@@ -1,0 +1,298 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <FileVersion>1.0.0.0</FileVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9e6dafc1-d901-4993-beb8-0b1f069714da}</ProjectGuid>
+    <SubObjectsSortedByName>True</SubObjectsSortedByName>
+    <DownloadApplicationInfo>true</DownloadApplicationInfo>
+    <WriteProductVersion>true</WriteProductVersion>
+    <GenerateTpy>false</GenerateTpy>
+    <Name>Plc</Name>
+    <ProgramVersion>3.1.4023.0</ProgramVersion>
+    <Application>{b6a46401-cc15-4de0-9b3a-9c78a4c7a5ef}</Application>
+    <TypeSystem>{a905b742-5ce1-4553-b266-22657c2beb24}</TypeSystem>
+    <Implicit_Task_Info>{6b643a04-eb0b-4c27-8cdd-be9f0e58c996}</Implicit_Task_Info>
+    <Implicit_KindOfTask>{375fbf38-4a12-4cc6-a570-fc532b5b9a2e}</Implicit_KindOfTask>
+    <Implicit_Jitter_Distribution>{06e9c2ac-dd7f-443d-9301-4072d48d7b60}</Implicit_Jitter_Distribution>
+    <LibraryReferences>{c93a3e1c-3558-480c-878a-f95c83852967}</LibraryReferences>
+    <DeploymentEvents>
+      <Events>
+        <Event>
+          <CommandType>Copy</CommandType>
+          <DeploymentType>ActivateConfiguration</DeploymentType>
+          <Command1 />
+          <Command2 />
+        </Event>
+      </Events>
+    </DeploymentEvents>
+    <Released>false</Released>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="PlcTask.TcTTO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="THREADs\Example Product Data\FB_ProductDataA.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="THREADs\Example Product Data\I_ProductDataA.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="THREADs\Example Product Data\PRG_Example_ProductData_Simple.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="THREADs\Example Product Data\ST_ProductDataA.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="THREADs\MAIN.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <PlaceholderReference Include="CHALET_BaseComponents">
+      <DefaultResolution>CHALET_BaseComponents, * (Beckhoff CH)</DefaultResolution>
+      <Namespace>CHALET_BaseComponents</Namespace>
+    </PlaceholderReference>
+    <PlaceholderReference Include="CHALET_XPlanar">
+      <DefaultResolution>CHALET_XPlanar, * (Beckhoff CH)</DefaultResolution>
+      <Namespace>CHALET_XPlanar</Namespace>
+      <Parameters>
+        <Parameter ListName="XPLANARPARAMETERLIST" xmlns="">
+          <Key>F_GAP_STARTUP</Key>
+          <Value>300</Value>
+        </Parameter>
+      </Parameters>
+    </PlaceholderReference>
+    <PlaceholderReference Include="Tc2_Standard">
+      <DefaultResolution>Tc2_Standard, * (Beckhoff Automation GmbH)</DefaultResolution>
+      <Namespace>Tc2_Standard</Namespace>
+    </PlaceholderReference>
+    <PlaceholderReference Include="Tc2_System">
+      <DefaultResolution>Tc2_System, * (Beckhoff Automation GmbH)</DefaultResolution>
+      <Namespace>Tc2_System</Namespace>
+    </PlaceholderReference>
+    <PlaceholderReference Include="Tc2_Utilities">
+      <DefaultResolution>Tc2_Utilities, * (Beckhoff Automation GmbH)</DefaultResolution>
+      <Namespace>Tc2_Utilities</Namespace>
+    </PlaceholderReference>
+    <PlaceholderReference Include="Tc3_EventLogger">
+      <DefaultResolution>Tc3_EventLogger, * (Beckhoff Automation GmbH)</DefaultResolution>
+      <Namespace>Tc3_EventLogger</Namespace>
+    </PlaceholderReference>
+    <PlaceholderReference Include="Tc3_Mc3Definitions">
+      <DefaultResolution>Tc3_Mc3Definitions, * (Beckhoff Automation GmbH)</DefaultResolution>
+      <Namespace>Tc3_Mc3Definitions</Namespace>
+    </PlaceholderReference>
+    <PlaceholderReference Include="Tc3_Mc3PlanarMotion">
+      <DefaultResolution>Tc3_Mc3PlanarMotion, * (Beckhoff Automation GmbH)</DefaultResolution>
+      <Namespace>Tc3_Mc3PlanarMotion</Namespace>
+    </PlaceholderReference>
+    <PlaceholderReference Include="Tc3_Module">
+      <DefaultResolution>Tc3_Module, * (Beckhoff Automation GmbH)</DefaultResolution>
+      <Namespace>Tc3_Module</Namespace>
+    </PlaceholderReference>
+    <PlaceholderReference Include="Tc3_Physics">
+      <DefaultResolution>Tc3_Physics, * (Beckhoff Automation GmbH)</DefaultResolution>
+      <Namespace>Tc3_Physics</Namespace>
+    </PlaceholderReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="THREADs" />
+    <Folder Include="THREADs\Example Product Data" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Plc.tmc">
+      <SubType>Content</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <PlaceholderResolution Include="CAA Callback">
+      <Resolution>CAA Callback Extern, * (CAA Technical Workgroup)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="CAA MemBlockMan">
+      <Resolution>CAA Memory Block Manager Extern, * (CAA Technical Workgroup)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="CAA ResMan">
+      <Resolution>CAA Ressource Manager Extern, * (CAA Technical Workgroup)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="CAA Types">
+      <Resolution>CAA Types Extern, * (CAA Technical Workgroup)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="CHALET_BaseComponents">
+      <Resolution>CHALET_BaseComponents, * (Beckhoff CH)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="CHALET_Nc">
+      <Resolution>CHALET_Nc, * (Beckhoff CH)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="CHALET_XPlanar">
+      <Resolution>CHALET_XPlanar, * (Beckhoff CH)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="CmpApp">
+      <Resolution>CmpApp, * (System)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="CmpBitmapPool">
+      <Resolution>CmpBitmapPool, * (System)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="CmpDynamicText">
+      <Resolution>CmpDynamicText, * (System)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="CmpEventMgr">
+      <Resolution>CmpEventMgr, * (System)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="CmpLog">
+      <Resolution>CmpLog, * (System)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="CmpSchedule">
+      <Resolution>CmpSchedule, * (System)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="CmpTargetVisu">
+      <Resolution>CmpTargetVisu, * (System)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="CmpVisuHandler">
+      <Resolution>CmpVisuHandler, * (System)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="Collections">
+      <Resolution>Collections, * (System)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="Component Manager">
+      <Resolution>Component Manager, * (System)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="FloatingPointUtils">
+      <Resolution>FloatingPointUtils, * (System)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="Standard">
+      <Resolution>Tc2_Standard, * (Beckhoff Automation GmbH)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="Standard64">
+      <Resolution>Tc2_Standard, * (Beckhoff Automation GmbH)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="StringUtils">
+      <Resolution>StringUtils, * (System)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="SysCpuHandling">
+      <Resolution>SysCpuHandling, * (System)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="SysDir">
+      <Resolution>SysDir, * (System)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="SysFile">
+      <Resolution>SysFile, * (System)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="SysMem">
+      <Resolution>SysMem, * (System)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="SysProcess">
+      <Resolution>SysProcess, * (System)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="SysShm">
+      <Resolution>SysShm, * (System)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="SysTarget">
+      <Resolution>SysTarget, * (System)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="System_VisuElemBase">
+      <Resolution>VisuElemBase, * (System)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="System_VisuElemMeter">
+      <Resolution>VisuElemMeter, * (System)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="System_VisuElems">
+      <Resolution>VisuElems, * (System)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="System_VisuElemsSpecialControls">
+      <Resolution>VisuElemsSpecialControls, * (System)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="System_VisuElemsWinControls">
+      <Resolution>VisuElemsWinControls, * (System)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="System_VisuElemTextEditor">
+      <Resolution>VisuElemTextEditor, * (System)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="system_visuinputs">
+      <Resolution>VisuInputs, * (System)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="System_VisuInputs">
+      <Resolution>VisuInputs, * (System)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="System_VisuNativeControl">
+      <Resolution>VisuNativeControl, * (System)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="SysTime">
+      <Resolution>SysTime, * (System)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="SysTimeCore">
+      <Resolution>SysTimeCore, * (System)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="SysTimeRtc">
+      <Resolution>SysTimeRtc, * (System)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="Tc2_Drive">
+      <Resolution>Tc2_Drive, * (Beckhoff Automation GmbH)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="Tc2_EtherCAT">
+      <Resolution>Tc2_EtherCAT, * (Beckhoff Automation GmbH)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="Tc2_IoFunctions">
+      <Resolution>Tc2_IoFunctions, * (Beckhoff Automation GmbH)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="Tc2_Math">
+      <Resolution>Tc2_Math, * (Beckhoff Automation GmbH)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="Tc2_MC2">
+      <Resolution>Tc2_MC2, * (Beckhoff Automation GmbH)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="Tc2_MC2_Drive">
+      <Resolution>Tc2_MC2_Drive, * (Beckhoff Automation GmbH)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="Tc2_Standard">
+      <Resolution>Tc2_Standard, * (Beckhoff Automation GmbH)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="Tc2_System">
+      <Resolution>Tc2_System, * (Beckhoff Automation GmbH)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="Tc2_Utilities">
+      <Resolution>Tc2_Utilities, * (Beckhoff Automation GmbH)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="Tc3_EventLogger">
+      <Resolution>Tc3_EventLogger, * (Beckhoff Automation GmbH)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="Tc3_Mc3Definitions">
+      <Resolution>Tc3_Mc3Definitions, * (Beckhoff Automation GmbH)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="Tc3_Mc3PlanarMotion">
+      <Resolution>Tc3_Mc3PlanarMotion, * (Beckhoff Automation GmbH)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="Tc3_Module">
+      <Resolution>Tc3_Module, * (Beckhoff Automation GmbH)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="Tc3_Physics">
+      <Resolution>Tc3_Physics, * (Beckhoff Automation GmbH)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="Tc3_XPlanarUtility">
+      <Resolution>Tc3_XPlanarUtility, * (Beckhoff Automation GmbH &amp; Co. KG)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="Util">
+      <Resolution>Util, * (System)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="VisuDialogs">
+      <Resolution>VisuDialogs, * (System)</Resolution>
+    </PlaceholderResolution>
+  </ItemGroup>
+  <ProjectExtensions>
+    <PlcProjectOptions>
+      <XmlArchive>
+        <Data>
+          <o xml:space="preserve" t="OptionKey">
+      <v n="Name">"&lt;ProjectRoot&gt;"</v>
+      <d n="SubKeys" t="Hashtable" />
+      <d n="Values" t="Hashtable" />
+    </o>
+        </Data>
+        <TypeList>
+          <Type n="Hashtable">System.Collections.Hashtable</Type>
+          <Type n="OptionKey">{54dd0eac-a6d8-46f2-8c27-2f43c7e49861}</Type>
+          <Type n="String">System.String</Type>
+        </TypeList>
+      </XmlArchive>
+    </PlcProjectOptions>
+  </ProjectExtensions>
+</Project>

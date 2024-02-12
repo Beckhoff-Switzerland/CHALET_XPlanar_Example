@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_ProductDataA" Id="{60709667-429a-40f1-9752-df19484c3ac5}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_ProductDataA EXTENDS FB_XP_ProductData IMPLEMENTS I_ProductDataA
+VAR
+	{attribute 'hide'}	
+	stData 	: ST_ProductDataA;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(* It is not necessary to edit anything in this FB. All changes must be made in the "ST_ProductData" structure.
+The reason why this FB is not in the CHALET library is that the structure "ST_ProductData" that it contains should be variable.*)]]></ST>
+    </Implementation>
+    <Property Name="Data" Id="{b6e3ed4a-f410-4d25-9730-b9dfa58db76a}">
+      <Declaration><![CDATA[{attribute 'monitoring':='call'}
+PROPERTY Data : REFERENCE TO ST_ProductDataA ]]></Declaration>
+      <Get Name="Get" Id="{c4675546-e9e3-453c-94ed-8c600b4e1f21}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Data REF= stData;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+  </POU>
+</TcPlcObject>

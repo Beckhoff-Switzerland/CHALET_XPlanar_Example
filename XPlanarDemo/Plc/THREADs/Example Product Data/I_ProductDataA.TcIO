@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <Itf Name="I_ProductDataA" Id="{2d50328d-72aa-458e-a3ac-89b08c0edb90}">
+    <Declaration><![CDATA[INTERFACE I_ProductDataA EXTENDS I_XP_ProductData
+]]></Declaration>
+    <Property Name="Data" Id="{eec7604d-52ea-4253-a690-e52843e9f4c8}">
+      <Declaration><![CDATA[{attribute 'monitoring':='call'}
+PROPERTY Data : REFERENCE TO ST_ProductDataA ]]></Declaration>
+      <Get Name="Get" Id="{2245f976-6a3f-4c7e-9513-22b10b898d7d}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+  </Itf>
+</TcPlcObject>

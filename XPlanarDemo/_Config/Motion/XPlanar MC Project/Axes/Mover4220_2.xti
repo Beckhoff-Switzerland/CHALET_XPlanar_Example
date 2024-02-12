@@ -1,0 +1,1826 @@
+<?xml version="1.0"?>
+<TcSmItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.53" ClassName="CTComMcMoverDef" SubType="78">
+	<DataTypes>
+		<DataType>
+			<Name GUID="{5AC0538E-BDFA-4B58-A6B5-99E997DABADA}" Namespace="MC">MoverVector</Name>
+			<Comment><![CDATA[A vector of six numeric values corresponding to the six coordinates of the PlanarMover. May be used e.g. for position, velocity or acceleration of the PlanarMover.]]></Comment>
+			<BitSize>384</BitSize>
+			<SubItem>
+				<Name>x</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<Comment><![CDATA[X coordinate.]]></Comment>
+				<BitSize>64</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>y</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<Comment><![CDATA[Y coordinate.]]></Comment>
+				<BitSize>64</BitSize>
+				<BitOffs>64</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>z</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<Comment><![CDATA[Z coordinate.]]></Comment>
+				<BitSize>64</BitSize>
+				<BitOffs>128</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>a</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<Comment><![CDATA[A coordinate.]]></Comment>
+				<BitSize>64</BitSize>
+				<BitOffs>192</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<Comment><![CDATA[B coordinate.]]></Comment>
+				<BitSize>64</BitSize>
+				<BitOffs>256</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>c</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<Comment><![CDATA[C coordinate.]]></Comment>
+				<BitSize>64</BitSize>
+				<BitOffs>320</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{38ED262D-F8F3-4BB3-9E0F-BFC46C6E916B}" Namespace="MC">DynamicLimits1D</Name>
+			<BitSize>256</BitSize>
+			<SubItem>
+				<Name>V</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<Comment><![CDATA[Velocity]]></Comment>
+				<BitSize>64</BitSize>
+				<BitOffs>0</BitOffs>
+				<Unit><![CDATA[mm/s, °/s]]></Unit>
+			</SubItem>
+			<SubItem>
+				<Name>A</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<Comment><![CDATA[Acceleration]]></Comment>
+				<BitSize>64</BitSize>
+				<BitOffs>64</BitOffs>
+				<Unit><![CDATA[mm/s², °/s²]]></Unit>
+			</SubItem>
+			<SubItem>
+				<Name>D</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<Comment><![CDATA[Deceleration]]></Comment>
+				<BitSize>64</BitSize>
+				<BitOffs>128</BitOffs>
+				<Unit><![CDATA[mm/s², °/s²]]></Unit>
+			</SubItem>
+			<SubItem>
+				<Name>J</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<Comment><![CDATA[Jerk]]></Comment>
+				<BitSize>64</BitSize>
+				<BitOffs>192</BitOffs>
+				<Unit><![CDATA[mm/s³, °/s³]]></Unit>
+			</SubItem>
+			<Relations>
+				<Relation>
+					<Type GUID="{9BD1CBBB-93EA-4974-9154-C6EDCA1707FA}">DeprecatedName</Type>
+				</Relation>
+			</Relations>
+		</DataType>
+		<DataType>
+			<Name GUID="{6D2B99B2-A9F2-44AF-A298-4BB7A08AE294}" Namespace="MC" TcBaseType="true">MC_PLANAR_STATE</Name>
+			<Comment><![CDATA[Indicates the enable state of a component.]]></Comment>
+			<BitSize>16</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000005}">UINT</BaseType>
+			<EnumInfo>
+				<Text><![CDATA[Invalid]]></Text>
+				<Enum>0</Enum>
+				<Comment><![CDATA[Indicates no or invalid information, e.g. no connection or component not yet ready.]]></Comment>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[Disabled]]></Text>
+				<Enum>1</Enum>
+				<Comment><![CDATA[Indicates a disabled component.]]></Comment>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[Enabling]]></Text>
+				<Enum>2</Enum>
+				<Comment><![CDATA[Indicates an enabling component.]]></Comment>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[Enabled]]></Text>
+				<Enum>3</Enum>
+				<Comment><![CDATA[Indicates an enabled component.]]></Comment>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[Disabling]]></Text>
+				<Enum>4</Enum>
+				<Comment><![CDATA[Indicates a disabling component.]]></Comment>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[Error]]></Text>
+				<Enum>5</Enum>
+				<Comment><![CDATA[Indicates a component in error state.]]></Comment>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[ErrorPending]]></Text>
+				<Enum>6</Enum>
+				<Comment><![CDATA[Indicates that a component is transitioning from any non error state to the error state.]]></Comment>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[Resetting]]></Text>
+				<Enum>7</Enum>
+				<Comment><![CDATA[Indicates that a component is resetting after it was in error state.]]></Comment>
+			</EnumInfo>
+			<Properties>
+				<Property>
+					<Name>plcAttribute_qualified_only</Name>
+				</Property>
+			</Properties>
+		</DataType>
+		<DataType>
+			<Name GUID="{FAE6DCD6-33EF-4275-8592-10BCED19E1EA}" Namespace="MC">MC_PLANAR_MOVER_COMMAND_MODE</Name>
+			<Comment><![CDATA[Indicates the command mode of an enabled PlanarMover, i.e. how setpoints are currently produced.]]></Comment>
+			<BitSize>16</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000005}">UINT</BaseType>
+			<EnumInfo>
+				<Text><![CDATA[Invalid]]></Text>
+				<Enum>0</Enum>
+				<Comment><![CDATA[Indicates no or invalid information, e.g. no connection or component not yet ready.]]></Comment>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[FreeMovement]]></Text>
+				<Enum>101</Enum>
+				<Comment><![CDATA[Indicates a freely moving PlanarMover.]]></Comment>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[OnTrack]]></Text>
+				<Enum>102</Enum>
+				<Comment><![CDATA[Indicates that the PlanarMover is moving on a PlanarTrack.]]></Comment>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[JoiningTrack]]></Text>
+				<Enum>103</Enum>
+				<Comment><![CDATA[Indicates that the PlanarMover is approaching a PlanarTrack to join it.]]></Comment>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[LeavingTrack]]></Text>
+				<Enum>104</Enum>
+				<Comment><![CDATA[Indicates that the PlanarMover is leaving a PlanarTrack to move freely afterwards.]]></Comment>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[ExternalSetpointGeneration]]></Text>
+				<Enum>105</Enum>
+				<Comment><![CDATA[Indicates that the PlanarMover is following externally provided setpoints.]]></Comment>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[CRotationFreeMovement]]></Text>
+				<Enum>106</Enum>
+				<Comment><![CDATA[Indicates that the PlanarMover only rotating the C coordinate in free movement, X and Y are standing.]]></Comment>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[CRotationOnTrack]]></Text>
+				<Enum>107</Enum>
+				<Comment><![CDATA[Indicates that the PlanarMover only rotating the C coordinate on a track, X and Y are standing.]]></Comment>
+			</EnumInfo>
+			<Properties>
+				<Property>
+					<Name>plcAttribute_qualified_only</Name>
+				</Property>
+			</Properties>
+		</DataType>
+		<DataType>
+			<Name GUID="{DB4B14FF-1923-4ED2-A97C-3D3120BDBDAA}" Namespace="MC" TcBaseType="true">CDT_MCTOPLC_PLANAR_MOVER_TRACK</Name>
+			<Comment><![CDATA[CDT provides the current mover setpoint on the planar track (if mover is on track).]]></Comment>
+			<BitSize>320</BitSize>
+			<SubItem>
+				<Name>SetPos</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<Comment><![CDATA[Current position.]]></Comment>
+				<BitSize>64</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>SetVelo</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<Comment><![CDATA[Current velocity.]]></Comment>
+				<BitSize>64</BitSize>
+				<BitOffs>64</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>SetAcc</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<Comment><![CDATA[Current acceleration.]]></Comment>
+				<BitSize>64</BitSize>
+				<BitOffs>128</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>SetJerk</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<Comment><![CDATA[Current jerk.]]></Comment>
+				<BitSize>64</BitSize>
+				<BitOffs>192</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>TrackOID</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</Type>
+				<Comment><![CDATA[Current track object id.]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>256</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{C4BA2B11-27FE-4956-B736-B8F79E7E1624}" Namespace="MC" TcBaseType="true">MC_EXTERNAL_SET_POSITION_MODE</Name>
+			<Comment><![CDATA[Indicates the external setpoint generation mode.]]></Comment>
+			<BitSize>16</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000005}">UINT</BaseType>
+			<EnumInfo>
+				<Text><![CDATA[Invalid]]></Text>
+				<Enum>0</Enum>
+				<Comment><![CDATA[Indicates invalid data.]]></Comment>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[Absolute]]></Text>
+				<Enum>1</Enum>
+				<Comment><![CDATA[Indicates that the Planar Mover is following only the external setpoints.]]></Comment>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[Relative]]></Text>
+				<Enum>2</Enum>
+				<Comment><![CDATA[Indicates that internal setpoint generation continues normally and the externally provided setpoints are added as an offset.]]></Comment>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[None]]></Text>
+				<Enum>3</Enum>
+				<Comment><![CDATA[Indicates no external setpoint generation.]]></Comment>
+			</EnumInfo>
+			<Properties>
+				<Property>
+					<Name>plcAttribute_qualified_only</Name>
+				</Property>
+				<Property>
+					<Name>plcAttribute_strict</Name>
+				</Property>
+			</Properties>
+		</DataType>
+		<DataType>
+			<Name GUID="{DCBC2796-F4A6-49ED-AD13-8E71F04F5FD7}" Namespace="MC">CDT_HWTOMC_MOVER</Name>
+			<BitSize>960</BitSize>
+			<SubItem>
+				<Name>ActPos</Name>
+				<Type GUID="{5AC0538E-BDFA-4B58-A6B5-99E997DABADA}" Namespace="MC">MoverVector</Type>
+				<BitSize>384</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ActVelo</Name>
+				<Type GUID="{5AC0538E-BDFA-4B58-A6B5-99E997DABADA}" Namespace="MC">MoverVector</Type>
+				<BitSize>384</BitSize>
+				<BitOffs>384</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>DcTimeStamp</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000B}">ULINT</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>768</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>PhysicalAreaID</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>832</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ErrorCode</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000004}">WORD</Type>
+				<BitSize>16</BitSize>
+				<BitOffs>896</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>CoEstatus1</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000001}">BYTE</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>912</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>CoEstatus2</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000001}">BYTE</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>920</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>HardwareMoverOID</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>928</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{BC77732B-A71D-4084-AA53-85A5016932F3}" Namespace="MC" TcBaseType="true">CDT_PLCTOMC_PLANAR_MOVER_STD</Name>
+			<Comment><![CDATA[CDT for the current general MC_PlanarMover information.]]></Comment>
+			<BitSize>8</BitSize>
+			<SubItem>
+				<Name>Enable</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<Comment><![CDATA[Unused as of now.]]></Comment>
+				<BitSize>8</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{F6B8E2E8-5F96-45E0-AD21-3E97B7E9BDB2}" Namespace="MC">CDT_MCTOHW_MOVER</Name>
+			<BitSize>1408</BitSize>
+			<SubItem>
+				<Name>SetPos</Name>
+				<Type GUID="{5AC0538E-BDFA-4B58-A6B5-99E997DABADA}" Namespace="MC">MoverVector</Type>
+				<BitSize>384</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>SetVelo</Name>
+				<Type GUID="{5AC0538E-BDFA-4B58-A6B5-99E997DABADA}" Namespace="MC">MoverVector</Type>
+				<BitSize>384</BitSize>
+				<BitOffs>384</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>SetAcc</Name>
+				<Type GUID="{5AC0538E-BDFA-4B58-A6B5-99E997DABADA}" Namespace="MC">MoverVector</Type>
+				<BitSize>384</BitSize>
+				<BitOffs>768</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>DcTimeStamp</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000B}">ULINT</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>1152</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>PhysicalAreaID</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>1216</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MovementAreaID</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>1280</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MasterID</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>1312</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>CoEcontrol1</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000001}">BYTE</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>1344</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>CoEcontrol2</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000001}">BYTE</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>1352</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MoverOID</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>1376</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{1724CCE2-4FE1-4A80-AEC5-6F25F9789895}" Namespace="MC">MoverBusy</Name>
+			<Comment><![CDATA[Indicates the busy state of the PlanarMover.]]></Comment>
+			<BitSize>8</BitSize>
+			<SubItem>
+				<Name>busyMover</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<Comment><![CDATA[Indicates the busy state of the whole PlanarMover.]]></Comment>
+				<BitSize>1</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>busyXYC</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<Comment><![CDATA[Indicates the busy state of the main coordinates (includes only x and y if c is independent).]]></Comment>
+				<BitSize>1</BitSize>
+				<BitOffs>1</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>busyX</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<Comment><![CDATA[Indicates the busy state of the x coordinate.]]></Comment>
+				<BitSize>1</BitSize>
+				<BitOffs>2</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>busyY</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<Comment><![CDATA[Indicates the busy state of the y coordinate.]]></Comment>
+				<BitSize>1</BitSize>
+				<BitOffs>3</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>busyZ</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<Comment><![CDATA[Indicates the busy state of the z coordinate.]]></Comment>
+				<BitSize>1</BitSize>
+				<BitOffs>4</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>busyA</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<Comment><![CDATA[Indicates the busy state of the a coordinate.]]></Comment>
+				<BitSize>1</BitSize>
+				<BitOffs>5</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>busyB</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<Comment><![CDATA[Indicates the busy state of the b coordinate.]]></Comment>
+				<BitSize>1</BitSize>
+				<BitOffs>6</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>busyC</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<Comment><![CDATA[Indicates the busy state of the c coordinate.]]></Comment>
+				<BitSize>1</BitSize>
+				<BitOffs>7</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{7D131116-81E4-45B0-AC50-A71EE4201E30}" Namespace="MC" TcBaseType="true">CDT_MCTOPLC_PLANAR_MOVER_STD</Name>
+			<Comment><![CDATA[CDT provides current general information about the planar mover.]]></Comment>
+			<BitSize>160</BitSize>
+			<SubItem>
+				<Name>MoverOID</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</Type>
+				<Comment><![CDATA[Object id of the planar mover.]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>GroupOID</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</Type>
+				<Comment><![CDATA[Object id of the planar group the mover is in.]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>32</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>State</Name>
+				<Type GUID="{6D2B99B2-A9F2-44AF-A298-4BB7A08AE294}" Namespace="MC">MC_PLANAR_STATE</Type>
+				<Comment><![CDATA[State of the planar mover, e.g. enabled.]]></Comment>
+				<BitSize>16</BitSize>
+				<BitOffs>64</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>CommandMode</Name>
+				<Type GUID="{FAE6DCD6-33EF-4275-8592-10BCED19E1EA}" Namespace="MC">MC_PLANAR_MOVER_COMMAND_MODE</Type>
+				<Comment><![CDATA[Command mode of the planar mover, e.g. onTrack.]]></Comment>
+				<BitSize>16</BitSize>
+				<BitOffs>80</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Busy</Name>
+				<Type GUID="{1724CCE2-4FE1-4A80-AEC5-6F25F9789895}" Namespace="MC">MoverBusy</Type>
+				<Comment><![CDATA[Busy state of the planar mover.]]></Comment>
+				<BitSize>8</BitSize>
+				<BitOffs>96</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ErrorCode</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000019}">HRESULT</Type>
+				<Comment><![CDATA[Error code of the planar mover.]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>128</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{D7D4F146-9962-4745-8631-17F5FB457164}" Namespace="MC" TcBaseType="true">CDT_MCTOPLC_PLANAR_MOVER_SET</Name>
+			<Comment><![CDATA[CDT provides the current planar mover setpoint.]]></Comment>
+			<BitSize>1280</BitSize>
+			<SubItem>
+				<Name>SetPos</Name>
+				<Type GUID="{5AC0538E-BDFA-4B58-A6B5-99E997DABADA}" Namespace="MC">MoverVector</Type>
+				<Comment><![CDATA[Current position.]]></Comment>
+				<BitSize>384</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>SetVelo</Name>
+				<Type GUID="{5AC0538E-BDFA-4B58-A6B5-99E997DABADA}" Namespace="MC">MoverVector</Type>
+				<Comment><![CDATA[Current velocity.]]></Comment>
+				<BitSize>384</BitSize>
+				<BitOffs>384</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>SetAcc</Name>
+				<Type GUID="{5AC0538E-BDFA-4B58-A6B5-99E997DABADA}" Namespace="MC">MoverVector</Type>
+				<Comment><![CDATA[Current acceleration.]]></Comment>
+				<BitSize>384</BitSize>
+				<BitOffs>768</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>DcTimeStamp</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000B}">ULINT</Type>
+				<Comment><![CDATA[Current time stamp.]]></Comment>
+				<BitSize>64</BitSize>
+				<BitOffs>1152</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>PhysicalAreaID</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<Comment><![CDATA[Current physical area id.]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>1216</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{F18FBB92-D68F-43D8-95AE-0E42EDCD14E2}" Namespace="MC" TcBaseType="true">CDT_MCTOPLC_PLANAR_MOVER_ACT</Name>
+			<Comment><![CDATA[CDT provides the current mover actpoint.]]></Comment>
+			<BitSize>896</BitSize>
+			<SubItem>
+				<Name>ActPos</Name>
+				<Type GUID="{5AC0538E-BDFA-4B58-A6B5-99E997DABADA}" Namespace="MC">MoverVector</Type>
+				<Comment><![CDATA[Current position.]]></Comment>
+				<BitSize>384</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ActVelo</Name>
+				<Type GUID="{5AC0538E-BDFA-4B58-A6B5-99E997DABADA}" Namespace="MC">MoverVector</Type>
+				<Comment><![CDATA[Current velocity.]]></Comment>
+				<BitSize>384</BitSize>
+				<BitOffs>384</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>DcTimeStamp</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000B}">ULINT</Type>
+				<Comment><![CDATA[Current time stamp.]]></Comment>
+				<BitSize>64</BitSize>
+				<BitOffs>768</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>PhysicalAreaID</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<Comment><![CDATA[Current physical area id.]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>832</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{4A0F472D-280E-4FC8-9A7B-F63984042D8D}" Namespace="MC">MC_PLANAR_COORDINATE_MODE</Name>
+			<Comment><![CDATA[Indicates if the setpoint generation for a coordinate is independent, coupled to the main coordinates (x, y) or controlled by other sources.]]></Comment>
+			<BitSize>16</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000005}">UINT</BaseType>
+			<EnumInfo>
+				<Text><![CDATA[Invalid]]></Text>
+				<Enum>0</Enum>
+				<Comment><![CDATA[Indicates no or invalid information, e.g. no connection or component not yet ready.]]></Comment>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[Independent]]></Text>
+				<Enum>1</Enum>
+				<Comment><![CDATA[Indicates an independent coordinate, controlled separately.]]></Comment>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[Dependent]]></Text>
+				<Enum>2</Enum>
+				<Comment><![CDATA[Indicates a dependent coordinate, controlled together with x and y.]]></Comment>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[External]]></Text>
+				<Enum>3</Enum>
+				<Comment><![CDATA[Indicates a coordinate controlled by external setpoint generation.]]></Comment>
+			</EnumInfo>
+			<Properties>
+				<Property>
+					<Name>plcAttribute_qualified_only</Name>
+				</Property>
+			</Properties>
+		</DataType>
+		<DataType>
+			<Name GUID="{B2D0D1AF-2BA9-49BA-AF3F-BC95009CD9CD}" Namespace="MC" TcBaseType="true">CDT_MCTOPLC_PLANAR_MOVER_COORDMODE</Name>
+			<Comment><![CDATA[CDT provides the current mover coordinate modes.]]></Comment>
+			<BitSize>80</BitSize>
+			<SubItem>
+				<Name>XYCoordinateMode</Name>
+				<Type GUID="{4A0F472D-280E-4FC8-9A7B-F63984042D8D}" Namespace="MC">MC_PLANAR_COORDINATE_MODE</Type>
+				<Comment><![CDATA[X and Y coordinate.]]></Comment>
+				<BitSize>16</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ZCoordinateMode</Name>
+				<Type GUID="{4A0F472D-280E-4FC8-9A7B-F63984042D8D}" Namespace="MC">MC_PLANAR_COORDINATE_MODE</Type>
+				<Comment><![CDATA[Z coordinate.]]></Comment>
+				<BitSize>16</BitSize>
+				<BitOffs>16</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ACoordinateMode</Name>
+				<Type GUID="{4A0F472D-280E-4FC8-9A7B-F63984042D8D}" Namespace="MC">MC_PLANAR_COORDINATE_MODE</Type>
+				<Comment><![CDATA[A coordinate.]]></Comment>
+				<BitSize>16</BitSize>
+				<BitOffs>32</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>BCoordinateMode</Name>
+				<Type GUID="{4A0F472D-280E-4FC8-9A7B-F63984042D8D}" Namespace="MC">MC_PLANAR_COORDINATE_MODE</Type>
+				<Comment><![CDATA[B coordinate.]]></Comment>
+				<BitSize>16</BitSize>
+				<BitOffs>48</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>CCoordinateMode</Name>
+				<Type GUID="{4A0F472D-280E-4FC8-9A7B-F63984042D8D}" Namespace="MC">MC_PLANAR_COORDINATE_MODE</Type>
+				<Comment><![CDATA[C coordinate.]]></Comment>
+				<BitSize>16</BitSize>
+				<BitOffs>64</BitOffs>
+			</SubItem>
+		</DataType>
+	</DataTypes>
+	<ImageDatas>
+		<ImageData Id="1000">424d360300000000000036000000280000001000000010000000010018000000000000000000c30e0000c30e000000000000000000003d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b297b766f7a756d79746c77726a767168756f66736e64716c626f695f6d675d6b655a696358666155645e523d3b293d3b297f7a737f7b727e7a717c78707a766d78746bb6b4aeb6b4ae726d63706a606d685d6b665b6964586661553d3b293d3b2989847e8a867f8a867e88847cb6b4aeb6b4ae3d3b293d3b29b6b4aeb6b4ae706b606d685d6b665b6863583d3b293d3b2995918b96938db6b4aeb6b4ae3d3b293d3b2988837b817c743d3b293d3b29b6b4aeb6b4ae6d685d6b655a3d3b293d3b29a19e98b6b4ae3d3b293d3b299e9b943d3b29b6b4aeb6b4ae3d3b29a09c963d3b293d3b29b6b4ae6d675d3d3b293d3b29aca9a43d3b29aeaba6adaaa4a9a6a13d3b293d3b293d3b293d3b29a09c967b766d7570663d3b29b6b4ae3d3b293d3b29b6b3ae3d3b29b9b6b2b7b5b13d3b293d3b29a9a6a0a09c963d3b293d3b29a09c96a09c963d3b29b6b4ae3d3b293d3b29c1bfbb3d3b293d3b293d3b29bfbcb8bab8b3b3b0aba9a6a0a09c9696928b3d3b293d3b293d3b29b6b4ae3d3b293d3b29cac8c53d3b29ceccc9cccbc7c9c7c4c3c1bdbbb8b4b1aea9a6a39d9c9891908c85847f773d3b29b6b4ae3d3b293d3b29d1cfcd3d3b29d7d6d3d6d5d2d1cfcdcac8c5c1bebab6b4afaca9a3a09d9795918a89847d3d3b29b6b4ae3d3b293d3b29d6d4d2dcdbd93d3b293d3b29d6d5d2cfcdcac5c3c0bab8b3afaca7a4a19b3d3b293d3b297f7a7277736b3d3b293d3b29d9d7d6e0dfdde5e4e2e2e1df3d3b293d3b29c7c5c2bcb9b53d3b293d3b299a96908d8982807c7479756c3d3b293d3b29d8d6d5dedddce2e1e0dfdeddd8d7d5d0cfcc3d3b293d3b29b1aeaaa6a39d9a96918e8a84817d767a766e3d3b293d3b29d4d2d1d9d7d6dad9d8d9d8d6d4d2d0cdcbc9c4c2bfbab7b3afaca8a5a19c9995908d8983817c757b766f3d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b29</ImageData>
+	</ImageDatas>
+	<Mover Id="#x05110020">
+		<Name>__FILENAME__</Name>
+		<ImageId>1000</ImageId>
+		<TmcDesc GUID="{5FC17892-62EA-4736-9999-D79964E87717}" TcSmClass="TComMcPlanarMoverObj">
+			<Name>Planar Mover</Name>
+			<CLSID ClassFactory="TcNc3">{050300C6-0000-0000-F000-000000000064}</CLSID>
+			<Licenses>
+				<License>
+					<LicenseId>{C2F58FAE-EB3E-4252-A3D4-E912569E6EFC}</LicenseId>
+				</License>
+			</Licenses>
+			<InitSequence>PSO</InitSequence>
+			<Contexts>
+				<Context>
+					<Id>0</Id>
+					<Name>MET</Name>
+					<ManualConfig>
+						<OTCID>#x02010050</OTCID>
+					</ManualConfig>
+					<Priority>3</Priority>
+					<CycleTime>2000000</CycleTime>
+					<DependOn>ParentObject</DependOn>
+				</Context>
+				<Context>
+					<Id>1</Id>
+					<Name>MPT</Name>
+					<ManualConfig>
+						<OTCID>#x02010060</OTCID>
+					</ManualConfig>
+					<Priority>8</Priority>
+					<CycleTime>10000000</CycleTime>
+					<DependOn>ParentObject</DependOn>
+				</Context>
+			</Contexts>
+			<Parameters>
+				<Group><![CDATA[General]]></Group>
+				<Group><![CDATA[Maximum Dynamics]]></Group>
+				<Group><![CDATA[Default Dynamics]]></Group>
+				<Group><![CDATA[Monitoring]]></Group>
+				<Group Collapsed="true"><![CDATA[Internal]]></Group>
+				<Parameter HideParameter="true">
+					<Name>TraceLevel</Name>
+					<BitSize>32</BitSize>
+					<BaseType GUID="{8007AE3B-86BB-40F2-B385-EF87FCC239A4}">TcTraceLevel</BaseType>
+					<Default>
+						<Value>2</Value>
+					</Default>
+					<PTCID>#x03002103</PTCID>
+				</Parameter>
+				<Parameter HideParameter="true" RefreshableValue="true">
+					<Name>Ctx_TaskOidMET</Name>
+					<Comment><![CDATA[Task implementing ICyclicCaller for cyclic execution of this module]]></Comment>
+					<BitSize>32</BitSize>
+					<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+					<PTCID>#x03002060</PTCID>
+				</Parameter>
+				<Parameter HideParameter="true" Group="General">
+					<Name>Simulation mode</Name>
+					<Comment><![CDATA[Specifies if mover is in simulation mode or not, i.e. if the mover needs hardware (driver) connection via CoE.]]></Comment>
+					<BitSize>8</BitSize>
+					<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
+					<Default>
+						<Value>0</Value>
+					</Default>
+					<PTCID>#x050300b1</PTCID>
+					<ContextId OnlineAccess="true">0</ContextId>
+				</Parameter>
+				<Parameter Group="General">
+					<Name>Mover width</Name>
+					<Comment><![CDATA[Width that is used for internal collision checks.]]></Comment>
+					<BitSize>64</BitSize>
+					<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+					<Unit><![CDATA[mm]]></Unit>
+					<Default>
+						<Value>155.0</Value>
+					</Default>
+					<PTCID>#x050300b2</PTCID>
+					<ContextId OnlineAccess="true">0</ContextId>
+				</Parameter>
+				<Parameter Group="General">
+					<Name>Mover height</Name>
+					<Comment><![CDATA[Height that is used for internal collision checks.]]></Comment>
+					<BitSize>64</BitSize>
+					<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+					<Unit><![CDATA[mm]]></Unit>
+					<Default>
+						<Value>155.0</Value>
+					</Default>
+					<PTCID>#x050300b3</PTCID>
+					<ContextId OnlineAccess="true">0</ContextId>
+				</Parameter>
+				<Parameter Group="General">
+					<Name>Initial position</Name>
+					<Comment><![CDATA[Mover position, can be set for disabled mover.]]></Comment>
+					<BitSize>384</BitSize>
+					<BaseType GUID="{5AC0538E-BDFA-4B58-A6B5-99E997DABADA}" Namespace="MC">MoverVector</BaseType>
+					<Unit><![CDATA[mm, °]]></Unit>
+					<PTCID>#x050300b5</PTCID>
+				</Parameter>
+				<Parameter HideParameter="true" Group="General">
+					<Name>Minimal position</Name>
+					<Comment><![CDATA[Mover minimal position, can be set for disabled mover. For the c coordinate the interpretation is not absolute.]]></Comment>
+					<BitSize>384</BitSize>
+					<BaseType GUID="{5AC0538E-BDFA-4B58-A6B5-99E997DABADA}" Namespace="MC">MoverVector</BaseType>
+					<Unit><![CDATA[mm, °]]></Unit>
+					<Default>
+						<SubItem>
+							<Name>.x</Name>
+							<Value>-1e10</Value>
+						</SubItem>
+						<SubItem>
+							<Name>.y</Name>
+							<Value>-1e10</Value>
+						</SubItem>
+						<SubItem>
+							<Name>.z</Name>
+							<Value>-1.0</Value>
+						</SubItem>
+						<SubItem>
+							<Name>.a</Name>
+							<Value>-3.0</Value>
+						</SubItem>
+						<SubItem>
+							<Name>.b</Name>
+							<Value>-3.0</Value>
+						</SubItem>
+						<SubItem>
+							<Name>.c</Name>
+							<Value>-15.0</Value>
+						</SubItem>
+					</Default>
+					<PTCID>#x050300d3</PTCID>
+				</Parameter>
+				<Parameter HideParameter="true" Group="General">
+					<Name>Maximal position</Name>
+					<Comment><![CDATA[Mover maximal position, can be set for disabled mover. For the c coordinate the interpretation is not absolute.]]></Comment>
+					<BitSize>384</BitSize>
+					<BaseType GUID="{5AC0538E-BDFA-4B58-A6B5-99E997DABADA}" Namespace="MC">MoverVector</BaseType>
+					<Unit><![CDATA[mm, °]]></Unit>
+					<Default>
+						<SubItem>
+							<Name>.x</Name>
+							<Value>1e10</Value>
+						</SubItem>
+						<SubItem>
+							<Name>.y</Name>
+							<Value>1e10</Value>
+						</SubItem>
+						<SubItem>
+							<Name>.z</Name>
+							<Value>1.0</Value>
+						</SubItem>
+						<SubItem>
+							<Name>.a</Name>
+							<Value>3.0</Value>
+						</SubItem>
+						<SubItem>
+							<Name>.b</Name>
+							<Value>3.0</Value>
+						</SubItem>
+						<SubItem>
+							<Name>.c</Name>
+							<Value>15.0</Value>
+						</SubItem>
+					</Default>
+					<PTCID>#x050300d4</PTCID>
+				</Parameter>
+				<Parameter Group="General">
+					<Name>C coordinate modulus</Name>
+					<Comment><![CDATA[C coordinate modulus, can be set for disabled mover.]]></Comment>
+					<BitSize>64</BitSize>
+					<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+					<Unit><![CDATA[°]]></Unit>
+					<Default>
+						<Value>360.0</Value>
+					</Default>
+					<PTCID>#x05030107</PTCID>
+				</Parameter>
+				<Parameter Group="General">
+					<Name>C coordinate modulo tolerance window</Name>
+					<Comment><![CDATA[C coordinate modulo tolerance window, can be set for disabled mover.]]></Comment>
+					<BitSize>64</BitSize>
+					<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+					<Unit><![CDATA[°]]></Unit>
+					<Default>
+						<Value>0.0</Value>
+					</Default>
+					<PTCID>#x05030108</PTCID>
+				</Parameter>
+				<Parameter Group="Monitoring">
+					<Name>Position Lag Monitoring Enabled</Name>
+					<BitSize>8</BitSize>
+					<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
+					<Default>
+						<Value>1</Value>
+					</Default>
+					<PTCID>#x0503011a</PTCID>
+				</Parameter>
+				<Parameter Group="Monitoring">
+					<Name>Maximum Position Lag Value</Name>
+					<Comment><![CDATA[A vector of six numeric values corresponding to the six coordinates of the PlanarMover. May be used e.g. for position, velocity or acceleration of the PlanarMover.]]></Comment>
+					<BitSize>384</BitSize>
+					<BaseType GUID="{5AC0538E-BDFA-4B58-A6B5-99E997DABADA}" Namespace="MC">MoverVector</BaseType>
+					<Unit><![CDATA[mm, °]]></Unit>
+					<Default>
+						<SubItem>
+							<Name>.x</Name>
+							<Value>5.0</Value>
+						</SubItem>
+						<SubItem>
+							<Name>.y</Name>
+							<Value>5.0</Value>
+						</SubItem>
+						<SubItem>
+							<Name>.z</Name>
+							<Value>1.0</Value>
+						</SubItem>
+						<SubItem>
+							<Name>.a</Name>
+							<Value>1.0</Value>
+						</SubItem>
+						<SubItem>
+							<Name>.b</Name>
+							<Value>1.0</Value>
+						</SubItem>
+						<SubItem>
+							<Name>.c</Name>
+							<Value>1.5</Value>
+						</SubItem>
+					</Default>
+					<PTCID>#x050300be</PTCID>
+				</Parameter>
+				<Parameter Group="Monitoring">
+					<Name>Maximum Position Lag Filter Time</Name>
+					<Comment><![CDATA[A vector of six numeric values corresponding to the six coordinates of the PlanarMover. May be used e.g. for position, velocity or acceleration of the PlanarMover.]]></Comment>
+					<BitSize>384</BitSize>
+					<BaseType GUID="{5AC0538E-BDFA-4B58-A6B5-99E997DABADA}" Namespace="MC">MoverVector</BaseType>
+					<Unit><![CDATA[s]]></Unit>
+					<Default>
+						<SubItem>
+							<Name>.x</Name>
+							<Value>0.02</Value>
+						</SubItem>
+						<SubItem>
+							<Name>.y</Name>
+							<Value>0.02</Value>
+						</SubItem>
+						<SubItem>
+							<Name>.z</Name>
+							<Value>0.02</Value>
+						</SubItem>
+						<SubItem>
+							<Name>.a</Name>
+							<Value>0.02</Value>
+						</SubItem>
+						<SubItem>
+							<Name>.b</Name>
+							<Value>0.02</Value>
+						</SubItem>
+						<SubItem>
+							<Name>.c</Name>
+							<Value>0.02</Value>
+						</SubItem>
+					</Default>
+					<PTCID>#x050300bf</PTCID>
+				</Parameter>
+				<Parameter ShowSubItems="true" Group="Maximum Dynamics">
+					<Name>Maximum dynamic XY</Name>
+					<Comment><![CDATA[Maximum dynamic of the mover in the XY plane.]]></Comment>
+					<BitSize>256</BitSize>
+					<BaseType GUID="{38ED262D-F8F3-4BB3-9E0F-BFC46C6E916B}" Namespace="MC">DynamicLimits1D</BaseType>
+					<Unit><![CDATA[mm per s, s², or s³]]></Unit>
+					<Default>
+						<SubItem>
+							<Name>.V</Name>
+							<Value>2000.0</Value>
+						</SubItem>
+						<SubItem>
+							<Name>.A</Name>
+							<Value>20000.0</Value>
+						</SubItem>
+						<SubItem>
+							<Name>.D</Name>
+							<Value>20000.0</Value>
+						</SubItem>
+						<SubItem>
+							<Name>.J</Name>
+							<Value>200000.0</Value>
+						</SubItem>
+					</Default>
+					<PTCID>#x050300b8</PTCID>
+				</Parameter>
+				<Parameter Group="Maximum Dynamics">
+					<Name>Maximum dynamic C</Name>
+					<Comment><![CDATA[Maximum dynamic of the movers C rotation.]]></Comment>
+					<BitSize>256</BitSize>
+					<BaseType GUID="{38ED262D-F8F3-4BB3-9E0F-BFC46C6E916B}" Namespace="MC">DynamicLimits1D</BaseType>
+					<Unit><![CDATA[° per s, s², or s³]]></Unit>
+					<Default>
+						<SubItem>
+							<Name>.V</Name>
+							<Value>10.0</Value>
+						</SubItem>
+						<SubItem>
+							<Name>.A</Name>
+							<Value>100.0</Value>
+						</SubItem>
+						<SubItem>
+							<Name>.D</Name>
+							<Value>100.0</Value>
+						</SubItem>
+						<SubItem>
+							<Name>.J</Name>
+							<Value>1000.0</Value>
+						</SubItem>
+					</Default>
+					<PTCID>#x050300b9</PTCID>
+				</Parameter>
+				<Parameter Group="Maximum Dynamics">
+					<Name>Maximum dynamic Z</Name>
+					<Comment><![CDATA[Maximum dynamic of the movers Z coordinate.]]></Comment>
+					<BitSize>256</BitSize>
+					<BaseType GUID="{38ED262D-F8F3-4BB3-9E0F-BFC46C6E916B}" Namespace="MC">DynamicLimits1D</BaseType>
+					<Unit><![CDATA[mm per s, s², or s³]]></Unit>
+					<Default>
+						<SubItem>
+							<Name>.V</Name>
+							<Value>10.0</Value>
+						</SubItem>
+						<SubItem>
+							<Name>.A</Name>
+							<Value>100.0</Value>
+						</SubItem>
+						<SubItem>
+							<Name>.D</Name>
+							<Value>100.0</Value>
+						</SubItem>
+						<SubItem>
+							<Name>.J</Name>
+							<Value>1000.0</Value>
+						</SubItem>
+					</Default>
+					<PTCID>#x050300ba</PTCID>
+				</Parameter>
+				<Parameter Group="Maximum Dynamics">
+					<Name>Maximum dynamic A</Name>
+					<Comment><![CDATA[Maximum dynamic of the movers A rotation.]]></Comment>
+					<BitSize>256</BitSize>
+					<BaseType GUID="{38ED262D-F8F3-4BB3-9E0F-BFC46C6E916B}" Namespace="MC">DynamicLimits1D</BaseType>
+					<Unit><![CDATA[° per s, s², or s³]]></Unit>
+					<Default>
+						<SubItem>
+							<Name>.V</Name>
+							<Value>10.0</Value>
+						</SubItem>
+						<SubItem>
+							<Name>.A</Name>
+							<Value>100.0</Value>
+						</SubItem>
+						<SubItem>
+							<Name>.D</Name>
+							<Value>100.0</Value>
+						</SubItem>
+						<SubItem>
+							<Name>.J</Name>
+							<Value>1000.0</Value>
+						</SubItem>
+					</Default>
+					<PTCID>#x050300ca</PTCID>
+				</Parameter>
+				<Parameter Group="Maximum Dynamics">
+					<Name>Maximum dynamic B</Name>
+					<Comment><![CDATA[Maximum dynamic of the movers B rotation.]]></Comment>
+					<BitSize>256</BitSize>
+					<BaseType GUID="{38ED262D-F8F3-4BB3-9E0F-BFC46C6E916B}" Namespace="MC">DynamicLimits1D</BaseType>
+					<Unit><![CDATA[° per s, s², or s³]]></Unit>
+					<Default>
+						<SubItem>
+							<Name>.V</Name>
+							<Value>10.0</Value>
+						</SubItem>
+						<SubItem>
+							<Name>.A</Name>
+							<Value>100.0</Value>
+						</SubItem>
+						<SubItem>
+							<Name>.D</Name>
+							<Value>100.0</Value>
+						</SubItem>
+						<SubItem>
+							<Name>.J</Name>
+							<Value>1000.0</Value>
+						</SubItem>
+					</Default>
+					<PTCID>#x050300cb</PTCID>
+				</Parameter>
+				<Parameter ShowSubItems="true" Group="Default Dynamics">
+					<Name>Default dynamic XY</Name>
+					<Comment><![CDATA[Default dynamic of the mover in the XY plane.]]></Comment>
+					<BitSize>256</BitSize>
+					<BaseType GUID="{38ED262D-F8F3-4BB3-9E0F-BFC46C6E916B}" Namespace="MC">DynamicLimits1D</BaseType>
+					<Unit><![CDATA[mm per s, s², or s³]]></Unit>
+					<Default>
+						<SubItem>
+							<Name>.V</Name>
+							<Value>100.0</Value>
+						</SubItem>
+						<SubItem>
+							<Name>.A</Name>
+							<Value>200.0</Value>
+						</SubItem>
+						<SubItem>
+							<Name>.D</Name>
+							<Value>200.0</Value>
+						</SubItem>
+						<SubItem>
+							<Name>.J</Name>
+							<Value>1000.0</Value>
+						</SubItem>
+					</Default>
+					<PTCID>#x050300cc</PTCID>
+				</Parameter>
+				<Parameter Group="Default Dynamics">
+					<Name>Default dynamic C</Name>
+					<Comment><![CDATA[Default dynamic of the movers C rotation.]]></Comment>
+					<BitSize>256</BitSize>
+					<BaseType GUID="{38ED262D-F8F3-4BB3-9E0F-BFC46C6E916B}" Namespace="MC">DynamicLimits1D</BaseType>
+					<Unit><![CDATA[° per s, s², or s³]]></Unit>
+					<Default>
+						<SubItem>
+							<Name>.V</Name>
+							<Value>5.0</Value>
+						</SubItem>
+						<SubItem>
+							<Name>.A</Name>
+							<Value>20.0</Value>
+						</SubItem>
+						<SubItem>
+							<Name>.D</Name>
+							<Value>20.0</Value>
+						</SubItem>
+						<SubItem>
+							<Name>.J</Name>
+							<Value>100.0</Value>
+						</SubItem>
+					</Default>
+					<PTCID>#x050300cd</PTCID>
+				</Parameter>
+				<Parameter Group="Default Dynamics">
+					<Name>Default dynamic Z</Name>
+					<Comment><![CDATA[Default dynamic of the movers Z coordinate.]]></Comment>
+					<BitSize>256</BitSize>
+					<BaseType GUID="{38ED262D-F8F3-4BB3-9E0F-BFC46C6E916B}" Namespace="MC">DynamicLimits1D</BaseType>
+					<Unit><![CDATA[mm per s, s², or s³]]></Unit>
+					<Default>
+						<SubItem>
+							<Name>.V</Name>
+							<Value>5.0</Value>
+						</SubItem>
+						<SubItem>
+							<Name>.A</Name>
+							<Value>20.0</Value>
+						</SubItem>
+						<SubItem>
+							<Name>.D</Name>
+							<Value>20.0</Value>
+						</SubItem>
+						<SubItem>
+							<Name>.J</Name>
+							<Value>100.0</Value>
+						</SubItem>
+					</Default>
+					<PTCID>#x050300ce</PTCID>
+				</Parameter>
+				<Parameter Group="Default Dynamics">
+					<Name>Default dynamic A</Name>
+					<Comment><![CDATA[Default dynamic of the movers A rotation.]]></Comment>
+					<BitSize>256</BitSize>
+					<BaseType GUID="{38ED262D-F8F3-4BB3-9E0F-BFC46C6E916B}" Namespace="MC">DynamicLimits1D</BaseType>
+					<Unit><![CDATA[° per s, s², or s³]]></Unit>
+					<Default>
+						<SubItem>
+							<Name>.V</Name>
+							<Value>5.0</Value>
+						</SubItem>
+						<SubItem>
+							<Name>.A</Name>
+							<Value>20.0</Value>
+						</SubItem>
+						<SubItem>
+							<Name>.D</Name>
+							<Value>20.0</Value>
+						</SubItem>
+						<SubItem>
+							<Name>.J</Name>
+							<Value>100.0</Value>
+						</SubItem>
+					</Default>
+					<PTCID>#x050300cf</PTCID>
+				</Parameter>
+				<Parameter Group="Default Dynamics">
+					<Name>Default dynamic B</Name>
+					<Comment><![CDATA[Default dynamic of the movers B rotation.]]></Comment>
+					<BitSize>256</BitSize>
+					<BaseType GUID="{38ED262D-F8F3-4BB3-9E0F-BFC46C6E916B}" Namespace="MC">DynamicLimits1D</BaseType>
+					<Unit><![CDATA[° per s, s², or s³]]></Unit>
+					<Default>
+						<SubItem>
+							<Name>.V</Name>
+							<Value>5.0</Value>
+						</SubItem>
+						<SubItem>
+							<Name>.A</Name>
+							<Value>20.0</Value>
+						</SubItem>
+						<SubItem>
+							<Name>.D</Name>
+							<Value>20.0</Value>
+						</SubItem>
+						<SubItem>
+							<Name>.J</Name>
+							<Value>100.0</Value>
+						</SubItem>
+					</Default>
+					<PTCID>#x050300d0</PTCID>
+				</Parameter>
+				<Parameter OnlineParameter="true" ShowSubItems="true" ReadOnly="true">
+					<Name>SetPos</Name>
+					<Comment><![CDATA[Mover position, read only.]]></Comment>
+					<BitSize>384</BitSize>
+					<BaseType GUID="{5AC0538E-BDFA-4B58-A6B5-99E997DABADA}" Namespace="MC">MoverVector</BaseType>
+					<Unit><![CDATA[mm, °]]></Unit>
+					<PTCID>#x050300d2</PTCID>
+				</Parameter>
+				<Parameter OnlineParameter="true" ReadOnly="true">
+					<Name>GroupOID</Name>
+					<Comment><![CDATA[Object id of the PlanarGroup the mover is in, read only.]]></Comment>
+					<BitSize>32</BitSize>
+					<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+					<PTCID>#x050300c3</PTCID>
+				</Parameter>
+				<Parameter OnlineParameter="true" ReadOnly="true">
+					<Name>State</Name>
+					<Comment><![CDATA[State, read only.]]></Comment>
+					<BitSize>16</BitSize>
+					<BaseType GUID="{6D2B99B2-A9F2-44AF-A298-4BB7A08AE294}" Namespace="MC">MC_PLANAR_STATE</BaseType>
+					<PTCID>#x050300b6</PTCID>
+				</Parameter>
+				<Parameter OnlineParameter="true" ReadOnly="true">
+					<Name>Command mode</Name>
+					<Comment><![CDATA[Command mode, read only.]]></Comment>
+					<BitSize>16</BitSize>
+					<BaseType GUID="{FAE6DCD6-33EF-4275-8592-10BCED19E1EA}" Namespace="MC">MC_PLANAR_MOVER_COMMAND_MODE</BaseType>
+					<PTCID>#x050300b7</PTCID>
+				</Parameter>
+				<Parameter OnlineParameter="true" ShowSubItems="true" ReadOnly="true">
+					<Name>ActPos</Name>
+					<Comment><![CDATA[Mover hardware position, read only.]]></Comment>
+					<BitSize>384</BitSize>
+					<BaseType GUID="{5AC0538E-BDFA-4B58-A6B5-99E997DABADA}" Namespace="MC">MoverVector</BaseType>
+					<PTCID>#x050300c1</PTCID>
+				</Parameter>
+				<Parameter OnlineParameter="true" ShowSubItems="true" ReadOnly="true">
+					<Name>Mover SetPos on track</Name>
+					<Comment><![CDATA[Mover state on track, read only.]]></Comment>
+					<BitSize>320</BitSize>
+					<BaseType GUID="{DB4B14FF-1923-4ED2-A97C-3D3120BDBDAA}" Namespace="MC">CDT_MCTOPLC_PLANAR_MOVER_TRACK</BaseType>
+					<PTCID>#x050300c2</PTCID>
+				</Parameter>
+				<Parameter OnlineParameter="true" ReadOnly="true">
+					<Name>External setpoint generation mode</Name>
+					<Comment><![CDATA[Indicates which external setpoint generation mode is active.]]></Comment>
+					<BitSize>16</BitSize>
+					<BaseType GUID="{C4BA2B11-27FE-4956-B736-B8F79E7E1624}" Namespace="MC">MC_EXTERNAL_SET_POSITION_MODE</BaseType>
+					<PTCID>#x050300db</PTCID>
+				</Parameter>
+				<Parameter HideParameter="true" ReadOnly="true" Group="Internal" RefreshableValue="true">
+					<Name>ChildAreaLocation</Name>
+					<BitSize>256</BitSize>
+					<BaseType GUID="{C5711B60-10CA-42F2-8DE1-6039CB261CCF}" Namespace="IO">TcIoChildAreaLocation</BaseType>
+					<ArrayInfo>
+						<LBound>0</LBound>
+						<Elements Min="0" MaxUnbounded="true">2</Elements>
+					</ArrayInfo>
+					<PTCID>#x03000029</PTCID>
+				</Parameter>
+				<Parameter HideParameter="true" ReadOnly="true" Group="Internal" RefreshableValue="true">
+					<Name>PlcInputsCfg</Name>
+					<BitSize>128</BitSize>
+					<BaseType GUID="{BD3BA8A6-FB59-4197-B6BA-A3B09FFC369C}" Namespace="IO">TcIoDataAreaCfg</BaseType>
+					<ArrayInfo>
+						<LBound>0</LBound>
+						<Elements Min="0" MaxUnbounded="true">1</Elements>
+					</ArrayInfo>
+					<PTCID>#x03007000</PTCID>
+				</Parameter>
+				<Parameter HideParameter="true" ReadOnly="true" Group="Internal" RefreshableValue="true">
+					<Name>PlcOutputsCfg</Name>
+					<BitSize>640</BitSize>
+					<BaseType GUID="{BD3BA8A6-FB59-4197-B6BA-A3B09FFC369C}" Namespace="IO">TcIoDataAreaCfg</BaseType>
+					<ArrayInfo>
+						<LBound>0</LBound>
+						<Elements Min="0" MaxUnbounded="true">5</Elements>
+					</ArrayInfo>
+					<PTCID>#x03007001</PTCID>
+				</Parameter>
+			</Parameters>
+			<DataAreas>
+				<DataArea>
+					<AreaNo AreaType="InputDst" CreateSymbols="true">4</AreaNo>
+					<Name>IoToMc</Name>
+					<ContextId>0</ContextId>
+					<ByteSize X64="#x8">4</ByteSize>
+					<Symbol>
+						<Name>STD</Name>
+						<BitSize X64="64">32</BitSize>
+						<BaseType GUID="{DCBC2796-F4A6-49ED-AD13-8E71F04F5FD7}" Namespace="MC" PointerTo="1">CDT_HWTOMC_MOVER</BaseType>
+						<Properties>
+							<Property>
+								<Name>TcPointerMapping</Name>
+							</Property>
+						</Properties>
+						<BitOffs>0</BitOffs>
+					</Symbol>
+					<Properties>
+						<Property>
+							<Name>TcMappingDataArea</Name>
+							<Value>IO2MC</Value>
+						</Property>
+					</Properties>
+				</DataArea>
+				<DataArea>
+					<AreaNo AreaType="InputDst" ChildArea="true" CreateSymbols="true">0</AreaNo>
+					<Name>PlcToMc</Name>
+					<ContextId>0</ContextId>
+					<ByteSize X64="#x8">4</ByteSize>
+					<Symbol>
+						<Name>STD</Name>
+						<BitSize X64="64">32</BitSize>
+						<BaseType GUID="{BC77732B-A71D-4084-AA53-85A5016932F3}" Namespace="MC" PointerTo="1">CDT_PLCTOMC_PLANAR_MOVER_STD</BaseType>
+						<Properties>
+							<Property>
+								<Name>TcPointerMapping</Name>
+							</Property>
+						</Properties>
+						<PTCID>#x0503c006</PTCID>
+						<BitOffs>0</BitOffs>
+					</Symbol>
+					<Properties>
+						<Property>
+							<Name>TcMappingDataArea</Name>
+							<Value>PLC2MC</Value>
+						</Property>
+					</Properties>
+				</DataArea>
+				<DataArea>
+					<AreaNo AreaType="OutputSrc" CreateSymbols="true">5</AreaNo>
+					<Name>McToIo</Name>
+					<ContextId>0</ContextId>
+					<ByteSize X64="#x8">4</ByteSize>
+					<Symbol>
+						<Name>STD</Name>
+						<BitSize X64="64">32</BitSize>
+						<BaseType GUID="{F6B8E2E8-5F96-45E0-AD21-3E97B7E9BDB2}" Namespace="MC" PointerTo="1">CDT_MCTOHW_MOVER</BaseType>
+						<Properties>
+							<Property>
+								<Name>TcPointerMapping</Name>
+							</Property>
+						</Properties>
+						<BitOffs>0</BitOffs>
+					</Symbol>
+					<Properties>
+						<Property>
+							<Name>TcMappingDataArea</Name>
+							<Value>MC2IO</Value>
+						</Property>
+					</Properties>
+				</DataArea>
+				<DataArea>
+					<AreaNo AreaType="OutputSrc" ChildArea="true" CreateSymbols="true">1</AreaNo>
+					<Name>McToPlc</Name>
+					<ContextId>0</ContextId>
+					<ByteSize X64="#x28">20</ByteSize>
+					<Symbol>
+						<Name>STD</Name>
+						<BitSize X64="64">32</BitSize>
+						<BaseType GUID="{7D131116-81E4-45B0-AC50-A71EE4201E30}" Namespace="MC" PointerTo="1">CDT_MCTOPLC_PLANAR_MOVER_STD</BaseType>
+						<Properties>
+							<Property>
+								<Name>TcPointerMapping</Name>
+							</Property>
+						</Properties>
+						<PTCID>#x0503c007</PTCID>
+						<BitOffs>0</BitOffs>
+					</Symbol>
+					<Symbol>
+						<Name>SET</Name>
+						<BitSize X64="64">32</BitSize>
+						<BaseType GUID="{D7D4F146-9962-4745-8631-17F5FB457164}" Namespace="MC" PointerTo="1">CDT_MCTOPLC_PLANAR_MOVER_SET</BaseType>
+						<Properties>
+							<Property>
+								<Name>TcPointerMapping</Name>
+							</Property>
+						</Properties>
+						<PTCID>#x0503c008</PTCID>
+						<BitOffs X64="64">32</BitOffs>
+					</Symbol>
+					<Symbol>
+						<Name>ACT</Name>
+						<BitSize X64="64">32</BitSize>
+						<BaseType GUID="{F18FBB92-D68F-43D8-95AE-0E42EDCD14E2}" Namespace="MC" PointerTo="1">CDT_MCTOPLC_PLANAR_MOVER_ACT</BaseType>
+						<Properties>
+							<Property>
+								<Name>TcPointerMapping</Name>
+							</Property>
+						</Properties>
+						<PTCID>#x0503c009</PTCID>
+						<BitOffs X64="128">64</BitOffs>
+					</Symbol>
+					<Symbol>
+						<Name>COORDMODE</Name>
+						<BitSize X64="64">32</BitSize>
+						<BaseType GUID="{B2D0D1AF-2BA9-49BA-AF3F-BC95009CD9CD}" Namespace="MC" PointerTo="1">CDT_MCTOPLC_PLANAR_MOVER_COORDMODE</BaseType>
+						<Properties>
+							<Property>
+								<Name>TcPointerMapping</Name>
+							</Property>
+						</Properties>
+						<PTCID>#x0503c00a</PTCID>
+						<BitOffs X64="192">96</BitOffs>
+					</Symbol>
+					<Symbol>
+						<Name>SETONTRACK</Name>
+						<BitSize X64="64">32</BitSize>
+						<BaseType GUID="{DB4B14FF-1923-4ED2-A97C-3D3120BDBDAA}" Namespace="MC" PointerTo="1">CDT_MCTOPLC_PLANAR_MOVER_TRACK</BaseType>
+						<Properties>
+							<Property>
+								<Name>TcPointerMapping</Name>
+							</Property>
+						</Properties>
+						<PTCID>#x0503c003</PTCID>
+						<BitOffs X64="256">128</BitOffs>
+					</Symbol>
+					<Properties>
+						<Property>
+							<Name>TcMappingDataArea</Name>
+							<Value>MC2PLC</Value>
+						</Property>
+					</Properties>
+				</DataArea>
+			</DataAreas>
+			<Properties>
+				<Property>
+					<Name>Category</Name>
+					<Value>MC Object</Value>
+				</Property>
+				<Property>
+					<Name>Category</Name>
+					<Value>McDefaultAxis</Value>
+				</Property>
+				<Property>
+					<Name>Category</Name>
+					<Value>TcMcPlcAxis</Value>
+				</Property>
+				<Property>
+					<Name>Category</Name>
+					<Value>HideTcComContextPP</Value>
+				</Property>
+				<Property>
+					<Name>IoMappingInstance</Name>
+					<Value>PlanarMover</Value>
+				</Property>
+				<Property>
+					<Name>PlcMappingInstance</Name>
+					<Value>PlanarMover</Value>
+				</Property>
+			</Properties>
+			<ParentOTCID>#x05100010</ParentOTCID>
+			<ParameterValues>
+				<Value>
+					<Name>TraceLevel</Name>
+					<EnumText>tlWarning</EnumText>
+				</Value>
+				<Value>
+					<Name>Simulation mode</Name>
+					<EnumText>FALSE</EnumText>
+				</Value>
+				<Value>
+					<Name>Mover width</Name>
+					<Value>115</Value>
+				</Value>
+				<Value>
+					<Name>Mover height</Name>
+					<Value>115</Value>
+				</Value>
+				<Value>
+					<Name>Initial position.x</Name>
+					<Value>376.220245361328</Value>
+				</Value>
+				<Value>
+					<Name>Initial position.y</Name>
+					<Value>100.69775390625</Value>
+				</Value>
+				<Value>
+					<Name>Initial position.z</Name>
+					<Value>0</Value>
+				</Value>
+				<Value>
+					<Name>Initial position.a</Name>
+					<Value>0</Value>
+				</Value>
+				<Value>
+					<Name>Initial position.b</Name>
+					<Value>0</Value>
+				</Value>
+				<Value>
+					<Name>Initial position.c</Name>
+					<Value>0</Value>
+				</Value>
+				<Value>
+					<Name>Minimal position.x</Name>
+					<Value>-10000000000</Value>
+				</Value>
+				<Value>
+					<Name>Minimal position.y</Name>
+					<Value>-10000000000</Value>
+				</Value>
+				<Value>
+					<Name>Minimal position.z</Name>
+					<Value>-1</Value>
+				</Value>
+				<Value>
+					<Name>Minimal position.a</Name>
+					<Value>-3</Value>
+				</Value>
+				<Value>
+					<Name>Minimal position.b</Name>
+					<Value>-3</Value>
+				</Value>
+				<Value>
+					<Name>Minimal position.c</Name>
+					<Value>-15</Value>
+				</Value>
+				<Value>
+					<Name>Maximal position.x</Name>
+					<Value>10000000000</Value>
+				</Value>
+				<Value>
+					<Name>Maximal position.y</Name>
+					<Value>10000000000</Value>
+				</Value>
+				<Value>
+					<Name>Maximal position.z</Name>
+					<Value>1</Value>
+				</Value>
+				<Value>
+					<Name>Maximal position.a</Name>
+					<Value>3</Value>
+				</Value>
+				<Value>
+					<Name>Maximal position.b</Name>
+					<Value>3</Value>
+				</Value>
+				<Value>
+					<Name>Maximal position.c</Name>
+					<Value>15</Value>
+				</Value>
+				<Value>
+					<Name>C coordinate modulus</Name>
+					<Value>360</Value>
+				</Value>
+				<Value>
+					<Name>C coordinate modulo tolerance window</Name>
+					<Value>0</Value>
+				</Value>
+				<Value>
+					<Name>Position Lag Monitoring Enabled</Name>
+					<EnumText>TRUE</EnumText>
+				</Value>
+				<Value>
+					<Name>Maximum Position Lag Value.x</Name>
+					<Value>5</Value>
+				</Value>
+				<Value>
+					<Name>Maximum Position Lag Value.y</Name>
+					<Value>5</Value>
+				</Value>
+				<Value>
+					<Name>Maximum Position Lag Value.z</Name>
+					<Value>1</Value>
+				</Value>
+				<Value>
+					<Name>Maximum Position Lag Value.a</Name>
+					<Value>1</Value>
+				</Value>
+				<Value>
+					<Name>Maximum Position Lag Value.b</Name>
+					<Value>1</Value>
+				</Value>
+				<Value>
+					<Name>Maximum Position Lag Value.c</Name>
+					<Value>1.5</Value>
+				</Value>
+				<Value>
+					<Name>Maximum Position Lag Filter Time.x</Name>
+					<Value>0.02</Value>
+				</Value>
+				<Value>
+					<Name>Maximum Position Lag Filter Time.y</Name>
+					<Value>0.02</Value>
+				</Value>
+				<Value>
+					<Name>Maximum Position Lag Filter Time.z</Name>
+					<Value>0.02</Value>
+				</Value>
+				<Value>
+					<Name>Maximum Position Lag Filter Time.a</Name>
+					<Value>0.02</Value>
+				</Value>
+				<Value>
+					<Name>Maximum Position Lag Filter Time.b</Name>
+					<Value>0.02</Value>
+				</Value>
+				<Value>
+					<Name>Maximum Position Lag Filter Time.c</Name>
+					<Value>0.02</Value>
+				</Value>
+				<Value>
+					<Name>Maximum dynamic XY.V</Name>
+					<Value>2000</Value>
+				</Value>
+				<Value>
+					<Name>Maximum dynamic XY.A</Name>
+					<Value>20000</Value>
+				</Value>
+				<Value>
+					<Name>Maximum dynamic XY.D</Name>
+					<Value>20000</Value>
+				</Value>
+				<Value>
+					<Name>Maximum dynamic XY.J</Name>
+					<Value>200000</Value>
+				</Value>
+				<Value>
+					<Name>Maximum dynamic C.V</Name>
+					<Value>10</Value>
+				</Value>
+				<Value>
+					<Name>Maximum dynamic C.A</Name>
+					<Value>100</Value>
+				</Value>
+				<Value>
+					<Name>Maximum dynamic C.D</Name>
+					<Value>100</Value>
+				</Value>
+				<Value>
+					<Name>Maximum dynamic C.J</Name>
+					<Value>1000</Value>
+				</Value>
+				<Value>
+					<Name>Maximum dynamic Z.V</Name>
+					<Value>10</Value>
+				</Value>
+				<Value>
+					<Name>Maximum dynamic Z.A</Name>
+					<Value>100</Value>
+				</Value>
+				<Value>
+					<Name>Maximum dynamic Z.D</Name>
+					<Value>100</Value>
+				</Value>
+				<Value>
+					<Name>Maximum dynamic Z.J</Name>
+					<Value>1000</Value>
+				</Value>
+				<Value>
+					<Name>Maximum dynamic A.V</Name>
+					<Value>10</Value>
+				</Value>
+				<Value>
+					<Name>Maximum dynamic A.A</Name>
+					<Value>100</Value>
+				</Value>
+				<Value>
+					<Name>Maximum dynamic A.D</Name>
+					<Value>100</Value>
+				</Value>
+				<Value>
+					<Name>Maximum dynamic A.J</Name>
+					<Value>1000</Value>
+				</Value>
+				<Value>
+					<Name>Maximum dynamic B.V</Name>
+					<Value>10</Value>
+				</Value>
+				<Value>
+					<Name>Maximum dynamic B.A</Name>
+					<Value>100</Value>
+				</Value>
+				<Value>
+					<Name>Maximum dynamic B.D</Name>
+					<Value>100</Value>
+				</Value>
+				<Value>
+					<Name>Maximum dynamic B.J</Name>
+					<Value>1000</Value>
+				</Value>
+				<Value>
+					<Name>Default dynamic XY.V</Name>
+					<Value>100</Value>
+				</Value>
+				<Value>
+					<Name>Default dynamic XY.A</Name>
+					<Value>200</Value>
+				</Value>
+				<Value>
+					<Name>Default dynamic XY.D</Name>
+					<Value>200</Value>
+				</Value>
+				<Value>
+					<Name>Default dynamic XY.J</Name>
+					<Value>1000</Value>
+				</Value>
+				<Value>
+					<Name>Default dynamic C.V</Name>
+					<Value>5</Value>
+				</Value>
+				<Value>
+					<Name>Default dynamic C.A</Name>
+					<Value>20</Value>
+				</Value>
+				<Value>
+					<Name>Default dynamic C.D</Name>
+					<Value>20</Value>
+				</Value>
+				<Value>
+					<Name>Default dynamic C.J</Name>
+					<Value>100</Value>
+				</Value>
+				<Value>
+					<Name>Default dynamic Z.V</Name>
+					<Value>5</Value>
+				</Value>
+				<Value>
+					<Name>Default dynamic Z.A</Name>
+					<Value>20</Value>
+				</Value>
+				<Value>
+					<Name>Default dynamic Z.D</Name>
+					<Value>20</Value>
+				</Value>
+				<Value>
+					<Name>Default dynamic Z.J</Name>
+					<Value>100</Value>
+				</Value>
+				<Value>
+					<Name>Default dynamic A.V</Name>
+					<Value>5</Value>
+				</Value>
+				<Value>
+					<Name>Default dynamic A.A</Name>
+					<Value>20</Value>
+				</Value>
+				<Value>
+					<Name>Default dynamic A.D</Name>
+					<Value>20</Value>
+				</Value>
+				<Value>
+					<Name>Default dynamic A.J</Name>
+					<Value>100</Value>
+				</Value>
+				<Value>
+					<Name>Default dynamic B.V</Name>
+					<Value>5</Value>
+				</Value>
+				<Value>
+					<Name>Default dynamic B.A</Name>
+					<Value>20</Value>
+				</Value>
+				<Value>
+					<Name>Default dynamic B.D</Name>
+					<Value>20</Value>
+				</Value>
+				<Value>
+					<Name>Default dynamic B.J</Name>
+					<Value>100</Value>
+				</Value>
+				<Value>
+					<Name>SetPos.x</Name>
+					<Value>0</Value>
+				</Value>
+				<Value>
+					<Name>SetPos.y</Name>
+					<Value>0</Value>
+				</Value>
+				<Value>
+					<Name>SetPos.z</Name>
+					<Value>0</Value>
+				</Value>
+				<Value>
+					<Name>SetPos.a</Name>
+					<Value>0</Value>
+				</Value>
+				<Value>
+					<Name>SetPos.b</Name>
+					<Value>0</Value>
+				</Value>
+				<Value>
+					<Name>SetPos.c</Name>
+					<Value>0</Value>
+				</Value>
+				<Value>
+					<Name>GroupOID</Name>
+					<Value>0</Value>
+				</Value>
+				<Value>
+					<Name>State</Name>
+					<EnumText>Invalid</EnumText>
+				</Value>
+				<Value>
+					<Name>Command mode</Name>
+					<EnumText>Invalid</EnumText>
+				</Value>
+				<Value>
+					<Name>ActPos.x</Name>
+					<Value>0</Value>
+				</Value>
+				<Value>
+					<Name>ActPos.y</Name>
+					<Value>0</Value>
+				</Value>
+				<Value>
+					<Name>ActPos.z</Name>
+					<Value>0</Value>
+				</Value>
+				<Value>
+					<Name>ActPos.a</Name>
+					<Value>0</Value>
+				</Value>
+				<Value>
+					<Name>ActPos.b</Name>
+					<Value>0</Value>
+				</Value>
+				<Value>
+					<Name>ActPos.c</Name>
+					<Value>0</Value>
+				</Value>
+				<Value>
+					<Name>Mover SetPos on track.SetPos</Name>
+					<Value>0</Value>
+				</Value>
+				<Value>
+					<Name>Mover SetPos on track.SetVelo</Name>
+					<Value>0</Value>
+				</Value>
+				<Value>
+					<Name>Mover SetPos on track.SetAcc</Name>
+					<Value>0</Value>
+				</Value>
+				<Value>
+					<Name>Mover SetPos on track.SetJerk</Name>
+					<Value>0</Value>
+				</Value>
+				<Value>
+					<Name>Mover SetPos on track.TrackOID</Name>
+					<Value>0</Value>
+				</Value>
+				<Value>
+					<Name>External setpoint generation mode</Name>
+					<EnumText>Invalid</EnumText>
+				</Value>
+			</ParameterValues>
+		</TmcDesc>
+	</Mover>
+</TcSmItem>
