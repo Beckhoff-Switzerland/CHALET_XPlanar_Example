@@ -3,12 +3,13 @@ This repository is a detailed example application how to use the [CHALET_XPlanar
 
 The following layout has been selected with 3 movers.
 Station "Infeed1" on the left-hand side requires several movers to start interacting with the process.
-The two stations on the right-hand side "Outfeed1" and "Outfeed2" require one mover. They are redundant. If one of the two stations fails, the movers will automatically move to the other station.
+The two stations on the right-hand side "Outfeed1" and "Outfeed2" require one mover. They are redundant. 
+If one of the two stations fails, the movers will automatically move to the other station.
 ![image](https://github.com/Beckhoff-Switzerland/CHALET_XPlanar_Example/blob/master/Layout.png)
 
-- how the framework can be used to use the movers in the station to perform a simple clamp movement with the external setpoint generator.
-- Changing the mover dynamics on different sections of the track
 - Easily configurable simulation mode to simulate a process and detect bottlenecks at an early stage
+- Two movers standing in a station make a clamping movement with the help of the external setpint generator
+- Changing the mover dynamics on different sections of the track
 - Configuration of the tracks either online from the PLC or offline in the track object
 
 ---
@@ -19,5 +20,14 @@ The two stations on the right-hand side "Outfeed1" and "Outfeed2" require one mo
 
 ---
 ## Quick Start
-- 
+When the project is opened in TwinCat for the first time, certain PLC libraries are missing. These are stored in the project and can be installed using the following button.<br>
+![image](https://github.com/Beckhoff-Switzerland/CHALET_XPlanar_Example/assets/143804651/2eaaeeea-066d-446c-9530-650616aed40e)<br>
+
+Scan existing CPU cores and select an isolated one for code execution<br>
+![image](https://github.com/Beckhoff-Switzerland/CHALET_XPlanar_Example/assets/143804651/2a9a3c79-fef8-45c8-b2de-12903479d375)<br>
+
+Download and login to the PLC
+Navigate to the main program. As soon as the system reports back that it has been initialized, bEnable can be toggled. The system starts, the movers begin to hover, line up on the track and drive to the first station.<br>
+![image](https://github.com/Beckhoff-Switzerland/CHALET_XPlanar_Example/assets/143804651/1a7b1440-49a5-4328-9ecd-70057a2ea817)<br>
+
 
