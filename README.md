@@ -30,4 +30,5 @@ Download and login to the PLC
 Navigate to the main program. As soon as the system reports back that it has been initialized, bEnable can be toggled. The system starts, the movers begin to hover, line up on the track and drive to the first station.<br>
 ![image](https://github.com/Beckhoff-Switzerland/CHALET_XPlanar_Example/assets/143804651/1a7b1440-49a5-4328-9ecd-70057a2ea817)<br>
 
-
+Start XPlanar configurator to get a live view<br>
+![TcXaeShell_IaUgHow8R4](https://github.com/Beckhoff-Switzerland/CHALET_XPlanar_Example/assets/143804651/bcc88095-671b-43d6-94a4-7ca62dfb421a)<br>
