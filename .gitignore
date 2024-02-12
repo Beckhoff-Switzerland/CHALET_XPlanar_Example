@@ -1,0 +1,65 @@
+# [void*.ers] - TwinCAT CHALET V1.4
+
+# Visual Studio
+**/.vs/
+*.~u
+
+# Build results
+**/[Dd]ebug/
+**/[Dd]ebugPublic/
+**/[Rr]elease/
+**/[Rr]eleases/
+**/x64/
+**/x86/
+**/[Aa][Rr][Mm]/
+**/[Aa][Rr][Mm]64/
+**/bld/
+**/[Bb]in/
+**/[Oo]bj/
+**/[Ll]og/
+**/[Ll]ogs/
+
+# Temporary files
+*.[Cc]ache
+*.pfx
+
+# NuGet Packages
+*.nupkg
+**/Packages/
+
+# TwinCAT 
+**/_Boot/
+# **/_Config/
+*.tclrs
+*.bin
+*.bak
+*.tpy
+*.tmc
+# But not these files...
+!/TMC/*
+
+
+*.tmcRefac
+
+# Online Change sources
+**/_CompileInfo/
+LineIDs.dbg
+
+
+# Libraries
+**/_Libraries/*
+# But not these files...
+!**/_Libraries/beckhoff ch/
+
+
+# TwinCAT HMI related
+**/.engineering_servers/
+**/json-schema.org/
+
+# Twincat Vision related
+*.tcs
+*.mp4
+*.jpg
+*.png
+*.gif
+*.bmp
