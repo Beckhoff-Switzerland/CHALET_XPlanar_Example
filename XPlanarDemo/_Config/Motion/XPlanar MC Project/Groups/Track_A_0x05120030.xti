@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<TcSmItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.53" ClassName="CTComMcObjDef" SubType="72">
+<TcSmItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.55" ClassName="CTComMcObjDef" SubType="72">
 	<DataTypes>
 		<DataType>
 			<Name GUID="{A405473D-A1A7-439E-8C48-FC8F02636891}" Namespace="MC">MC_PLANAR_TRACK_COLLISION_RANGE_MODE</Name>
@@ -278,7 +278,7 @@
 			</SubItem>
 		</DataType>
 	</DataTypes>
-	<GroupModule Id="#x05120030">
+	<GroupModule Id="#x05120030" ObjectFolder="Tracks">
 		<Name>__FILENAME__</Name>
 		<TmcDesc GUID="{87201A49-0B3B-48DC-957C-3BC5C2E990F0}" TcSmClass="TComMcGroupObj">
 			<Name>Planar Track</Name>
@@ -437,15 +437,12 @@
 				<Parameter OnlineParameter="true" ShowSubItems="true" ReadOnly="true">
 					<Name>Geometric online information</Name>
 					<Comment><![CDATA[Array containing the elements describing the geometric curve of the track.]]></Comment>
-					<BitSize>1536</BitSize>
+					<BitSize>0</BitSize>
 					<ArraySubItems MaxUnbounded="true">
 						<LBound>1</LBound>
 						<ItemType GUID="{9E820E67-264A-4170-958A-0B26CA5C91FA}" Namespace="MC">MC_POINT_XYC</ItemType>
 						<ItemType GUID="{B48A64D8-464F-4B39-8708-C82C1147C8B6}" Namespace="MC">MC_LINE_XYC</ItemType>
 						<ItemType GUID="{C3BAEC31-7F05-4B2F-A9AE-F0D8872EE557}" Namespace="MC">MC_CIRCLE_XYC_START_CENTER_END</ItemType>
-						<SubItem GUID="{B48A64D8-464F-4B39-8708-C82C1147C8B6}" Namespace="MC">MC_LINE_XYC</SubItem>
-						<SubItem GUID="{B48A64D8-464F-4B39-8708-C82C1147C8B6}" Namespace="MC">MC_LINE_XYC</SubItem>
-						<SubItem GUID="{B48A64D8-464F-4B39-8708-C82C1147C8B6}" Namespace="MC">MC_LINE_XYC</SubItem>
 					</ArraySubItems>
 					<PTCID>#x050300da</PTCID>
 				</Parameter>
@@ -613,90 +610,6 @@
 				</Value>
 				<Value>
 					<Name>Moving mover count</Name>
-					<Value>0</Value>
-				</Value>
-				<Value>
-					<Name>Geometric online information.h1</Name>
-					<Data>d8648ab44f46394b8708c82c1147c8b6</Data>
-				</Value>
-				<Value>
-					<Name>Geometric online information.1.start.x</Name>
-					<Value>240</Value>
-				</Value>
-				<Value>
-					<Name>Geometric online information.1.start.y</Name>
-					<Value>100</Value>
-				</Value>
-				<Value>
-					<Name>Geometric online information.1.start.c</Name>
-					<Value>0</Value>
-				</Value>
-				<Value>
-					<Name>Geometric online information.1.end.x</Name>
-					<Value>110</Value>
-				</Value>
-				<Value>
-					<Name>Geometric online information.1.end.y</Name>
-					<Value>100</Value>
-				</Value>
-				<Value>
-					<Name>Geometric online information.1.end.c</Name>
-					<Value>0</Value>
-				</Value>
-				<Value>
-					<Name>Geometric online information.h2</Name>
-					<Data>d8648ab44f46394b8708c82c1147c8b6</Data>
-				</Value>
-				<Value>
-					<Name>Geometric online information.2.start.x</Name>
-					<Value>100</Value>
-				</Value>
-				<Value>
-					<Name>Geometric online information.2.start.y</Name>
-					<Value>110</Value>
-				</Value>
-				<Value>
-					<Name>Geometric online information.2.start.c</Name>
-					<Value>0</Value>
-				</Value>
-				<Value>
-					<Name>Geometric online information.2.end.x</Name>
-					<Value>100</Value>
-				</Value>
-				<Value>
-					<Name>Geometric online information.2.end.y</Name>
-					<Value>130</Value>
-				</Value>
-				<Value>
-					<Name>Geometric online information.2.end.c</Name>
-					<Value>0</Value>
-				</Value>
-				<Value>
-					<Name>Geometric online information.h3</Name>
-					<Data>d8648ab44f46394b8708c82c1147c8b6</Data>
-				</Value>
-				<Value>
-					<Name>Geometric online information.3.start.x</Name>
-					<Value>110</Value>
-				</Value>
-				<Value>
-					<Name>Geometric online information.3.start.y</Name>
-					<Value>140</Value>
-				</Value>
-				<Value>
-					<Name>Geometric online information.3.start.c</Name>
-					<Value>0</Value>
-				</Value>
-				<Value>
-					<Name>Geometric online information.3.end.x</Name>
-					<Value>240</Value>
-				</Value>
-				<Value>
-					<Name>Geometric online information.3.end.y</Name>
-					<Value>140</Value>
-				</Value>
-				<Value>
-					<Name>Geometric online information.3.end.c</Name>
 					<Value>0</Value>
 				</Value>
 				<Value>

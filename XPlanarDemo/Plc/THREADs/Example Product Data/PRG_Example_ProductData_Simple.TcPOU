@@ -36,7 +36,7 @@ END_IF
 ipStationModify := MAIN.xPlanarPLC.Station(MAIN.S_INFEED1);
 
 //This is executed once when the mover arrives at the station
-fbTriggerMoverInPlace(CLK:= ipStationModify.AreMoversInPlace);
+fbTriggerMoverInPlace(CLK:= ipStationModify.MoversInPlace);
 IF fbTriggerMoverInPlace.Q THEN
 	
 	//Do this for each mover inside the station

@@ -3,114 +3,107 @@
   <POU Name="MAIN" Id="{0d5726c6-96bf-43b9-ad37-581c6a412de7}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
-	bInitDone 	: BOOL;
-	bEnable		: BOOL;
-	bDisable	: BOOL;
-	bSetSettings : BOOL := TRUE;
+	bInitDone 			: BOOL;
+	bEnable				: BOOL;
+	bDisable, bReset	: BOOL;
+	bSetSettings 		: BOOL := TRUE;
 	
-//////////////////////////////////////////////////////////////////////////
-
-(* XPlanar System - 1 per associated XPlanar 
-	The system is the container and organizer for all subsequent XPlanar objects. All objects are registered with this system*)
-fbXpSystem : FB_XP_System;
-xPlanarPLC : I_XP_System_PLC := fbXpSystem; 
-
-(* XPlanar Collision Avoidance Groupe - 1 per associated XPlanar 
-	The Planar group is a software object that prevents collisions between Planar movers as well as collisions of Planar movers with the boundary of 
-	the stator area on the two-dimensional XPlanar stator area. To do this, the 2D areas of all objects in the group are blocked. When a motion command 
-	is transferred to a mover, the required area is requested from the Planar group and the motion command is rejected if this area would collide 
-	with already reserved areas. If the motion command can be executed, the area is added to the set of reserved area and blocked accordingly. *)
-fbXpGroup : FB_XP_Group
-								(ipSystem			:= fbXpSystem);
-(* XPlanar Environment - 1 per associated XPlanar 
-	The Planar environment is a software object that represents the two-dimensional XPlanar stator surface. Together with Planar movers in a group, 
-	it prevents collisions of the movers with the edge of the surface. *)
-fbXpEnvironment : FB_XP_Environment
-								(ipSystem			:= fbXpSystem);	
-
-(* XPlanar mover - n per associated XPlanar. Can be instantiated as an array and/or individually
-	The Planar mover is a software object that represents an XPlanar mover. It summarizes the state of the real mover (position, velocity, etc.) 
-	for the user. In addition, the user has the possibility to influence or control the state of the real mover via the Planar mover. *)								
-aMovers : ARRAY[1..cCtsXpMovers] OF FB_XP_Mover[
-							 (	ipSystem			:= fbXpSystem),
-							 (	ipSystem			:= fbXpSystem),
-							 (	ipSystem			:= fbXpSystem)];
-
-(* XPlanar track - n per associated XPlanar. Can be instantiated as an array and/or individually
-	The Planar track is a software object that represents a (virtual) one-dimensional path on the two-dimensional XPlanar stator surface. 
-	Several Planar movers can be lined up and moved on this path. Collisions are prevented by keeping a preset distance between the movers. *)		
-fbTrackA 		: FB_XP_Track(  ipSystem 			:= fbXpSystem	);	
-fbTrackB 		: FB_XP_Track(  ipSystem 			:= fbXpSystem	);	
-fbTrackC 		: FB_XP_Track(  ipSystem 			:= fbXpSystem	);	
+	//////////////////////////////////////////////////////////////////////////
 	
-
-(* XPlanar station - n per associated XPlanar. Can be instantiated as an array and/or individually
-	The stations are the main component of the application. As soon as the system has been started up and all movers are on the track, the movers are only sent from one station to the next.
-	Parameters:
-		xPos, yPos 			= Absolute position of the station on the xPlanar.
-		ipAccocietedTrack 	= The track on which the station is located. If the XY position is not on this track, the next possible track position is assumed on this track.
-		sStationID 			= Unique name that may only exist once.
-		sStationGroupID 	= A name for a group to which this station belongs. Important for redundant stations
-		StationAheadx 		= Which station can be approached directly from this station in the positive direction? After a switch there are several possibilities. *)	
-fbStation1 		: FB_XP_Station(ipSystem 			:= fbXpSystem,
-								ipAccocietedTrack 	:= fbTrackA,
-								sStationID 			:= S_INFEED1,
-								sStationGroupID		:= G_INFEED,
-								nMoverQueueSize		:= 2,
-								xPos				:= 100,
-								yPos				:= 360,
-								StationAhead1		:= fbStationWaiting,
-								StationAhead2		:= 0	,
-								StationAhead3		:= 0	);
-						
-fbStationWaiting : FB_XP_Station(ipSystem 			:= fbXpSystem,
-								ipAccocietedTrack 	:= fbTrackA,
-								sStationID 			:= 'Waiting1',
-								sStationGroupID		:= 'Waiting',
-								nMoverQueueSize		:= 3,
-								xPos				:= 480,
-								yPos				:= 600,
-								StationAhead1		:= fbStation2,
-								StationAhead2		:= fbStation3,
-								StationAhead3		:= 0	);	
-						
-fbStation2 		: FB_XP_Station(ipSystem 			:= fbXpSystem,
-								ipAccocietedTrack 	:= fbTrackB,
-								sStationID 			:= S_OUTFEED1,
-								sStationGroupID		:= G_OUTFEED,
-								nMoverQueueSize		:= 1,
-								xPos				:= 480,
-								yPos				:= 360,
-								StationAhead1		:= fbStation1,
-								StationAhead2		:= 0	,
-								StationAhead3		:= 0	);	
+	(* XPlanar System - 1 per associated XPlanar 
+		The system is the container and organizer for all subsequent XPlanar objects. All objects are registered with this system*)
+	fbXpSystem : FB_XP_System(METAdsPort := 351);
+	xPlanarPLC : I_XP_System_PLC := fbXpSystem; 
 	
-fbStation3 		: FB_XP_Station(ipSystem 			:= fbXpSystem,
-								ipAccocietedTrack 	:= fbTrackC,
-								sStationID 			:= S_OUTFEED2,
-								sStationGroupID		:= G_OUTFEED,
-								nMoverQueueSize		:= 1,
-								xPos				:= 840,
-								yPos				:= 360,
-								StationAhead1		:= fbStation1,
-								StationAhead2		:= 0	,
-								StationAhead3		:= 0	);						
+	(* XPlanar Collision Avoidance Groupe - 1 per associated XPlanar 
+		The Planar group is a software object that prevents collisions between Planar movers as well as collisions of Planar movers with the boundary of 
+		the stator area on the two-dimensional XPlanar stator area. To do this, the 2D areas of all objects in the group are blocked. When a motion command 
+		is transferred to a mover, the required area is requested from the Planar group and the motion command is rejected if this area would collide 
+		with already reserved areas. If the motion command can be executed, the area is added to the set of reserved area and blocked accordingly. *)
+	fbXpGroup : FB_XP_Group
+									(ipSystem			:= fbXpSystem);
+	(* XPlanar Environment - 1 per associated XPlanar 
+		The Planar environment is a software object that represents the two-dimensional XPlanar stator surface. Together with Planar movers in a group, 
+		it prevents collisions of the movers with the edge of the surface. *)
+	fbXpEnvironment : FB_XP_Environment
+									(ipSystem			:= fbXpSystem);	
+	
+	(* XPlanar mover - n per associated XPlanar. Can be instantiated as an array and/or individually
+		The Planar mover is a software object that represents an XPlanar mover. It summarizes the state of the real mover (position, velocity, etc.) 
+		for the user. In addition, the user has the possibility to influence or control the state of the real mover via the Planar mover. *)								
+	aMovers : ARRAY[1..cCtsXpMovers] OF FB_XP_Mover[
+								 	(ipSystem			:= fbXpSystem),
+								 	(ipSystem			:= fbXpSystem),
+								 	(ipSystem			:= fbXpSystem)];
+	
+	(* XPlanar track - n per associated XPlanar. Can be instantiated as an array and/or individually
+		The Planar track is a software object that represents a (virtual) one-dimensional path on the two-dimensional XPlanar stator surface. 
+		Several Planar movers can be lined up and moved on this path. Collisions are prevented by keeping a preset distance between the movers. *)		
+	fbTrackA 		: FB_XP_Track	(ipSystem 			:= fbXpSystem);	
+	fbTrackB 		: FB_XP_Track	(ipSystem 			:= fbXpSystem);	
+	fbTrackC 		: FB_XP_Track	(ipSystem 			:= fbXpSystem);	
+		
+	
+	//NEW: Each station can now be optionally linked to a "TcCom Planar Track Object". In this case, the station is displayed in the LiveView. The name is the "sUnigueName"
+	//NEW: StationAhead no longer needs to be entered manually. These are now automatically determined when the system is enabling.
+	(* XPlanar station - n per associated XPlanar. Can be instantiated as an array and/or individually
+		The stations are the main component of the application. As soon as the system has been started up and all movers are on the track, the movers are only sent from one station to the next.
+		Parameters:
+			xPos, yPos 			= Absolute position of the station on the xPlanar.
+			ipAccocietedTrack 	= The track on which the station is located. If the XY position is not on this track, the next possible track position is assumed on this track.
+								  Can be set to 0. In this case, the closest track to the coordinates is automatically used. 
+								  If the station is very close to a transition, it may still be interesting to enter the exact track here.		
+			sUnigueName 		= Unique name that may only exist once.
+			sTargetGroupe 		= A name for a group to which this station belongs. Important for redundant stations	*)	
+	fbStation1 		: FB_XP_Station(ipSystem 			:= fbXpSystem,
+									ipAccocietedTrack 	:= 0,
+									sUnigueName			:= S_INFEED1,
+									sTargetGroupe		:= G_INFEED,
+									nMoverQueueSize		:= 2,
+									xPos				:= 100,
+									yPos				:= 360);
+		
+	//The unique station name or/and the group to which the station belongs may be ''(empty string). 	
+	//This can be interesting for waiting or bypass stations.
+	//In this case, a unique name is automatically generated in the background.					
+	fbStationWaiting : FB_XP_Station(ipSystem 			:= fbXpSystem,
+									ipAccocietedTrack 	:= fbTrackA,
+									sUnigueName 		:= '',
+									sTargetGroupe		:= '',
+									nMoverQueueSize		:= 3,
+									xPos				:= 480,
+									yPos				:= 600	);	
 							
+	fbStation2 		: FB_XP_Station(ipSystem 			:= fbXpSystem,
+									ipAccocietedTrack 	:= fbTrackB,
+									sUnigueName 		:= S_OUTFEED1,
+									sTargetGroupe		:= G_OUTFEED,
+									nMoverQueueSize		:= 1,
+									xPos				:= 480,
+									yPos				:= 360);	
+		
+	fbStation3 		: FB_XP_Station(ipSystem 			:= fbXpSystem,
+									ipAccocietedTrack 	:= 0, // =closest track
+									sUnigueName 		:= S_OUTFEED2,
+									sTargetGroupe		:= G_OUTFEED,
+									nMoverQueueSize		:= 1,
+									xPos				:= 840,
+									yPos				:= 360);						
+								
 
 END_VAR
 VAR CONSTANT
 	cCtsXpMovers : UINT := 3;	
 
-
 	//Unique station identification 
 	//Station ID
-	S_INFEED1 	: STRING := 'Infeed1';
-	S_OUTFEED1 	: STRING := 'Outfeed1';
-	S_OUTFEED2 	: STRING := 'Outfeed2';
+	S_INFEED1 	: STRING := 'Station Infeed1';
+	S_OUTFEED1 	: STRING := 'Station Outfeed1';
+	S_OUTFEED2 	: STRING := 'Station Outfeed2';
 	
 	//Groupe ID
-	G_INFEED	: STRING := 'Infeed';
-	G_OUTFEED	: STRING := 'Outfeed';
+	G_INFEED	: STRING := 'Groupe Infeed';
+	G_OUTFEED	: STRING := 'Groupe Outfeed';
 END_VAR
 
 //Example ExternalSetpoint Clamp
@@ -149,7 +142,6 @@ VAR
 	bChangeDynConstraint : BOOL;
 END_VAR
 
-
 //Example Manual Interaction with process outside XPlanar
 VAR
 	bToUpstreamProcessCanStart 		: BOOL; //Requestet cts of mover are in station. Example: rototer can start to place prodcts
@@ -165,25 +157,23 @@ END_VAR
 	RETURN;
 END_IF
 
-
 IF bEnable AND xPlanarPLC.Disabled THEN
 	bEnable := FALSE;
 	xPlanarPLC.Enable();
 END_IF
 
-
-IF bDisable THEN
-	bDisable := FALSE;
+IF bDisable OR bReset THEN
+	bDisable := FALSE; bReset := FALSE;
 	xPlanarPLC.Disable();
 END_IF
 
 (* Toggle bit to run the examples *)
+bStartSimulation := bStartSimulation;			//after a given time in the station, the mover is sent to the target station 
 bSetpointExample := bSetpointExample; 			//Clamping in Station S_INFEED1
 bSetpointExample2 := bSetpointExample2; 		//Leave track and move to exact coordinates of station
 bChangeDynConstraint := bChangeDynConstraint;	//The movers have different speeds depending on the section of the route
-bStartSimulation := bStartSimulation;			//after a given time in the station, the mover is sent to the target station 
-bStopSimulation := bStopSimulation;
 
+bStopSimulation := bStopSimulation;
 
 
 IF bSetSettings THEN
@@ -191,7 +181,6 @@ IF bSetSettings THEN
 	xPlanarPLC.Station(S_OUTFEED1).MoverGapAtExit := 200.0;
 	xPlanarPLC.Station(S_OUTFEED2).MoverGapAtExit := 200.0;
 END_IF
-
 
 
 
@@ -203,7 +192,10 @@ Example_ExternalSetpoint_MoveToExactStationCoordinates();
 Example_ManualInteractionWithProcess();
 PRG_Example_ProductData_Simple();
 
+
+(* Update is called at the end of the program *)
 xPlanarPLC.Update();
+
 ]]></ST>
     </Implementation>
     <Method Name="Example_ChangeDynamicConstraint" Id="{0c48dace-8681-4ab7-b111-a1f02d902bb0}">
@@ -221,21 +213,21 @@ END_VAR
 //Set this variable to run this example
 IF bChangeDynConstraint THEN
 		
-	IF xPlanarPLC.Station(S_INFEED1).AreMoversInPlace THEN
+	IF xPlanarPLC.Station(S_INFEED1).MoversInPlace THEN
 		//For all movers in queue
 		FOR nIdx:=0 TO (xPlanarPLC.Station(S_INFEED1).MoverQueueSize-1) DO
 			xPlanarPLC.Station(S_INFEED1).MoversInQueue[nIdx].SetDynConstraint_Path(V:= 200, A:= 100, D:= 100, J:= 1000);
 		END_FOR
 	END_IF	
 	
-	IF xPlanarPLC.Station(S_OUTFEED1).AreMoversInPlace THEN
+	IF xPlanarPLC.Station(S_OUTFEED1).MoversInPlace THEN
 		//For all movers in queue
 		FOR nIdx:=0 TO (xPlanarPLC.Station(S_OUTFEED1).MoverQueueSize-1) DO
 			xPlanarPLC.Station(S_OUTFEED1).MoversInQueue[nIdx].SetDynConstraint_Path(V:= 1000, A:= MC_MAXIMUM, D:= 500, J:= 1000);
 		END_FOR
 	END_IF	
 	
-	IF xPlanarPLC.Station(S_OUTFEED2).AreMoversInPlace THEN
+	IF xPlanarPLC.Station(S_OUTFEED2).MoversInPlace THEN
 		//For all movers in queue
 		FOR nIdx:=0 TO (xPlanarPLC.Station(S_OUTFEED2).MoverQueueSize-1) DO
 			xPlanarPLC.Station(S_OUTFEED2).MoversInQueue[nIdx].SetDynConstraint_Path(V:= 1000, A:= MC_DEFAULT, D:= 500, J:= 1000);
@@ -261,11 +253,11 @@ IF bSetpointExample THEN
 	//fix 2 Movers are used in example
 	xPlanarPLC.Station(S_INFEED1).MoverQueueSize := 2;
 	//Switch off simulation in Station 1
-	xPlanarPLC.Station(S_INFEED1).SimulationMode(fProcessDuration := 0, sTargedStationGroupID := '');
+	xPlanarPLC.Station(S_INFEED1).SimulationMode(fProcessDuration := 0, sTargedStation := '');
 	
 	CASE nSeqStation1 OF	
 		0: //Wait for Mover
-			IF xPlanarPLC.Station(S_INFEED1).AreMoversInPlace THEN
+			IF xPlanarPLC.Station(S_INFEED1).MoversInPlace THEN
 				//Get interface to mover
 				ipMover1 := xPlanarPLC.Station(S_INFEED1).MoversInQueue[0];
 				ipMover2 := xPlanarPLC.Station(S_INFEED1).MoversInQueue[1];
@@ -286,7 +278,7 @@ IF bSetpointExample THEN
 		3: //As example, the 2 movers in the station are geared in the Y-axis with a gear ratio of -1. Axis1 is Master, Axis2 is Slave
 			ipMover2.AxisExtSetpointY.GearIn(
 				ipMasterAxisAdapter:= ipMover1.AxisExtSetpointY, 
-				fRatioNumerator:= -1, 
+				fRatioNumerator:= -1, //neagative value = invertet direction
 				nRatioDenominator:= 1, 
 				fAcceleration:= 0, 	//0=default
 				fDeceleration:= 0, 	//0=default
@@ -341,7 +333,7 @@ IF bSetpointExample THEN
 			END_IF					
 			
 		13: //Finish. Send Mover in next Station
-			xPlanarPLC.Station(S_INFEED1).SendMoversToGroup(G_OUTFEED);
+			xPlanarPLC.Station(S_INFEED1).SendMoversToStation(G_OUTFEED);
 			nSeqStation1 := 0;
 	END_CASE
 
@@ -372,11 +364,11 @@ IF bSetpointExample2 AND ipThisStation <> 0 THEN
 	//fix 1 Movers are used in example
 	ipThisStation.MoverQueueSize := 1;
 	//Switch off simulation in Station 2
-	ipThisStation.SimulationMode(fProcessDuration := 0, sTargedStationGroupID := '');
+	ipThisStation.SimulationMode(fProcessDuration := 0, sTargedStation := '');
 	
 	CASE nSeqStation2 OF	
 		0: //Wait for Mover
-			IF ipThisStation.AreMoversInPlace THEN
+			IF ipThisStation.MoversInPlace THEN
 				//Get interface to mover
 				ipMoverExample2 := ipThisStation.MoversInQueue[0];
 				nSeqStation2 := nSeqStation2 + 1;
@@ -430,7 +422,7 @@ IF bSetpointExample2 AND ipThisStation <> 0 THEN
 
 			
 		10: //Finish. Send Mover in next Station
-			ipThisStation.SendMoversToGroup(G_INFEED);
+			ipThisStation.SendMoversToStation(G_INFEED);
 			nSeqStation2 := 0;
 	END_CASE
 
@@ -509,7 +501,7 @@ END_IF
 *)
 
 //Requestet cts of mover are in station. Example: rototer can start to place prodcts
-bToUpstreamProcessCanStart := xPlanarPLC.Station(S_INFEED1).AreMoversInPlace;
+bToUpstreamProcessCanStart := xPlanarPLC.Station(S_INFEED1).MoversInPlace;
 
 //The upstream process can set this bool if the process is finish and the mover can leave the station
 bFromUpsreamProcessIsFinish := bFromUpsreamProcessIsFinish;
@@ -520,7 +512,7 @@ sFromUpstreamTagedStation := G_OUTFEED;
 
 IF bFromUpsreamProcessIsFinish AND bToUpstreamProcessCanStart AND xPlanarPLC.Enabled THEN
 	bFromUpsreamProcessIsFinish := FALSE;
-	xPlanarPLC.Station(S_INFEED1).SendMoversToGroup(sFromUpstreamTagedStation);
+	xPlanarPLC.Station(S_INFEED1).SendMoversToStation(sFromUpstreamTagedStation);
 END_IF]]></ST>
       </Implementation>
     </Method>
@@ -539,17 +531,17 @@ xPlanarPLC.Station(S_OUTFEED2).ReadyToRecvMovers 	:= bStation3_Ready;
 IF bStartSimulation THEN
 	bStartSimulation := FALSE;
 	//xPlanarPLC.SuppressAllDynamicsChanges := FALSE;	//Enable to adjust Gap + Dynamic depending on Station
-	xPlanarPLC.Station(S_INFEED1).SimulationMode(fProcessDuration := 2.0, 	sTargedStationGroupID := G_OUTFEED);
-	xPlanarPLC.Station(S_OUTFEED1).SimulationMode(fProcessDuration := 1.5, 	sTargedStationGroupID := G_INFEED);
-	xPlanarPLC.Station(S_OUTFEED2).SimulationMode(fProcessDuration := 1.5, 	sTargedStationGroupID := G_INFEED);
+	xPlanarPLC.Station(S_INFEED1).SimulationMode(fProcessDuration := 2.0, 	sTargedStation := G_OUTFEED);
+	xPlanarPLC.Station(S_OUTFEED1).SimulationMode(fProcessDuration := 1.5, 	sTargedStation := G_INFEED);
+	xPlanarPLC.Station(S_OUTFEED2).SimulationMode(fProcessDuration := 1.5, 	sTargedStation := G_INFEED);
 END_IF
 
 // Stop Simulation
 IF bStopSimulation THEN
 	bStopSimulation := FALSE;
-	xPlanarPLC.Station(S_INFEED1).SimulationMode(fProcessDuration := 0, sTargedStationGroupID := '');
-	xPlanarPLC.Station(S_OUTFEED1).SimulationMode(fProcessDuration := 0, sTargedStationGroupID := '');
-	xPlanarPLC.Station(S_OUTFEED2).SimulationMode(fProcessDuration := 0, sTargedStationGroupID := '');
+	xPlanarPLC.Station(S_INFEED1).SimulationMode(fProcessDuration := 0, sTargedStation := '');
+	xPlanarPLC.Station(S_OUTFEED1).SimulationMode(fProcessDuration := 0, sTargedStation := '');
+	xPlanarPLC.Station(S_OUTFEED2).SimulationMode(fProcessDuration := 0, sTargedStation := '');
 END_IF
 ]]></ST>
       </Implementation>

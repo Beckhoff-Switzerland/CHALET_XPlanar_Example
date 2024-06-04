@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<TcSmItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.53" ClassName="CMcPrjDef" SubType="70">
+<TcSmItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.55" ClassName="CMcPrjDef" SubType="70">
 	<DataTypes>
 		<DataType>
 			<Name GUID="{5AC0538E-BDFA-4B58-A6B5-99E997DABADA}" Namespace="MC">MoverVector</Name>
@@ -643,6 +643,267 @@
 				<Comment><![CDATA[C coordinate.]]></Comment>
 				<BitSize>16</BitSize>
 				<BitOffs>64</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{A405473D-A1A7-439E-8C48-FC8F02636891}" Namespace="MC">MC_PLANAR_TRACK_COLLISION_RANGE_MODE</Name>
+			<Comment><![CDATA[Indicates how the collision range of a track is calculated.]]></Comment>
+			<BitSize>16</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000005}">UINT</BaseType>
+			<EnumInfo>
+				<Text><![CDATA[Automatic]]></Text>
+				<Enum>0</Enum>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[Manual]]></Text>
+				<Enum>1</Enum>
+			</EnumInfo>
+		</DataType>
+		<DataType>
+			<Name GUID="{6E814ACD-1DD8-4E30-80DB-648BE0A7193D}" Namespace="MC">MC_PLANAR_TRACK_OPERATION_MODE</Name>
+			<Comment><![CDATA[Indicates the state of an enabled PlanarTrack, i.e. how PlanarMovers currently interact with the PlanarTrack.]]></Comment>
+			<BitSize>16</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000005}">UINT</BaseType>
+			<EnumInfo>
+				<Text><![CDATA[Invalid]]></Text>
+				<Enum>0</Enum>
+				<Comment><![CDATA[Indicates no or invalid information, e.g. no connection or component not yet ready.]]></Comment>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[Uninitialized]]></Text>
+				<Enum>201</Enum>
+				<Comment><![CDATA[Indicates that there is no finalized gemetric path yet.]]></Comment>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[Standing]]></Text>
+				<Enum>202</Enum>
+				<Comment><![CDATA[All PlanarMovers on the PlanarTrack are standing.]]></Comment>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[Configuring]]></Text>
+				<Enum>203</Enum>
+				<Comment><![CDATA[At least one PlanarMover is joining/leaving the track or crossing it in free movement mode.]]></Comment>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[Moving]]></Text>
+				<Enum>204</Enum>
+				<Comment><![CDATA[At least one PlanarMover on the PlanarTrack is busy (moving).]]></Comment>
+			</EnumInfo>
+			<Properties>
+				<Property>
+					<Name>plcAttribute_qualified_only</Name>
+				</Property>
+			</Properties>
+		</DataType>
+		<DataType>
+			<Name GUID="{9E820E67-264A-4170-958A-0B26CA5C91FA}" Namespace="MC">MC_POINT_XYC</Name>
+			<BitSize>192</BitSize>
+			<SubItem>
+				<Name>x</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>y</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>64</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>c</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>128</BitOffs>
+			</SubItem>
+			<Format>
+				<Printf>(%g, %g, %g)</Printf>
+				<Parameter>.x</Parameter>
+				<Parameter>.y</Parameter>
+				<Parameter>.c</Parameter>
+			</Format>
+		</DataType>
+		<DataType>
+			<Name GUID="{B48A64D8-464F-4B39-8708-C82C1147C8B6}" Namespace="MC">MC_LINE_XYC</Name>
+			<BitSize>384</BitSize>
+			<SubItem>
+				<Name>start</Name>
+				<Type GUID="{9E820E67-264A-4170-958A-0B26CA5C91FA}" Namespace="MC">MC_POINT_XYC</Type>
+				<BitSize>192</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>end</Name>
+				<Type GUID="{9E820E67-264A-4170-958A-0B26CA5C91FA}" Namespace="MC">MC_POINT_XYC</Type>
+				<BitSize>192</BitSize>
+				<BitOffs>192</BitOffs>
+			</SubItem>
+			<Format>
+				<Printf>(%g, %g, %g) -&gt; (%g ,%g ,%g)</Printf>
+				<Parameter>.start.x</Parameter>
+				<Parameter>.start.y</Parameter>
+				<Parameter>.start.c</Parameter>
+				<Parameter>.end.x</Parameter>
+				<Parameter>.end.y</Parameter>
+				<Parameter>.end.c</Parameter>
+			</Format>
+		</DataType>
+		<DataType>
+			<Name GUID="{52703F74-3BDA-40D6-8168-35F19A066ABA}" Namespace="MC">MC_POINT_XY</Name>
+			<BitSize>128</BitSize>
+			<SubItem>
+				<Name>x</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>y</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>64</BitOffs>
+			</SubItem>
+			<Format>
+				<Printf>(%g, %g)</Printf>
+				<Parameter>.x</Parameter>
+				<Parameter>.y</Parameter>
+			</Format>
+		</DataType>
+		<DataType>
+			<Name GUID="{C3BAEC31-7F05-4B2F-A9AE-F0D8872EE557}" Namespace="MC">MC_CIRCLE_XYC_START_CENTER_END</Name>
+			<BitSize>576</BitSize>
+			<SubItem>
+				<Name>start</Name>
+				<Type GUID="{9E820E67-264A-4170-958A-0B26CA5C91FA}" Namespace="MC">MC_POINT_XYC</Type>
+				<BitSize>192</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>end</Name>
+				<Type GUID="{9E820E67-264A-4170-958A-0B26CA5C91FA}" Namespace="MC">MC_POINT_XYC</Type>
+				<BitSize>192</BitSize>
+				<BitOffs>192</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>center</Name>
+				<Type GUID="{52703F74-3BDA-40D6-8168-35F19A066ABA}" Namespace="MC">MC_POINT_XY</Type>
+				<BitSize>128</BitSize>
+				<BitOffs>384</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>clockwise</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>512</BitOffs>
+			</SubItem>
+			<Format>
+				<Printf>center (%g, %g), clockwise %i, (%g, %g, %g) -&gt; (%g, %g, %g)</Printf>
+				<Parameter>.center.x</Parameter>
+				<Parameter>.center.y</Parameter>
+				<Parameter>.clockwise</Parameter>
+				<Parameter>.start.x</Parameter>
+				<Parameter>.start.y</Parameter>
+				<Parameter>.start.c</Parameter>
+				<Parameter>.end.x</Parameter>
+				<Parameter>.end.y</Parameter>
+				<Parameter>.end.c</Parameter>
+			</Format>
+		</DataType>
+		<DataType>
+			<Name GUID="{3192C90B-2605-4DD5-87BE-005A80B3990B}" Namespace="MC">PlanarTrackOTCID</Name>
+			<BitSize>32</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+			<Properties>
+				<Property>
+					<Name>OTCID</Name>
+				</Property>
+				<Property>
+					<Name>TcCategoryOID</Name>
+					<Value>McPlanarTrack</Value>
+				</Property>
+			</Properties>
+		</DataType>
+		<DataType>
+			<Name GUID="{97041E57-3512-4AEA-B6FE-B323C37ACC32}" Namespace="MC">PlanarTrackConnectionData</Name>
+			<BitSize>128</BitSize>
+			<SubItem>
+				<Name>OtherTrackOID</Name>
+				<Type GUID="{3192C90B-2605-4DD5-87BE-005A80B3990B}" Namespace="MC">PlanarTrackOTCID</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ThisTrackPartPositionIndex</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>32</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>OtherTrackPartPositionIndex</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>64</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>LinkOnlyInSpecifiedPartPositions</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>96</BitOffs>
+			</SubItem>
+			<Relations>
+				<Relation>
+					<Type GUID="{3192C90B-2605-4DD5-87BE-005A80B3990B}">PlanarTrackOTCID</Type>
+					<MapEntry>
+						<BitSize>32</BitSize>
+					</MapEntry>
+				</Relation>
+			</Relations>
+		</DataType>
+		<DataType>
+			<Name GUID="{5769ADF0-D6E6-40D9-B474-790A2A7F1D1F}" Namespace="MC" TcBaseType="true">CDT_MCTOPLC_PLANAR_TRACK</Name>
+			<Comment><![CDATA[CDT provides current planar track information.]]></Comment>
+			<BitSize>160</BitSize>
+			<SubItem>
+				<Name>TrackOID</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</Type>
+				<Comment><![CDATA[Object id of the planar track.]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>GroupOID</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</Type>
+				<Comment><![CDATA[Object id of the planar group the track is in.]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>32</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>State</Name>
+				<Type GUID="{6D2B99B2-A9F2-44AF-A298-4BB7A08AE294}" Namespace="MC">MC_PLANAR_STATE</Type>
+				<Comment><![CDATA[State of the planar track, e.g. disabled.]]></Comment>
+				<BitSize>16</BitSize>
+				<BitOffs>64</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>OperationMode</Name>
+				<Type GUID="{6E814ACD-1DD8-4E30-80DB-648BE0A7193D}" Namespace="MC">MC_PLANAR_TRACK_OPERATION_MODE</Type>
+				<Comment><![CDATA[Operation mode of the planar track, e.g. moving.]]></Comment>
+				<BitSize>16</BitSize>
+				<BitOffs>80</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MoverCountOnTrack</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<Comment><![CDATA[Number of movers coupled to this track.]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>96</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MovingMoverCount</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<Comment><![CDATA[Number of movers having a movement planned that includes this track.]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>128</BitOffs>
 			</SubItem>
 		</DataType>
 	</DataTypes>
@@ -1433,11 +1694,19 @@
 				<ParameterValues>
 					<Value>
 						<Name>Mover width</Name>
-						<Value>80</Value>
+						<Value>115</Value>
 					</Value>
 					<Value>
 						<Name>Mover height</Name>
-						<Value>80</Value>
+						<Value>115</Value>
+					</Value>
+					<Value>
+						<Name>Initial position.x</Name>
+						<Value>120.393379211426</Value>
+					</Value>
+					<Value>
+						<Name>Initial position.y</Name>
+						<Value>100.697723388672</Value>
 					</Value>
 					<Value>
 						<Name>Minimal position.x</Name>
@@ -2480,19 +2749,19 @@
 					</Value>
 					<Value>
 						<Name>Mover width</Name>
-						<Value>80</Value>
+						<Value>115</Value>
 					</Value>
 					<Value>
 						<Name>Mover height</Name>
-						<Value>80</Value>
+						<Value>115</Value>
 					</Value>
 					<Value>
 						<Name>Initial position.x</Name>
-						<Value>0</Value>
+						<Value>376.220245361328</Value>
 					</Value>
 					<Value>
 						<Name>Initial position.y</Name>
-						<Value>0</Value>
+						<Value>100.69775390625</Value>
 					</Value>
 					<Value>
 						<Name>Initial position.z</Name>
@@ -3647,19 +3916,19 @@
 					</Value>
 					<Value>
 						<Name>Mover width</Name>
-						<Value>80</Value>
+						<Value>115</Value>
 					</Value>
 					<Value>
 						<Name>Mover height</Name>
-						<Value>80</Value>
+						<Value>115</Value>
 					</Value>
 					<Value>
 						<Name>Initial position.x</Name>
-						<Value>0</Value>
+						<Value>604.728332519531</Value>
 					</Value>
 					<Value>
 						<Name>Initial position.y</Name>
-						<Value>0</Value>
+						<Value>93.0296630859375</Value>
 					</Value>
 					<Value>
 						<Name>Initial position.z</Name>
@@ -4032,13 +4301,3190 @@
 				</ParameterValues>
 			</TmcDesc>
 		</Axis>
-		<Group File="XPlanar Group.xti"/>
-		<Group File="Environment.xti"/>
 		<Group File="Track_A_0x05120030.xti"/>
 		<Group File="Track_B_0x05120040.xti"/>
 		<Group File="Track_C_0x05120050.xti"/>
 		<Group File="Track_D_0x05120060.xti"/>
 		<Group File="Track_E_0x05120070.xti"/>
+		<Group File="XPlanar Group.xti"/>
+		<Group File="Environment.xti"/>
+		<Group Id="#x05120080" ObjectFolder="Stations">
+			<Name>AnyStation01</Name>
+			<TmcDesc GUID="{87201A49-0B3B-48DC-957C-3BC5C2E990F0}" TcSmClass="TComMcGroupObj">
+				<Name>Planar Track</Name>
+				<CLSID ClassFactory="TcNc3">{050300C8-0000-0000-F000-000000000064}</CLSID>
+				<InitSequence>PSO</InitSequence>
+				<Contexts>
+					<Context>
+						<Id>0</Id>
+						<Name>MET</Name>
+						<ManualConfig>
+							<OTCID>#x02010050</OTCID>
+						</ManualConfig>
+						<Priority>3</Priority>
+						<CycleTime>2000000</CycleTime>
+						<DependOn>ParentObject</DependOn>
+					</Context>
+					<Context>
+						<Id>1</Id>
+						<Name>MPT</Name>
+						<ManualConfig>
+							<OTCID>#x02010060</OTCID>
+						</ManualConfig>
+						<Priority>8</Priority>
+						<CycleTime>10000000</CycleTime>
+						<DependOn>ParentObject</DependOn>
+					</Context>
+				</Contexts>
+				<Parameters>
+					<Parameter HideParameter="true">
+						<Name>TraceLevel</Name>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{8007AE3B-86BB-40F2-B385-EF87FCC239A4}">TcTraceLevel</BaseType>
+						<Default>
+							<Value>2</Value>
+						</Default>
+						<PTCID>#x03002103</PTCID>
+					</Parameter>
+					<Parameter HideParameter="true">
+						<Name>Ctx_TaskOid</Name>
+						<Comment><![CDATA[Task implementing ICyclicCaller for cyclic execution of this module]]></Comment>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+						<PTCID>#x03002060</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Track length</Name>
+						<Comment><![CDATA[Length of the track (read only).]]></Comment>
+						<BitSize>64</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+						<Default>
+							<Value>0.0</Value>
+						</Default>
+						<PTCID>#x05030060</PTCID>
+					</Parameter>
+					<Parameter>
+						<Name>Maximal mover width</Name>
+						<Comment><![CDATA[Maximal width for movers on the track, used for internal collision checks.]]></Comment>
+						<BitSize>64</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+						<Default>
+							<Value>155.0</Value>
+						</Default>
+						<PTCID>#x050300b2</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>Maximal mover height</Name>
+						<Comment><![CDATA[Maximal height for movers on the track, used for internal collision checks.]]></Comment>
+						<BitSize>64</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+						<Default>
+							<Value>155.0</Value>
+						</Default>
+						<PTCID>#x050300b3</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>Check collisions against static objects</Name>
+						<Comment><![CDATA[If TRUE, collisions are also checked against static objects, i.e. tracks and environment.]]></Comment>
+						<BitSize>8</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
+						<Default>
+							<Value>0</Value>
+						</Default>
+						<PTCID>#x050300b4</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>Collision range at start</Name>
+						<Comment><![CDATA[Distance of a mover to the start of the track, where it does not interfere anymore with other tracks also originating from the start of this track.]]></Comment>
+						<BitSize>64</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+						<Default>
+							<Value>250.0</Value>
+						</Default>
+						<PTCID>#x050300bc</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>Collision range at end</Name>
+						<Comment><![CDATA[Distance of a mover to the end of the track, where it does not interfere anymore with other tracks also ending at the end of this track.]]></Comment>
+						<BitSize>64</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+						<Default>
+							<Value>250.0</Value>
+						</Default>
+						<PTCID>#x050300bd</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>Collision range mode</Name>
+						<Comment><![CDATA[Either the collision range at start and end is calculated automatically when the track is enabled, or it is set manually by the user with the collision range parameters.]]></Comment>
+						<BitSize>16</BitSize>
+						<BaseType GUID="{A405473D-A1A7-439E-8C48-FC8F02636891}" Namespace="MC">MC_PLANAR_TRACK_COLLISION_RANGE_MODE</BaseType>
+						<Default>
+							<Value>0</Value>
+						</Default>
+						<PTCID>#x050300d1</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>PartOID</Name>
+						<Comment><![CDATA[Object id of the PlanarPart the track is in.]]></Comment>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+						<PTCID>#x050300e0</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>GroupOID</Name>
+						<Comment><![CDATA[Object id of the PlanarGroup the track is in, read only.]]></Comment>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+						<PTCID>#x050300c3</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>State</Name>
+						<Comment><![CDATA[State, read only.]]></Comment>
+						<BitSize>16</BitSize>
+						<BaseType GUID="{6D2B99B2-A9F2-44AF-A298-4BB7A08AE294}" Namespace="MC">MC_PLANAR_STATE</BaseType>
+						<PTCID>#x050300b6</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Operation mode</Name>
+						<Comment><![CDATA[Track state, read only.]]></Comment>
+						<BitSize>16</BitSize>
+						<BaseType GUID="{6E814ACD-1DD8-4E30-80DB-648BE0A7193D}" Namespace="MC">MC_PLANAR_TRACK_OPERATION_MODE</BaseType>
+						<PTCID>#x050300c4</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Mover count on track</Name>
+						<Comment><![CDATA[Number of movers that are on this track, read only.]]></Comment>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-000000000008}">UDINT</BaseType>
+						<PTCID>#x050300c5</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Moving mover count</Name>
+						<Comment><![CDATA[Number of movers that have requested a movement on the track, read only.]]></Comment>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-000000000008}">UDINT</BaseType>
+						<PTCID>#x050300c6</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Geometric online information</Name>
+						<Comment><![CDATA[Array containing the elements describing the geometric curve of the track.]]></Comment>
+						<BitSize>0</BitSize>
+						<ArraySubItems MaxUnbounded="true">
+							<LBound>1</LBound>
+							<ItemType GUID="{9E820E67-264A-4170-958A-0B26CA5C91FA}" Namespace="MC">MC_POINT_XYC</ItemType>
+							<ItemType GUID="{B48A64D8-464F-4B39-8708-C82C1147C8B6}" Namespace="MC">MC_LINE_XYC</ItemType>
+							<ItemType GUID="{C3BAEC31-7F05-4B2F-A9AE-F0D8872EE557}" Namespace="MC">MC_CIRCLE_XYC_START_CENTER_END</ItemType>
+						</ArraySubItems>
+						<PTCID>#x050300da</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Previous tracks</Name>
+						<Comment><![CDATA[Array containing the object IDs of all tracks that end at this track's start vertex, read only.]]></Comment>
+						<BitSize>0</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+						<ArrayInfo>
+							<LBound>1</LBound>
+							<Elements Min="0" MaxUnbounded="true">0</Elements>
+						</ArrayInfo>
+						<PTCID>#x050300d5</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Subsequent tracks</Name>
+						<Comment><![CDATA[Array containing the object IDs of all tracks that start at this track's end vertex, read only.]]></Comment>
+						<BitSize>0</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+						<ArrayInfo>
+							<LBound>1</LBound>
+							<Elements Min="0" MaxUnbounded="true">0</Elements>
+						</ArrayInfo>
+						<PTCID>#x050300d6</PTCID>
+					</Parameter>
+					<Parameter>
+						<Name>Geometric information</Name>
+						<Comment><![CDATA[Array containing the elements describing the geometric curve of the track.]]></Comment>
+						<BitSize>0</BitSize>
+						<ArraySubItems MaxUnbounded="true">
+							<LBound>1</LBound>
+							<ItemType GUID="{9E820E67-264A-4170-958A-0B26CA5C91FA}" Namespace="MC">MC_POINT_XYC</ItemType>
+							<ItemType GUID="{B48A64D8-464F-4B39-8708-C82C1147C8B6}" Namespace="MC">MC_LINE_XYC</ItemType>
+							<ItemType GUID="{C3BAEC31-7F05-4B2F-A9AE-F0D8872EE557}" Namespace="MC">MC_CIRCLE_XYC_START_CENTER_END</ItemType>
+						</ArraySubItems>
+						<PTCID>#x050300d7</PTCID>
+					</Parameter>
+					<Parameter>
+						<Name>Closed loop</Name>
+						<Comment><![CDATA[Bool setting the tracks init configuration to closed loop.]]></Comment>
+						<BitSize>8</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
+						<Default>
+							<Value>0</Value>
+						</Default>
+						<PTCID>#x05030066</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Closed loop online information</Name>
+						<Comment><![CDATA[Bool indicating if the tracks online configuration is a closed loop.]]></Comment>
+						<BitSize>8</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
+						<Default>
+							<Value>0</Value>
+						</Default>
+						<PTCID>#x050300e1</PTCID>
+					</Parameter>
+					<Parameter>
+						<Name>Starts from tracks</Name>
+						<Comment><![CDATA[Connection data of tracks where this track starts.]]></Comment>
+						<BitSize>0</BitSize>
+						<BaseType GUID="{97041E57-3512-4AEA-B6FE-B323C37ACC32}" Namespace="MC">PlanarTrackConnectionData</BaseType>
+						<ArrayInfo>
+							<LBound>1</LBound>
+							<Elements Min="0" MaxUnbounded="true">0</Elements>
+						</ArrayInfo>
+						<PTCID>#x050300d8</PTCID>
+					</Parameter>
+					<Parameter>
+						<Name>Ends at tracks</Name>
+						<Comment><![CDATA[Connection data of tracks where this track ends.]]></Comment>
+						<BitSize>0</BitSize>
+						<BaseType GUID="{97041E57-3512-4AEA-B6FE-B323C37ACC32}" Namespace="MC">PlanarTrackConnectionData</BaseType>
+						<ArrayInfo>
+							<LBound>1</LBound>
+							<Elements Min="0" MaxUnbounded="true">0</Elements>
+						</ArrayInfo>
+						<PTCID>#x050300d9</PTCID>
+					</Parameter>
+				</Parameters>
+				<DataAreas>
+					<DataArea>
+						<AreaNo AreaType="OutputSrc">1</AreaNo>
+						<Name>McToPlc</Name>
+						<ContextId>0</ContextId>
+						<ByteSize>20</ByteSize>
+						<Symbol>
+							<Name>STD</Name>
+							<BitSize>160</BitSize>
+							<BaseType GUID="{5769ADF0-D6E6-40D9-B474-790A2A7F1D1F}">MC.CDT_MCTOPLC_PLANAR_TRACK</BaseType>
+							<BitOffs>0</BitOffs>
+						</Symbol>
+					</DataArea>
+				</DataAreas>
+				<Properties>
+					<Property>
+						<Name>Category</Name>
+						<Value>MC Object</Value>
+					</Property>
+					<Property>
+						<Name>Category</Name>
+						<Value>McPlanarTrack</Value>
+					</Property>
+					<Property>
+						<Name>Category</Name>
+						<Value>HideTcComContextPP</Value>
+					</Property>
+				</Properties>
+				<ParentOTCID>#x05100010</ParentOTCID>
+				<ParameterValues>
+					<Value>
+						<Name>TraceLevel</Name>
+						<EnumText>tlWarning</EnumText>
+					</Value>
+					<Value>
+						<Name>Ctx_TaskOid</Name>
+						<Value>33620048</Value>
+					</Value>
+					<Value>
+						<Name>Track length</Name>
+						<Value>0</Value>
+					</Value>
+					<Value>
+						<Name>Maximal mover width</Name>
+						<Value>155</Value>
+					</Value>
+					<Value>
+						<Name>Maximal mover height</Name>
+						<Value>155</Value>
+					</Value>
+					<Value>
+						<Name>Check collisions against static objects</Name>
+						<EnumText>FALSE</EnumText>
+					</Value>
+					<Value>
+						<Name>Collision range at start</Name>
+						<Value>250</Value>
+					</Value>
+					<Value>
+						<Name>Collision range at end</Name>
+						<Value>250</Value>
+					</Value>
+					<Value>
+						<Name>Collision range mode</Name>
+						<EnumText>Automatic</EnumText>
+					</Value>
+					<Value>
+						<Name>PartOID</Name>
+						<Value>0</Value>
+					</Value>
+					<Value>
+						<Name>GroupOID</Name>
+						<Value>0</Value>
+					</Value>
+					<Value>
+						<Name>State</Name>
+						<EnumText>Invalid</EnumText>
+					</Value>
+					<Value>
+						<Name>Operation mode</Name>
+						<EnumText>Invalid</EnumText>
+					</Value>
+					<Value>
+						<Name>Mover count on track</Name>
+						<Value>0</Value>
+					</Value>
+					<Value>
+						<Name>Moving mover count</Name>
+						<Value>0</Value>
+					</Value>
+					<Value>
+						<Name>Closed loop</Name>
+						<EnumText>FALSE</EnumText>
+					</Value>
+					<Value>
+						<Name>Closed loop online information</Name>
+						<EnumText>FALSE</EnumText>
+					</Value>
+				</ParameterValues>
+			</TmcDesc>
+		</Group>
+		<Group Id="#x05120090" ObjectFolder="Stations">
+			<Name>AnyStation02</Name>
+			<TmcDesc GUID="{87201A49-0B3B-48DC-957C-3BC5C2E990F0}" TcSmClass="TComMcGroupObj">
+				<Name>Planar Track</Name>
+				<CLSID ClassFactory="TcNc3">{050300C8-0000-0000-F000-000000000064}</CLSID>
+				<InitSequence>PSO</InitSequence>
+				<Contexts>
+					<Context>
+						<Id>0</Id>
+						<Name>MET</Name>
+						<ManualConfig>
+							<OTCID>#x02010050</OTCID>
+						</ManualConfig>
+						<Priority>3</Priority>
+						<CycleTime>2000000</CycleTime>
+						<DependOn>ParentObject</DependOn>
+					</Context>
+					<Context>
+						<Id>1</Id>
+						<Name>MPT</Name>
+						<ManualConfig>
+							<OTCID>#x02010060</OTCID>
+						</ManualConfig>
+						<Priority>8</Priority>
+						<CycleTime>10000000</CycleTime>
+						<DependOn>ParentObject</DependOn>
+					</Context>
+				</Contexts>
+				<Parameters>
+					<Parameter HideParameter="true">
+						<Name>TraceLevel</Name>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{8007AE3B-86BB-40F2-B385-EF87FCC239A4}">TcTraceLevel</BaseType>
+						<Default>
+							<Value>2</Value>
+						</Default>
+						<PTCID>#x03002103</PTCID>
+					</Parameter>
+					<Parameter HideParameter="true">
+						<Name>Ctx_TaskOid</Name>
+						<Comment><![CDATA[Task implementing ICyclicCaller for cyclic execution of this module]]></Comment>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+						<PTCID>#x03002060</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Track length</Name>
+						<Comment><![CDATA[Length of the track (read only).]]></Comment>
+						<BitSize>64</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+						<Default>
+							<Value>0.0</Value>
+						</Default>
+						<PTCID>#x05030060</PTCID>
+					</Parameter>
+					<Parameter>
+						<Name>Maximal mover width</Name>
+						<Comment><![CDATA[Maximal width for movers on the track, used for internal collision checks.]]></Comment>
+						<BitSize>64</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+						<Default>
+							<Value>155.0</Value>
+						</Default>
+						<PTCID>#x050300b2</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>Maximal mover height</Name>
+						<Comment><![CDATA[Maximal height for movers on the track, used for internal collision checks.]]></Comment>
+						<BitSize>64</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+						<Default>
+							<Value>155.0</Value>
+						</Default>
+						<PTCID>#x050300b3</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>Check collisions against static objects</Name>
+						<Comment><![CDATA[If TRUE, collisions are also checked against static objects, i.e. tracks and environment.]]></Comment>
+						<BitSize>8</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
+						<Default>
+							<Value>0</Value>
+						</Default>
+						<PTCID>#x050300b4</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>Collision range at start</Name>
+						<Comment><![CDATA[Distance of a mover to the start of the track, where it does not interfere anymore with other tracks also originating from the start of this track.]]></Comment>
+						<BitSize>64</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+						<Default>
+							<Value>250.0</Value>
+						</Default>
+						<PTCID>#x050300bc</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>Collision range at end</Name>
+						<Comment><![CDATA[Distance of a mover to the end of the track, where it does not interfere anymore with other tracks also ending at the end of this track.]]></Comment>
+						<BitSize>64</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+						<Default>
+							<Value>250.0</Value>
+						</Default>
+						<PTCID>#x050300bd</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>Collision range mode</Name>
+						<Comment><![CDATA[Either the collision range at start and end is calculated automatically when the track is enabled, or it is set manually by the user with the collision range parameters.]]></Comment>
+						<BitSize>16</BitSize>
+						<BaseType GUID="{A405473D-A1A7-439E-8C48-FC8F02636891}" Namespace="MC">MC_PLANAR_TRACK_COLLISION_RANGE_MODE</BaseType>
+						<Default>
+							<Value>0</Value>
+						</Default>
+						<PTCID>#x050300d1</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>PartOID</Name>
+						<Comment><![CDATA[Object id of the PlanarPart the track is in.]]></Comment>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+						<PTCID>#x050300e0</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>GroupOID</Name>
+						<Comment><![CDATA[Object id of the PlanarGroup the track is in, read only.]]></Comment>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+						<PTCID>#x050300c3</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>State</Name>
+						<Comment><![CDATA[State, read only.]]></Comment>
+						<BitSize>16</BitSize>
+						<BaseType GUID="{6D2B99B2-A9F2-44AF-A298-4BB7A08AE294}" Namespace="MC">MC_PLANAR_STATE</BaseType>
+						<PTCID>#x050300b6</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Operation mode</Name>
+						<Comment><![CDATA[Track state, read only.]]></Comment>
+						<BitSize>16</BitSize>
+						<BaseType GUID="{6E814ACD-1DD8-4E30-80DB-648BE0A7193D}" Namespace="MC">MC_PLANAR_TRACK_OPERATION_MODE</BaseType>
+						<PTCID>#x050300c4</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Mover count on track</Name>
+						<Comment><![CDATA[Number of movers that are on this track, read only.]]></Comment>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-000000000008}">UDINT</BaseType>
+						<PTCID>#x050300c5</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Moving mover count</Name>
+						<Comment><![CDATA[Number of movers that have requested a movement on the track, read only.]]></Comment>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-000000000008}">UDINT</BaseType>
+						<PTCID>#x050300c6</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Geometric online information</Name>
+						<Comment><![CDATA[Array containing the elements describing the geometric curve of the track.]]></Comment>
+						<BitSize>0</BitSize>
+						<ArraySubItems MaxUnbounded="true">
+							<LBound>1</LBound>
+							<ItemType GUID="{9E820E67-264A-4170-958A-0B26CA5C91FA}" Namespace="MC">MC_POINT_XYC</ItemType>
+							<ItemType GUID="{B48A64D8-464F-4B39-8708-C82C1147C8B6}" Namespace="MC">MC_LINE_XYC</ItemType>
+							<ItemType GUID="{C3BAEC31-7F05-4B2F-A9AE-F0D8872EE557}" Namespace="MC">MC_CIRCLE_XYC_START_CENTER_END</ItemType>
+						</ArraySubItems>
+						<PTCID>#x050300da</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Previous tracks</Name>
+						<Comment><![CDATA[Array containing the object IDs of all tracks that end at this track's start vertex, read only.]]></Comment>
+						<BitSize>0</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+						<ArrayInfo>
+							<LBound>1</LBound>
+							<Elements Min="0" MaxUnbounded="true">0</Elements>
+						</ArrayInfo>
+						<PTCID>#x050300d5</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Subsequent tracks</Name>
+						<Comment><![CDATA[Array containing the object IDs of all tracks that start at this track's end vertex, read only.]]></Comment>
+						<BitSize>0</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+						<ArrayInfo>
+							<LBound>1</LBound>
+							<Elements Min="0" MaxUnbounded="true">0</Elements>
+						</ArrayInfo>
+						<PTCID>#x050300d6</PTCID>
+					</Parameter>
+					<Parameter>
+						<Name>Geometric information</Name>
+						<Comment><![CDATA[Array containing the elements describing the geometric curve of the track.]]></Comment>
+						<BitSize>0</BitSize>
+						<ArraySubItems MaxUnbounded="true">
+							<LBound>1</LBound>
+							<ItemType GUID="{9E820E67-264A-4170-958A-0B26CA5C91FA}" Namespace="MC">MC_POINT_XYC</ItemType>
+							<ItemType GUID="{B48A64D8-464F-4B39-8708-C82C1147C8B6}" Namespace="MC">MC_LINE_XYC</ItemType>
+							<ItemType GUID="{C3BAEC31-7F05-4B2F-A9AE-F0D8872EE557}" Namespace="MC">MC_CIRCLE_XYC_START_CENTER_END</ItemType>
+						</ArraySubItems>
+						<PTCID>#x050300d7</PTCID>
+					</Parameter>
+					<Parameter>
+						<Name>Closed loop</Name>
+						<Comment><![CDATA[Bool setting the tracks init configuration to closed loop.]]></Comment>
+						<BitSize>8</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
+						<Default>
+							<Value>0</Value>
+						</Default>
+						<PTCID>#x05030066</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Closed loop online information</Name>
+						<Comment><![CDATA[Bool indicating if the tracks online configuration is a closed loop.]]></Comment>
+						<BitSize>8</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
+						<Default>
+							<Value>0</Value>
+						</Default>
+						<PTCID>#x050300e1</PTCID>
+					</Parameter>
+					<Parameter>
+						<Name>Starts from tracks</Name>
+						<Comment><![CDATA[Connection data of tracks where this track starts.]]></Comment>
+						<BitSize>0</BitSize>
+						<BaseType GUID="{97041E57-3512-4AEA-B6FE-B323C37ACC32}" Namespace="MC">PlanarTrackConnectionData</BaseType>
+						<ArrayInfo>
+							<LBound>1</LBound>
+							<Elements Min="0" MaxUnbounded="true">0</Elements>
+						</ArrayInfo>
+						<PTCID>#x050300d8</PTCID>
+					</Parameter>
+					<Parameter>
+						<Name>Ends at tracks</Name>
+						<Comment><![CDATA[Connection data of tracks where this track ends.]]></Comment>
+						<BitSize>0</BitSize>
+						<BaseType GUID="{97041E57-3512-4AEA-B6FE-B323C37ACC32}" Namespace="MC">PlanarTrackConnectionData</BaseType>
+						<ArrayInfo>
+							<LBound>1</LBound>
+							<Elements Min="0" MaxUnbounded="true">0</Elements>
+						</ArrayInfo>
+						<PTCID>#x050300d9</PTCID>
+					</Parameter>
+				</Parameters>
+				<DataAreas>
+					<DataArea>
+						<AreaNo AreaType="OutputSrc">1</AreaNo>
+						<Name>McToPlc</Name>
+						<ContextId>0</ContextId>
+						<ByteSize>20</ByteSize>
+						<Symbol>
+							<Name>STD</Name>
+							<BitSize>160</BitSize>
+							<BaseType GUID="{5769ADF0-D6E6-40D9-B474-790A2A7F1D1F}">MC.CDT_MCTOPLC_PLANAR_TRACK</BaseType>
+							<BitOffs>0</BitOffs>
+						</Symbol>
+					</DataArea>
+				</DataAreas>
+				<Properties>
+					<Property>
+						<Name>Category</Name>
+						<Value>MC Object</Value>
+					</Property>
+					<Property>
+						<Name>Category</Name>
+						<Value>McPlanarTrack</Value>
+					</Property>
+					<Property>
+						<Name>Category</Name>
+						<Value>HideTcComContextPP</Value>
+					</Property>
+				</Properties>
+				<ParentOTCID>#x05100010</ParentOTCID>
+				<ParameterValues>
+					<Value>
+						<Name>TraceLevel</Name>
+						<EnumText>tlWarning</EnumText>
+					</Value>
+					<Value>
+						<Name>Ctx_TaskOid</Name>
+						<Value>33620048</Value>
+					</Value>
+					<Value>
+						<Name>Track length</Name>
+						<Value>0</Value>
+					</Value>
+					<Value>
+						<Name>Maximal mover width</Name>
+						<Value>155</Value>
+					</Value>
+					<Value>
+						<Name>Maximal mover height</Name>
+						<Value>155</Value>
+					</Value>
+					<Value>
+						<Name>Check collisions against static objects</Name>
+						<EnumText>FALSE</EnumText>
+					</Value>
+					<Value>
+						<Name>Collision range at start</Name>
+						<Value>250</Value>
+					</Value>
+					<Value>
+						<Name>Collision range at end</Name>
+						<Value>250</Value>
+					</Value>
+					<Value>
+						<Name>Collision range mode</Name>
+						<EnumText>Automatic</EnumText>
+					</Value>
+					<Value>
+						<Name>PartOID</Name>
+						<Value>0</Value>
+					</Value>
+					<Value>
+						<Name>GroupOID</Name>
+						<Value>0</Value>
+					</Value>
+					<Value>
+						<Name>State</Name>
+						<EnumText>Invalid</EnumText>
+					</Value>
+					<Value>
+						<Name>Operation mode</Name>
+						<EnumText>Invalid</EnumText>
+					</Value>
+					<Value>
+						<Name>Mover count on track</Name>
+						<Value>0</Value>
+					</Value>
+					<Value>
+						<Name>Moving mover count</Name>
+						<Value>0</Value>
+					</Value>
+					<Value>
+						<Name>Closed loop</Name>
+						<EnumText>FALSE</EnumText>
+					</Value>
+					<Value>
+						<Name>Closed loop online information</Name>
+						<EnumText>FALSE</EnumText>
+					</Value>
+				</ParameterValues>
+			</TmcDesc>
+		</Group>
+		<Group Id="#x051200a0" ObjectFolder="Stations">
+			<Name>AnyStation03</Name>
+			<TmcDesc GUID="{87201A49-0B3B-48DC-957C-3BC5C2E990F0}" TcSmClass="TComMcGroupObj">
+				<Name>Planar Track</Name>
+				<CLSID ClassFactory="TcNc3">{050300C8-0000-0000-F000-000000000064}</CLSID>
+				<InitSequence>PSO</InitSequence>
+				<Contexts>
+					<Context>
+						<Id>0</Id>
+						<Name>MET</Name>
+						<ManualConfig>
+							<OTCID>#x02010050</OTCID>
+						</ManualConfig>
+						<Priority>3</Priority>
+						<CycleTime>2000000</CycleTime>
+						<DependOn>ParentObject</DependOn>
+					</Context>
+					<Context>
+						<Id>1</Id>
+						<Name>MPT</Name>
+						<ManualConfig>
+							<OTCID>#x02010060</OTCID>
+						</ManualConfig>
+						<Priority>8</Priority>
+						<CycleTime>10000000</CycleTime>
+						<DependOn>ParentObject</DependOn>
+					</Context>
+				</Contexts>
+				<Parameters>
+					<Parameter HideParameter="true">
+						<Name>TraceLevel</Name>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{8007AE3B-86BB-40F2-B385-EF87FCC239A4}">TcTraceLevel</BaseType>
+						<Default>
+							<Value>2</Value>
+						</Default>
+						<PTCID>#x03002103</PTCID>
+					</Parameter>
+					<Parameter HideParameter="true">
+						<Name>Ctx_TaskOid</Name>
+						<Comment><![CDATA[Task implementing ICyclicCaller for cyclic execution of this module]]></Comment>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+						<PTCID>#x03002060</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Track length</Name>
+						<Comment><![CDATA[Length of the track (read only).]]></Comment>
+						<BitSize>64</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+						<Default>
+							<Value>0.0</Value>
+						</Default>
+						<PTCID>#x05030060</PTCID>
+					</Parameter>
+					<Parameter>
+						<Name>Maximal mover width</Name>
+						<Comment><![CDATA[Maximal width for movers on the track, used for internal collision checks.]]></Comment>
+						<BitSize>64</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+						<Default>
+							<Value>155.0</Value>
+						</Default>
+						<PTCID>#x050300b2</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>Maximal mover height</Name>
+						<Comment><![CDATA[Maximal height for movers on the track, used for internal collision checks.]]></Comment>
+						<BitSize>64</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+						<Default>
+							<Value>155.0</Value>
+						</Default>
+						<PTCID>#x050300b3</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>Check collisions against static objects</Name>
+						<Comment><![CDATA[If TRUE, collisions are also checked against static objects, i.e. tracks and environment.]]></Comment>
+						<BitSize>8</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
+						<Default>
+							<Value>0</Value>
+						</Default>
+						<PTCID>#x050300b4</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>Collision range at start</Name>
+						<Comment><![CDATA[Distance of a mover to the start of the track, where it does not interfere anymore with other tracks also originating from the start of this track.]]></Comment>
+						<BitSize>64</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+						<Default>
+							<Value>250.0</Value>
+						</Default>
+						<PTCID>#x050300bc</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>Collision range at end</Name>
+						<Comment><![CDATA[Distance of a mover to the end of the track, where it does not interfere anymore with other tracks also ending at the end of this track.]]></Comment>
+						<BitSize>64</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+						<Default>
+							<Value>250.0</Value>
+						</Default>
+						<PTCID>#x050300bd</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>Collision range mode</Name>
+						<Comment><![CDATA[Either the collision range at start and end is calculated automatically when the track is enabled, or it is set manually by the user with the collision range parameters.]]></Comment>
+						<BitSize>16</BitSize>
+						<BaseType GUID="{A405473D-A1A7-439E-8C48-FC8F02636891}" Namespace="MC">MC_PLANAR_TRACK_COLLISION_RANGE_MODE</BaseType>
+						<Default>
+							<Value>0</Value>
+						</Default>
+						<PTCID>#x050300d1</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>PartOID</Name>
+						<Comment><![CDATA[Object id of the PlanarPart the track is in.]]></Comment>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+						<PTCID>#x050300e0</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>GroupOID</Name>
+						<Comment><![CDATA[Object id of the PlanarGroup the track is in, read only.]]></Comment>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+						<PTCID>#x050300c3</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>State</Name>
+						<Comment><![CDATA[State, read only.]]></Comment>
+						<BitSize>16</BitSize>
+						<BaseType GUID="{6D2B99B2-A9F2-44AF-A298-4BB7A08AE294}" Namespace="MC">MC_PLANAR_STATE</BaseType>
+						<PTCID>#x050300b6</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Operation mode</Name>
+						<Comment><![CDATA[Track state, read only.]]></Comment>
+						<BitSize>16</BitSize>
+						<BaseType GUID="{6E814ACD-1DD8-4E30-80DB-648BE0A7193D}" Namespace="MC">MC_PLANAR_TRACK_OPERATION_MODE</BaseType>
+						<PTCID>#x050300c4</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Mover count on track</Name>
+						<Comment><![CDATA[Number of movers that are on this track, read only.]]></Comment>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-000000000008}">UDINT</BaseType>
+						<PTCID>#x050300c5</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Moving mover count</Name>
+						<Comment><![CDATA[Number of movers that have requested a movement on the track, read only.]]></Comment>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-000000000008}">UDINT</BaseType>
+						<PTCID>#x050300c6</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Geometric online information</Name>
+						<Comment><![CDATA[Array containing the elements describing the geometric curve of the track.]]></Comment>
+						<BitSize>0</BitSize>
+						<ArraySubItems MaxUnbounded="true">
+							<LBound>1</LBound>
+							<ItemType GUID="{9E820E67-264A-4170-958A-0B26CA5C91FA}" Namespace="MC">MC_POINT_XYC</ItemType>
+							<ItemType GUID="{B48A64D8-464F-4B39-8708-C82C1147C8B6}" Namespace="MC">MC_LINE_XYC</ItemType>
+							<ItemType GUID="{C3BAEC31-7F05-4B2F-A9AE-F0D8872EE557}" Namespace="MC">MC_CIRCLE_XYC_START_CENTER_END</ItemType>
+						</ArraySubItems>
+						<PTCID>#x050300da</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Previous tracks</Name>
+						<Comment><![CDATA[Array containing the object IDs of all tracks that end at this track's start vertex, read only.]]></Comment>
+						<BitSize>0</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+						<ArrayInfo>
+							<LBound>1</LBound>
+							<Elements Min="0" MaxUnbounded="true">0</Elements>
+						</ArrayInfo>
+						<PTCID>#x050300d5</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Subsequent tracks</Name>
+						<Comment><![CDATA[Array containing the object IDs of all tracks that start at this track's end vertex, read only.]]></Comment>
+						<BitSize>0</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+						<ArrayInfo>
+							<LBound>1</LBound>
+							<Elements Min="0" MaxUnbounded="true">0</Elements>
+						</ArrayInfo>
+						<PTCID>#x050300d6</PTCID>
+					</Parameter>
+					<Parameter>
+						<Name>Geometric information</Name>
+						<Comment><![CDATA[Array containing the elements describing the geometric curve of the track.]]></Comment>
+						<BitSize>0</BitSize>
+						<ArraySubItems MaxUnbounded="true">
+							<LBound>1</LBound>
+							<ItemType GUID="{9E820E67-264A-4170-958A-0B26CA5C91FA}" Namespace="MC">MC_POINT_XYC</ItemType>
+							<ItemType GUID="{B48A64D8-464F-4B39-8708-C82C1147C8B6}" Namespace="MC">MC_LINE_XYC</ItemType>
+							<ItemType GUID="{C3BAEC31-7F05-4B2F-A9AE-F0D8872EE557}" Namespace="MC">MC_CIRCLE_XYC_START_CENTER_END</ItemType>
+						</ArraySubItems>
+						<PTCID>#x050300d7</PTCID>
+					</Parameter>
+					<Parameter>
+						<Name>Closed loop</Name>
+						<Comment><![CDATA[Bool setting the tracks init configuration to closed loop.]]></Comment>
+						<BitSize>8</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
+						<Default>
+							<Value>0</Value>
+						</Default>
+						<PTCID>#x05030066</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Closed loop online information</Name>
+						<Comment><![CDATA[Bool indicating if the tracks online configuration is a closed loop.]]></Comment>
+						<BitSize>8</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
+						<Default>
+							<Value>0</Value>
+						</Default>
+						<PTCID>#x050300e1</PTCID>
+					</Parameter>
+					<Parameter>
+						<Name>Starts from tracks</Name>
+						<Comment><![CDATA[Connection data of tracks where this track starts.]]></Comment>
+						<BitSize>0</BitSize>
+						<BaseType GUID="{97041E57-3512-4AEA-B6FE-B323C37ACC32}" Namespace="MC">PlanarTrackConnectionData</BaseType>
+						<ArrayInfo>
+							<LBound>1</LBound>
+							<Elements Min="0" MaxUnbounded="true">0</Elements>
+						</ArrayInfo>
+						<PTCID>#x050300d8</PTCID>
+					</Parameter>
+					<Parameter>
+						<Name>Ends at tracks</Name>
+						<Comment><![CDATA[Connection data of tracks where this track ends.]]></Comment>
+						<BitSize>0</BitSize>
+						<BaseType GUID="{97041E57-3512-4AEA-B6FE-B323C37ACC32}" Namespace="MC">PlanarTrackConnectionData</BaseType>
+						<ArrayInfo>
+							<LBound>1</LBound>
+							<Elements Min="0" MaxUnbounded="true">0</Elements>
+						</ArrayInfo>
+						<PTCID>#x050300d9</PTCID>
+					</Parameter>
+				</Parameters>
+				<DataAreas>
+					<DataArea>
+						<AreaNo AreaType="OutputSrc">1</AreaNo>
+						<Name>McToPlc</Name>
+						<ContextId>0</ContextId>
+						<ByteSize>20</ByteSize>
+						<Symbol>
+							<Name>STD</Name>
+							<BitSize>160</BitSize>
+							<BaseType GUID="{5769ADF0-D6E6-40D9-B474-790A2A7F1D1F}">MC.CDT_MCTOPLC_PLANAR_TRACK</BaseType>
+							<BitOffs>0</BitOffs>
+						</Symbol>
+					</DataArea>
+				</DataAreas>
+				<Properties>
+					<Property>
+						<Name>Category</Name>
+						<Value>MC Object</Value>
+					</Property>
+					<Property>
+						<Name>Category</Name>
+						<Value>McPlanarTrack</Value>
+					</Property>
+					<Property>
+						<Name>Category</Name>
+						<Value>HideTcComContextPP</Value>
+					</Property>
+				</Properties>
+				<ParentOTCID>#x05100010</ParentOTCID>
+				<ParameterValues>
+					<Value>
+						<Name>TraceLevel</Name>
+						<EnumText>tlWarning</EnumText>
+					</Value>
+					<Value>
+						<Name>Ctx_TaskOid</Name>
+						<Value>33620048</Value>
+					</Value>
+					<Value>
+						<Name>Track length</Name>
+						<Value>0</Value>
+					</Value>
+					<Value>
+						<Name>Maximal mover width</Name>
+						<Value>155</Value>
+					</Value>
+					<Value>
+						<Name>Maximal mover height</Name>
+						<Value>155</Value>
+					</Value>
+					<Value>
+						<Name>Check collisions against static objects</Name>
+						<EnumText>FALSE</EnumText>
+					</Value>
+					<Value>
+						<Name>Collision range at start</Name>
+						<Value>250</Value>
+					</Value>
+					<Value>
+						<Name>Collision range at end</Name>
+						<Value>250</Value>
+					</Value>
+					<Value>
+						<Name>Collision range mode</Name>
+						<EnumText>Automatic</EnumText>
+					</Value>
+					<Value>
+						<Name>PartOID</Name>
+						<Value>0</Value>
+					</Value>
+					<Value>
+						<Name>GroupOID</Name>
+						<Value>0</Value>
+					</Value>
+					<Value>
+						<Name>State</Name>
+						<EnumText>Invalid</EnumText>
+					</Value>
+					<Value>
+						<Name>Operation mode</Name>
+						<EnumText>Invalid</EnumText>
+					</Value>
+					<Value>
+						<Name>Mover count on track</Name>
+						<Value>0</Value>
+					</Value>
+					<Value>
+						<Name>Moving mover count</Name>
+						<Value>0</Value>
+					</Value>
+					<Value>
+						<Name>Closed loop</Name>
+						<EnumText>FALSE</EnumText>
+					</Value>
+					<Value>
+						<Name>Closed loop online information</Name>
+						<EnumText>FALSE</EnumText>
+					</Value>
+				</ParameterValues>
+			</TmcDesc>
+		</Group>
+		<Group Id="#x051200b0" ObjectFolder="Stations">
+			<Name>AnyStation04</Name>
+			<TmcDesc GUID="{87201A49-0B3B-48DC-957C-3BC5C2E990F0}" TcSmClass="TComMcGroupObj">
+				<Name>Planar Track</Name>
+				<CLSID ClassFactory="TcNc3">{050300C8-0000-0000-F000-000000000064}</CLSID>
+				<InitSequence>PSO</InitSequence>
+				<Contexts>
+					<Context>
+						<Id>0</Id>
+						<Name>MET</Name>
+						<ManualConfig>
+							<OTCID>#x02010050</OTCID>
+						</ManualConfig>
+						<Priority>3</Priority>
+						<CycleTime>2000000</CycleTime>
+						<DependOn>ParentObject</DependOn>
+					</Context>
+					<Context>
+						<Id>1</Id>
+						<Name>MPT</Name>
+						<ManualConfig>
+							<OTCID>#x02010060</OTCID>
+						</ManualConfig>
+						<Priority>8</Priority>
+						<CycleTime>10000000</CycleTime>
+						<DependOn>ParentObject</DependOn>
+					</Context>
+				</Contexts>
+				<Parameters>
+					<Parameter HideParameter="true">
+						<Name>TraceLevel</Name>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{8007AE3B-86BB-40F2-B385-EF87FCC239A4}">TcTraceLevel</BaseType>
+						<Default>
+							<Value>2</Value>
+						</Default>
+						<PTCID>#x03002103</PTCID>
+					</Parameter>
+					<Parameter HideParameter="true">
+						<Name>Ctx_TaskOid</Name>
+						<Comment><![CDATA[Task implementing ICyclicCaller for cyclic execution of this module]]></Comment>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+						<PTCID>#x03002060</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Track length</Name>
+						<Comment><![CDATA[Length of the track (read only).]]></Comment>
+						<BitSize>64</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+						<Default>
+							<Value>0.0</Value>
+						</Default>
+						<PTCID>#x05030060</PTCID>
+					</Parameter>
+					<Parameter>
+						<Name>Maximal mover width</Name>
+						<Comment><![CDATA[Maximal width for movers on the track, used for internal collision checks.]]></Comment>
+						<BitSize>64</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+						<Default>
+							<Value>155.0</Value>
+						</Default>
+						<PTCID>#x050300b2</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>Maximal mover height</Name>
+						<Comment><![CDATA[Maximal height for movers on the track, used for internal collision checks.]]></Comment>
+						<BitSize>64</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+						<Default>
+							<Value>155.0</Value>
+						</Default>
+						<PTCID>#x050300b3</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>Check collisions against static objects</Name>
+						<Comment><![CDATA[If TRUE, collisions are also checked against static objects, i.e. tracks and environment.]]></Comment>
+						<BitSize>8</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
+						<Default>
+							<Value>0</Value>
+						</Default>
+						<PTCID>#x050300b4</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>Collision range at start</Name>
+						<Comment><![CDATA[Distance of a mover to the start of the track, where it does not interfere anymore with other tracks also originating from the start of this track.]]></Comment>
+						<BitSize>64</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+						<Default>
+							<Value>250.0</Value>
+						</Default>
+						<PTCID>#x050300bc</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>Collision range at end</Name>
+						<Comment><![CDATA[Distance of a mover to the end of the track, where it does not interfere anymore with other tracks also ending at the end of this track.]]></Comment>
+						<BitSize>64</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+						<Default>
+							<Value>250.0</Value>
+						</Default>
+						<PTCID>#x050300bd</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>Collision range mode</Name>
+						<Comment><![CDATA[Either the collision range at start and end is calculated automatically when the track is enabled, or it is set manually by the user with the collision range parameters.]]></Comment>
+						<BitSize>16</BitSize>
+						<BaseType GUID="{A405473D-A1A7-439E-8C48-FC8F02636891}" Namespace="MC">MC_PLANAR_TRACK_COLLISION_RANGE_MODE</BaseType>
+						<Default>
+							<Value>0</Value>
+						</Default>
+						<PTCID>#x050300d1</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>PartOID</Name>
+						<Comment><![CDATA[Object id of the PlanarPart the track is in.]]></Comment>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+						<PTCID>#x050300e0</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>GroupOID</Name>
+						<Comment><![CDATA[Object id of the PlanarGroup the track is in, read only.]]></Comment>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+						<PTCID>#x050300c3</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>State</Name>
+						<Comment><![CDATA[State, read only.]]></Comment>
+						<BitSize>16</BitSize>
+						<BaseType GUID="{6D2B99B2-A9F2-44AF-A298-4BB7A08AE294}" Namespace="MC">MC_PLANAR_STATE</BaseType>
+						<PTCID>#x050300b6</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Operation mode</Name>
+						<Comment><![CDATA[Track state, read only.]]></Comment>
+						<BitSize>16</BitSize>
+						<BaseType GUID="{6E814ACD-1DD8-4E30-80DB-648BE0A7193D}" Namespace="MC">MC_PLANAR_TRACK_OPERATION_MODE</BaseType>
+						<PTCID>#x050300c4</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Mover count on track</Name>
+						<Comment><![CDATA[Number of movers that are on this track, read only.]]></Comment>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-000000000008}">UDINT</BaseType>
+						<PTCID>#x050300c5</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Moving mover count</Name>
+						<Comment><![CDATA[Number of movers that have requested a movement on the track, read only.]]></Comment>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-000000000008}">UDINT</BaseType>
+						<PTCID>#x050300c6</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Geometric online information</Name>
+						<Comment><![CDATA[Array containing the elements describing the geometric curve of the track.]]></Comment>
+						<BitSize>0</BitSize>
+						<ArraySubItems MaxUnbounded="true">
+							<LBound>1</LBound>
+							<ItemType GUID="{9E820E67-264A-4170-958A-0B26CA5C91FA}" Namespace="MC">MC_POINT_XYC</ItemType>
+							<ItemType GUID="{B48A64D8-464F-4B39-8708-C82C1147C8B6}" Namespace="MC">MC_LINE_XYC</ItemType>
+							<ItemType GUID="{C3BAEC31-7F05-4B2F-A9AE-F0D8872EE557}" Namespace="MC">MC_CIRCLE_XYC_START_CENTER_END</ItemType>
+						</ArraySubItems>
+						<PTCID>#x050300da</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Previous tracks</Name>
+						<Comment><![CDATA[Array containing the object IDs of all tracks that end at this track's start vertex, read only.]]></Comment>
+						<BitSize>0</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+						<ArrayInfo>
+							<LBound>1</LBound>
+							<Elements Min="0" MaxUnbounded="true">0</Elements>
+						</ArrayInfo>
+						<PTCID>#x050300d5</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Subsequent tracks</Name>
+						<Comment><![CDATA[Array containing the object IDs of all tracks that start at this track's end vertex, read only.]]></Comment>
+						<BitSize>0</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+						<ArrayInfo>
+							<LBound>1</LBound>
+							<Elements Min="0" MaxUnbounded="true">0</Elements>
+						</ArrayInfo>
+						<PTCID>#x050300d6</PTCID>
+					</Parameter>
+					<Parameter>
+						<Name>Geometric information</Name>
+						<Comment><![CDATA[Array containing the elements describing the geometric curve of the track.]]></Comment>
+						<BitSize>0</BitSize>
+						<ArraySubItems MaxUnbounded="true">
+							<LBound>1</LBound>
+							<ItemType GUID="{9E820E67-264A-4170-958A-0B26CA5C91FA}" Namespace="MC">MC_POINT_XYC</ItemType>
+							<ItemType GUID="{B48A64D8-464F-4B39-8708-C82C1147C8B6}" Namespace="MC">MC_LINE_XYC</ItemType>
+							<ItemType GUID="{C3BAEC31-7F05-4B2F-A9AE-F0D8872EE557}" Namespace="MC">MC_CIRCLE_XYC_START_CENTER_END</ItemType>
+						</ArraySubItems>
+						<PTCID>#x050300d7</PTCID>
+					</Parameter>
+					<Parameter>
+						<Name>Closed loop</Name>
+						<Comment><![CDATA[Bool setting the tracks init configuration to closed loop.]]></Comment>
+						<BitSize>8</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
+						<Default>
+							<Value>0</Value>
+						</Default>
+						<PTCID>#x05030066</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Closed loop online information</Name>
+						<Comment><![CDATA[Bool indicating if the tracks online configuration is a closed loop.]]></Comment>
+						<BitSize>8</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
+						<Default>
+							<Value>0</Value>
+						</Default>
+						<PTCID>#x050300e1</PTCID>
+					</Parameter>
+					<Parameter>
+						<Name>Starts from tracks</Name>
+						<Comment><![CDATA[Connection data of tracks where this track starts.]]></Comment>
+						<BitSize>0</BitSize>
+						<BaseType GUID="{97041E57-3512-4AEA-B6FE-B323C37ACC32}" Namespace="MC">PlanarTrackConnectionData</BaseType>
+						<ArrayInfo>
+							<LBound>1</LBound>
+							<Elements Min="0" MaxUnbounded="true">0</Elements>
+						</ArrayInfo>
+						<PTCID>#x050300d8</PTCID>
+					</Parameter>
+					<Parameter>
+						<Name>Ends at tracks</Name>
+						<Comment><![CDATA[Connection data of tracks where this track ends.]]></Comment>
+						<BitSize>0</BitSize>
+						<BaseType GUID="{97041E57-3512-4AEA-B6FE-B323C37ACC32}" Namespace="MC">PlanarTrackConnectionData</BaseType>
+						<ArrayInfo>
+							<LBound>1</LBound>
+							<Elements Min="0" MaxUnbounded="true">0</Elements>
+						</ArrayInfo>
+						<PTCID>#x050300d9</PTCID>
+					</Parameter>
+				</Parameters>
+				<DataAreas>
+					<DataArea>
+						<AreaNo AreaType="OutputSrc">1</AreaNo>
+						<Name>McToPlc</Name>
+						<ContextId>0</ContextId>
+						<ByteSize>20</ByteSize>
+						<Symbol>
+							<Name>STD</Name>
+							<BitSize>160</BitSize>
+							<BaseType GUID="{5769ADF0-D6E6-40D9-B474-790A2A7F1D1F}">MC.CDT_MCTOPLC_PLANAR_TRACK</BaseType>
+							<BitOffs>0</BitOffs>
+						</Symbol>
+					</DataArea>
+				</DataAreas>
+				<Properties>
+					<Property>
+						<Name>Category</Name>
+						<Value>MC Object</Value>
+					</Property>
+					<Property>
+						<Name>Category</Name>
+						<Value>McPlanarTrack</Value>
+					</Property>
+					<Property>
+						<Name>Category</Name>
+						<Value>HideTcComContextPP</Value>
+					</Property>
+				</Properties>
+				<ParentOTCID>#x05100010</ParentOTCID>
+				<ParameterValues>
+					<Value>
+						<Name>TraceLevel</Name>
+						<EnumText>tlWarning</EnumText>
+					</Value>
+					<Value>
+						<Name>Ctx_TaskOid</Name>
+						<Value>33620048</Value>
+					</Value>
+					<Value>
+						<Name>Track length</Name>
+						<Value>0</Value>
+					</Value>
+					<Value>
+						<Name>Maximal mover width</Name>
+						<Value>155</Value>
+					</Value>
+					<Value>
+						<Name>Maximal mover height</Name>
+						<Value>155</Value>
+					</Value>
+					<Value>
+						<Name>Check collisions against static objects</Name>
+						<EnumText>FALSE</EnumText>
+					</Value>
+					<Value>
+						<Name>Collision range at start</Name>
+						<Value>250</Value>
+					</Value>
+					<Value>
+						<Name>Collision range at end</Name>
+						<Value>250</Value>
+					</Value>
+					<Value>
+						<Name>Collision range mode</Name>
+						<EnumText>Automatic</EnumText>
+					</Value>
+					<Value>
+						<Name>PartOID</Name>
+						<Value>0</Value>
+					</Value>
+					<Value>
+						<Name>GroupOID</Name>
+						<Value>0</Value>
+					</Value>
+					<Value>
+						<Name>State</Name>
+						<EnumText>Invalid</EnumText>
+					</Value>
+					<Value>
+						<Name>Operation mode</Name>
+						<EnumText>Invalid</EnumText>
+					</Value>
+					<Value>
+						<Name>Mover count on track</Name>
+						<Value>0</Value>
+					</Value>
+					<Value>
+						<Name>Moving mover count</Name>
+						<Value>0</Value>
+					</Value>
+					<Value>
+						<Name>Closed loop</Name>
+						<EnumText>FALSE</EnumText>
+					</Value>
+					<Value>
+						<Name>Closed loop online information</Name>
+						<EnumText>FALSE</EnumText>
+					</Value>
+				</ParameterValues>
+			</TmcDesc>
+		</Group>
+		<Group Id="#x051200c0" ObjectFolder="Stations">
+			<Name>AnyStation05</Name>
+			<TmcDesc GUID="{87201A49-0B3B-48DC-957C-3BC5C2E990F0}" TcSmClass="TComMcGroupObj">
+				<Name>Planar Track</Name>
+				<CLSID ClassFactory="TcNc3">{050300C8-0000-0000-F000-000000000064}</CLSID>
+				<InitSequence>PSO</InitSequence>
+				<Contexts>
+					<Context>
+						<Id>0</Id>
+						<Name>MET</Name>
+						<ManualConfig>
+							<OTCID>#x02010050</OTCID>
+						</ManualConfig>
+						<Priority>3</Priority>
+						<CycleTime>2000000</CycleTime>
+						<DependOn>ParentObject</DependOn>
+					</Context>
+					<Context>
+						<Id>1</Id>
+						<Name>MPT</Name>
+						<ManualConfig>
+							<OTCID>#x02010060</OTCID>
+						</ManualConfig>
+						<Priority>8</Priority>
+						<CycleTime>10000000</CycleTime>
+						<DependOn>ParentObject</DependOn>
+					</Context>
+				</Contexts>
+				<Parameters>
+					<Parameter HideParameter="true">
+						<Name>TraceLevel</Name>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{8007AE3B-86BB-40F2-B385-EF87FCC239A4}">TcTraceLevel</BaseType>
+						<Default>
+							<Value>2</Value>
+						</Default>
+						<PTCID>#x03002103</PTCID>
+					</Parameter>
+					<Parameter HideParameter="true">
+						<Name>Ctx_TaskOid</Name>
+						<Comment><![CDATA[Task implementing ICyclicCaller for cyclic execution of this module]]></Comment>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+						<PTCID>#x03002060</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Track length</Name>
+						<Comment><![CDATA[Length of the track (read only).]]></Comment>
+						<BitSize>64</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+						<Default>
+							<Value>0.0</Value>
+						</Default>
+						<PTCID>#x05030060</PTCID>
+					</Parameter>
+					<Parameter>
+						<Name>Maximal mover width</Name>
+						<Comment><![CDATA[Maximal width for movers on the track, used for internal collision checks.]]></Comment>
+						<BitSize>64</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+						<Default>
+							<Value>155.0</Value>
+						</Default>
+						<PTCID>#x050300b2</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>Maximal mover height</Name>
+						<Comment><![CDATA[Maximal height for movers on the track, used for internal collision checks.]]></Comment>
+						<BitSize>64</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+						<Default>
+							<Value>155.0</Value>
+						</Default>
+						<PTCID>#x050300b3</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>Check collisions against static objects</Name>
+						<Comment><![CDATA[If TRUE, collisions are also checked against static objects, i.e. tracks and environment.]]></Comment>
+						<BitSize>8</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
+						<Default>
+							<Value>0</Value>
+						</Default>
+						<PTCID>#x050300b4</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>Collision range at start</Name>
+						<Comment><![CDATA[Distance of a mover to the start of the track, where it does not interfere anymore with other tracks also originating from the start of this track.]]></Comment>
+						<BitSize>64</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+						<Default>
+							<Value>250.0</Value>
+						</Default>
+						<PTCID>#x050300bc</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>Collision range at end</Name>
+						<Comment><![CDATA[Distance of a mover to the end of the track, where it does not interfere anymore with other tracks also ending at the end of this track.]]></Comment>
+						<BitSize>64</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+						<Default>
+							<Value>250.0</Value>
+						</Default>
+						<PTCID>#x050300bd</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>Collision range mode</Name>
+						<Comment><![CDATA[Either the collision range at start and end is calculated automatically when the track is enabled, or it is set manually by the user with the collision range parameters.]]></Comment>
+						<BitSize>16</BitSize>
+						<BaseType GUID="{A405473D-A1A7-439E-8C48-FC8F02636891}" Namespace="MC">MC_PLANAR_TRACK_COLLISION_RANGE_MODE</BaseType>
+						<Default>
+							<Value>0</Value>
+						</Default>
+						<PTCID>#x050300d1</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>PartOID</Name>
+						<Comment><![CDATA[Object id of the PlanarPart the track is in.]]></Comment>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+						<PTCID>#x050300e0</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>GroupOID</Name>
+						<Comment><![CDATA[Object id of the PlanarGroup the track is in, read only.]]></Comment>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+						<PTCID>#x050300c3</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>State</Name>
+						<Comment><![CDATA[State, read only.]]></Comment>
+						<BitSize>16</BitSize>
+						<BaseType GUID="{6D2B99B2-A9F2-44AF-A298-4BB7A08AE294}" Namespace="MC">MC_PLANAR_STATE</BaseType>
+						<PTCID>#x050300b6</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Operation mode</Name>
+						<Comment><![CDATA[Track state, read only.]]></Comment>
+						<BitSize>16</BitSize>
+						<BaseType GUID="{6E814ACD-1DD8-4E30-80DB-648BE0A7193D}" Namespace="MC">MC_PLANAR_TRACK_OPERATION_MODE</BaseType>
+						<PTCID>#x050300c4</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Mover count on track</Name>
+						<Comment><![CDATA[Number of movers that are on this track, read only.]]></Comment>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-000000000008}">UDINT</BaseType>
+						<PTCID>#x050300c5</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Moving mover count</Name>
+						<Comment><![CDATA[Number of movers that have requested a movement on the track, read only.]]></Comment>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-000000000008}">UDINT</BaseType>
+						<PTCID>#x050300c6</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Geometric online information</Name>
+						<Comment><![CDATA[Array containing the elements describing the geometric curve of the track.]]></Comment>
+						<BitSize>0</BitSize>
+						<ArraySubItems MaxUnbounded="true">
+							<LBound>1</LBound>
+							<ItemType GUID="{9E820E67-264A-4170-958A-0B26CA5C91FA}" Namespace="MC">MC_POINT_XYC</ItemType>
+							<ItemType GUID="{B48A64D8-464F-4B39-8708-C82C1147C8B6}" Namespace="MC">MC_LINE_XYC</ItemType>
+							<ItemType GUID="{C3BAEC31-7F05-4B2F-A9AE-F0D8872EE557}" Namespace="MC">MC_CIRCLE_XYC_START_CENTER_END</ItemType>
+						</ArraySubItems>
+						<PTCID>#x050300da</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Previous tracks</Name>
+						<Comment><![CDATA[Array containing the object IDs of all tracks that end at this track's start vertex, read only.]]></Comment>
+						<BitSize>0</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+						<ArrayInfo>
+							<LBound>1</LBound>
+							<Elements Min="0" MaxUnbounded="true">0</Elements>
+						</ArrayInfo>
+						<PTCID>#x050300d5</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Subsequent tracks</Name>
+						<Comment><![CDATA[Array containing the object IDs of all tracks that start at this track's end vertex, read only.]]></Comment>
+						<BitSize>0</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+						<ArrayInfo>
+							<LBound>1</LBound>
+							<Elements Min="0" MaxUnbounded="true">0</Elements>
+						</ArrayInfo>
+						<PTCID>#x050300d6</PTCID>
+					</Parameter>
+					<Parameter>
+						<Name>Geometric information</Name>
+						<Comment><![CDATA[Array containing the elements describing the geometric curve of the track.]]></Comment>
+						<BitSize>0</BitSize>
+						<ArraySubItems MaxUnbounded="true">
+							<LBound>1</LBound>
+							<ItemType GUID="{9E820E67-264A-4170-958A-0B26CA5C91FA}" Namespace="MC">MC_POINT_XYC</ItemType>
+							<ItemType GUID="{B48A64D8-464F-4B39-8708-C82C1147C8B6}" Namespace="MC">MC_LINE_XYC</ItemType>
+							<ItemType GUID="{C3BAEC31-7F05-4B2F-A9AE-F0D8872EE557}" Namespace="MC">MC_CIRCLE_XYC_START_CENTER_END</ItemType>
+						</ArraySubItems>
+						<PTCID>#x050300d7</PTCID>
+					</Parameter>
+					<Parameter>
+						<Name>Closed loop</Name>
+						<Comment><![CDATA[Bool setting the tracks init configuration to closed loop.]]></Comment>
+						<BitSize>8</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
+						<Default>
+							<Value>0</Value>
+						</Default>
+						<PTCID>#x05030066</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Closed loop online information</Name>
+						<Comment><![CDATA[Bool indicating if the tracks online configuration is a closed loop.]]></Comment>
+						<BitSize>8</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
+						<Default>
+							<Value>0</Value>
+						</Default>
+						<PTCID>#x050300e1</PTCID>
+					</Parameter>
+					<Parameter>
+						<Name>Starts from tracks</Name>
+						<Comment><![CDATA[Connection data of tracks where this track starts.]]></Comment>
+						<BitSize>0</BitSize>
+						<BaseType GUID="{97041E57-3512-4AEA-B6FE-B323C37ACC32}" Namespace="MC">PlanarTrackConnectionData</BaseType>
+						<ArrayInfo>
+							<LBound>1</LBound>
+							<Elements Min="0" MaxUnbounded="true">0</Elements>
+						</ArrayInfo>
+						<PTCID>#x050300d8</PTCID>
+					</Parameter>
+					<Parameter>
+						<Name>Ends at tracks</Name>
+						<Comment><![CDATA[Connection data of tracks where this track ends.]]></Comment>
+						<BitSize>0</BitSize>
+						<BaseType GUID="{97041E57-3512-4AEA-B6FE-B323C37ACC32}" Namespace="MC">PlanarTrackConnectionData</BaseType>
+						<ArrayInfo>
+							<LBound>1</LBound>
+							<Elements Min="0" MaxUnbounded="true">0</Elements>
+						</ArrayInfo>
+						<PTCID>#x050300d9</PTCID>
+					</Parameter>
+				</Parameters>
+				<DataAreas>
+					<DataArea>
+						<AreaNo AreaType="OutputSrc">1</AreaNo>
+						<Name>McToPlc</Name>
+						<ContextId>0</ContextId>
+						<ByteSize>20</ByteSize>
+						<Symbol>
+							<Name>STD</Name>
+							<BitSize>160</BitSize>
+							<BaseType GUID="{5769ADF0-D6E6-40D9-B474-790A2A7F1D1F}">MC.CDT_MCTOPLC_PLANAR_TRACK</BaseType>
+							<BitOffs>0</BitOffs>
+						</Symbol>
+					</DataArea>
+				</DataAreas>
+				<Properties>
+					<Property>
+						<Name>Category</Name>
+						<Value>MC Object</Value>
+					</Property>
+					<Property>
+						<Name>Category</Name>
+						<Value>McPlanarTrack</Value>
+					</Property>
+					<Property>
+						<Name>Category</Name>
+						<Value>HideTcComContextPP</Value>
+					</Property>
+				</Properties>
+				<ParentOTCID>#x05100010</ParentOTCID>
+				<ParameterValues>
+					<Value>
+						<Name>TraceLevel</Name>
+						<EnumText>tlWarning</EnumText>
+					</Value>
+					<Value>
+						<Name>Ctx_TaskOid</Name>
+						<Value>33620048</Value>
+					</Value>
+					<Value>
+						<Name>Track length</Name>
+						<Value>0</Value>
+					</Value>
+					<Value>
+						<Name>Maximal mover width</Name>
+						<Value>155</Value>
+					</Value>
+					<Value>
+						<Name>Maximal mover height</Name>
+						<Value>155</Value>
+					</Value>
+					<Value>
+						<Name>Check collisions against static objects</Name>
+						<EnumText>FALSE</EnumText>
+					</Value>
+					<Value>
+						<Name>Collision range at start</Name>
+						<Value>250</Value>
+					</Value>
+					<Value>
+						<Name>Collision range at end</Name>
+						<Value>250</Value>
+					</Value>
+					<Value>
+						<Name>Collision range mode</Name>
+						<EnumText>Automatic</EnumText>
+					</Value>
+					<Value>
+						<Name>PartOID</Name>
+						<Value>0</Value>
+					</Value>
+					<Value>
+						<Name>GroupOID</Name>
+						<Value>0</Value>
+					</Value>
+					<Value>
+						<Name>State</Name>
+						<EnumText>Invalid</EnumText>
+					</Value>
+					<Value>
+						<Name>Operation mode</Name>
+						<EnumText>Invalid</EnumText>
+					</Value>
+					<Value>
+						<Name>Mover count on track</Name>
+						<Value>0</Value>
+					</Value>
+					<Value>
+						<Name>Moving mover count</Name>
+						<Value>0</Value>
+					</Value>
+					<Value>
+						<Name>Closed loop</Name>
+						<EnumText>FALSE</EnumText>
+					</Value>
+					<Value>
+						<Name>Closed loop online information</Name>
+						<EnumText>FALSE</EnumText>
+					</Value>
+				</ParameterValues>
+			</TmcDesc>
+		</Group>
+		<Group Id="#x051200d0" ObjectFolder="Stations">
+			<Name>AnyStation06</Name>
+			<TmcDesc GUID="{87201A49-0B3B-48DC-957C-3BC5C2E990F0}" TcSmClass="TComMcGroupObj">
+				<Name>Planar Track</Name>
+				<CLSID ClassFactory="TcNc3">{050300C8-0000-0000-F000-000000000064}</CLSID>
+				<InitSequence>PSO</InitSequence>
+				<Contexts>
+					<Context>
+						<Id>0</Id>
+						<Name>MET</Name>
+						<ManualConfig>
+							<OTCID>#x02010050</OTCID>
+						</ManualConfig>
+						<Priority>3</Priority>
+						<CycleTime>2000000</CycleTime>
+						<DependOn>ParentObject</DependOn>
+					</Context>
+					<Context>
+						<Id>1</Id>
+						<Name>MPT</Name>
+						<ManualConfig>
+							<OTCID>#x02010060</OTCID>
+						</ManualConfig>
+						<Priority>8</Priority>
+						<CycleTime>10000000</CycleTime>
+						<DependOn>ParentObject</DependOn>
+					</Context>
+				</Contexts>
+				<Parameters>
+					<Parameter HideParameter="true">
+						<Name>TraceLevel</Name>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{8007AE3B-86BB-40F2-B385-EF87FCC239A4}">TcTraceLevel</BaseType>
+						<Default>
+							<Value>2</Value>
+						</Default>
+						<PTCID>#x03002103</PTCID>
+					</Parameter>
+					<Parameter HideParameter="true">
+						<Name>Ctx_TaskOid</Name>
+						<Comment><![CDATA[Task implementing ICyclicCaller for cyclic execution of this module]]></Comment>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+						<PTCID>#x03002060</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Track length</Name>
+						<Comment><![CDATA[Length of the track (read only).]]></Comment>
+						<BitSize>64</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+						<Default>
+							<Value>0.0</Value>
+						</Default>
+						<PTCID>#x05030060</PTCID>
+					</Parameter>
+					<Parameter>
+						<Name>Maximal mover width</Name>
+						<Comment><![CDATA[Maximal width for movers on the track, used for internal collision checks.]]></Comment>
+						<BitSize>64</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+						<Default>
+							<Value>155.0</Value>
+						</Default>
+						<PTCID>#x050300b2</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>Maximal mover height</Name>
+						<Comment><![CDATA[Maximal height for movers on the track, used for internal collision checks.]]></Comment>
+						<BitSize>64</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+						<Default>
+							<Value>155.0</Value>
+						</Default>
+						<PTCID>#x050300b3</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>Check collisions against static objects</Name>
+						<Comment><![CDATA[If TRUE, collisions are also checked against static objects, i.e. tracks and environment.]]></Comment>
+						<BitSize>8</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
+						<Default>
+							<Value>0</Value>
+						</Default>
+						<PTCID>#x050300b4</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>Collision range at start</Name>
+						<Comment><![CDATA[Distance of a mover to the start of the track, where it does not interfere anymore with other tracks also originating from the start of this track.]]></Comment>
+						<BitSize>64</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+						<Default>
+							<Value>250.0</Value>
+						</Default>
+						<PTCID>#x050300bc</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>Collision range at end</Name>
+						<Comment><![CDATA[Distance of a mover to the end of the track, where it does not interfere anymore with other tracks also ending at the end of this track.]]></Comment>
+						<BitSize>64</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+						<Default>
+							<Value>250.0</Value>
+						</Default>
+						<PTCID>#x050300bd</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>Collision range mode</Name>
+						<Comment><![CDATA[Either the collision range at start and end is calculated automatically when the track is enabled, or it is set manually by the user with the collision range parameters.]]></Comment>
+						<BitSize>16</BitSize>
+						<BaseType GUID="{A405473D-A1A7-439E-8C48-FC8F02636891}" Namespace="MC">MC_PLANAR_TRACK_COLLISION_RANGE_MODE</BaseType>
+						<Default>
+							<Value>0</Value>
+						</Default>
+						<PTCID>#x050300d1</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>PartOID</Name>
+						<Comment><![CDATA[Object id of the PlanarPart the track is in.]]></Comment>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+						<PTCID>#x050300e0</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>GroupOID</Name>
+						<Comment><![CDATA[Object id of the PlanarGroup the track is in, read only.]]></Comment>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+						<PTCID>#x050300c3</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>State</Name>
+						<Comment><![CDATA[State, read only.]]></Comment>
+						<BitSize>16</BitSize>
+						<BaseType GUID="{6D2B99B2-A9F2-44AF-A298-4BB7A08AE294}" Namespace="MC">MC_PLANAR_STATE</BaseType>
+						<PTCID>#x050300b6</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Operation mode</Name>
+						<Comment><![CDATA[Track state, read only.]]></Comment>
+						<BitSize>16</BitSize>
+						<BaseType GUID="{6E814ACD-1DD8-4E30-80DB-648BE0A7193D}" Namespace="MC">MC_PLANAR_TRACK_OPERATION_MODE</BaseType>
+						<PTCID>#x050300c4</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Mover count on track</Name>
+						<Comment><![CDATA[Number of movers that are on this track, read only.]]></Comment>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-000000000008}">UDINT</BaseType>
+						<PTCID>#x050300c5</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Moving mover count</Name>
+						<Comment><![CDATA[Number of movers that have requested a movement on the track, read only.]]></Comment>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-000000000008}">UDINT</BaseType>
+						<PTCID>#x050300c6</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Geometric online information</Name>
+						<Comment><![CDATA[Array containing the elements describing the geometric curve of the track.]]></Comment>
+						<BitSize>0</BitSize>
+						<ArraySubItems MaxUnbounded="true">
+							<LBound>1</LBound>
+							<ItemType GUID="{9E820E67-264A-4170-958A-0B26CA5C91FA}" Namespace="MC">MC_POINT_XYC</ItemType>
+							<ItemType GUID="{B48A64D8-464F-4B39-8708-C82C1147C8B6}" Namespace="MC">MC_LINE_XYC</ItemType>
+							<ItemType GUID="{C3BAEC31-7F05-4B2F-A9AE-F0D8872EE557}" Namespace="MC">MC_CIRCLE_XYC_START_CENTER_END</ItemType>
+						</ArraySubItems>
+						<PTCID>#x050300da</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Previous tracks</Name>
+						<Comment><![CDATA[Array containing the object IDs of all tracks that end at this track's start vertex, read only.]]></Comment>
+						<BitSize>0</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+						<ArrayInfo>
+							<LBound>1</LBound>
+							<Elements Min="0" MaxUnbounded="true">0</Elements>
+						</ArrayInfo>
+						<PTCID>#x050300d5</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Subsequent tracks</Name>
+						<Comment><![CDATA[Array containing the object IDs of all tracks that start at this track's end vertex, read only.]]></Comment>
+						<BitSize>0</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+						<ArrayInfo>
+							<LBound>1</LBound>
+							<Elements Min="0" MaxUnbounded="true">0</Elements>
+						</ArrayInfo>
+						<PTCID>#x050300d6</PTCID>
+					</Parameter>
+					<Parameter>
+						<Name>Geometric information</Name>
+						<Comment><![CDATA[Array containing the elements describing the geometric curve of the track.]]></Comment>
+						<BitSize>0</BitSize>
+						<ArraySubItems MaxUnbounded="true">
+							<LBound>1</LBound>
+							<ItemType GUID="{9E820E67-264A-4170-958A-0B26CA5C91FA}" Namespace="MC">MC_POINT_XYC</ItemType>
+							<ItemType GUID="{B48A64D8-464F-4B39-8708-C82C1147C8B6}" Namespace="MC">MC_LINE_XYC</ItemType>
+							<ItemType GUID="{C3BAEC31-7F05-4B2F-A9AE-F0D8872EE557}" Namespace="MC">MC_CIRCLE_XYC_START_CENTER_END</ItemType>
+						</ArraySubItems>
+						<PTCID>#x050300d7</PTCID>
+					</Parameter>
+					<Parameter>
+						<Name>Closed loop</Name>
+						<Comment><![CDATA[Bool setting the tracks init configuration to closed loop.]]></Comment>
+						<BitSize>8</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
+						<Default>
+							<Value>0</Value>
+						</Default>
+						<PTCID>#x05030066</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Closed loop online information</Name>
+						<Comment><![CDATA[Bool indicating if the tracks online configuration is a closed loop.]]></Comment>
+						<BitSize>8</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
+						<Default>
+							<Value>0</Value>
+						</Default>
+						<PTCID>#x050300e1</PTCID>
+					</Parameter>
+					<Parameter>
+						<Name>Starts from tracks</Name>
+						<Comment><![CDATA[Connection data of tracks where this track starts.]]></Comment>
+						<BitSize>0</BitSize>
+						<BaseType GUID="{97041E57-3512-4AEA-B6FE-B323C37ACC32}" Namespace="MC">PlanarTrackConnectionData</BaseType>
+						<ArrayInfo>
+							<LBound>1</LBound>
+							<Elements Min="0" MaxUnbounded="true">0</Elements>
+						</ArrayInfo>
+						<PTCID>#x050300d8</PTCID>
+					</Parameter>
+					<Parameter>
+						<Name>Ends at tracks</Name>
+						<Comment><![CDATA[Connection data of tracks where this track ends.]]></Comment>
+						<BitSize>0</BitSize>
+						<BaseType GUID="{97041E57-3512-4AEA-B6FE-B323C37ACC32}" Namespace="MC">PlanarTrackConnectionData</BaseType>
+						<ArrayInfo>
+							<LBound>1</LBound>
+							<Elements Min="0" MaxUnbounded="true">0</Elements>
+						</ArrayInfo>
+						<PTCID>#x050300d9</PTCID>
+					</Parameter>
+				</Parameters>
+				<DataAreas>
+					<DataArea>
+						<AreaNo AreaType="OutputSrc">1</AreaNo>
+						<Name>McToPlc</Name>
+						<ContextId>0</ContextId>
+						<ByteSize>20</ByteSize>
+						<Symbol>
+							<Name>STD</Name>
+							<BitSize>160</BitSize>
+							<BaseType GUID="{5769ADF0-D6E6-40D9-B474-790A2A7F1D1F}">MC.CDT_MCTOPLC_PLANAR_TRACK</BaseType>
+							<BitOffs>0</BitOffs>
+						</Symbol>
+					</DataArea>
+				</DataAreas>
+				<Properties>
+					<Property>
+						<Name>Category</Name>
+						<Value>MC Object</Value>
+					</Property>
+					<Property>
+						<Name>Category</Name>
+						<Value>McPlanarTrack</Value>
+					</Property>
+					<Property>
+						<Name>Category</Name>
+						<Value>HideTcComContextPP</Value>
+					</Property>
+				</Properties>
+				<ParentOTCID>#x05100010</ParentOTCID>
+				<ParameterValues>
+					<Value>
+						<Name>TraceLevel</Name>
+						<EnumText>tlWarning</EnumText>
+					</Value>
+					<Value>
+						<Name>Ctx_TaskOid</Name>
+						<Value>33620048</Value>
+					</Value>
+					<Value>
+						<Name>Track length</Name>
+						<Value>0</Value>
+					</Value>
+					<Value>
+						<Name>Maximal mover width</Name>
+						<Value>155</Value>
+					</Value>
+					<Value>
+						<Name>Maximal mover height</Name>
+						<Value>155</Value>
+					</Value>
+					<Value>
+						<Name>Check collisions against static objects</Name>
+						<EnumText>FALSE</EnumText>
+					</Value>
+					<Value>
+						<Name>Collision range at start</Name>
+						<Value>250</Value>
+					</Value>
+					<Value>
+						<Name>Collision range at end</Name>
+						<Value>250</Value>
+					</Value>
+					<Value>
+						<Name>Collision range mode</Name>
+						<EnumText>Automatic</EnumText>
+					</Value>
+					<Value>
+						<Name>PartOID</Name>
+						<Value>0</Value>
+					</Value>
+					<Value>
+						<Name>GroupOID</Name>
+						<Value>0</Value>
+					</Value>
+					<Value>
+						<Name>State</Name>
+						<EnumText>Invalid</EnumText>
+					</Value>
+					<Value>
+						<Name>Operation mode</Name>
+						<EnumText>Invalid</EnumText>
+					</Value>
+					<Value>
+						<Name>Mover count on track</Name>
+						<Value>0</Value>
+					</Value>
+					<Value>
+						<Name>Moving mover count</Name>
+						<Value>0</Value>
+					</Value>
+					<Value>
+						<Name>Closed loop</Name>
+						<EnumText>FALSE</EnumText>
+					</Value>
+					<Value>
+						<Name>Closed loop online information</Name>
+						<EnumText>FALSE</EnumText>
+					</Value>
+				</ParameterValues>
+			</TmcDesc>
+		</Group>
+		<Group Id="#x051200e0" ObjectFolder="Stations">
+			<Name>AnyStation07</Name>
+			<TmcDesc GUID="{87201A49-0B3B-48DC-957C-3BC5C2E990F0}" TcSmClass="TComMcGroupObj">
+				<Name>Planar Track</Name>
+				<CLSID ClassFactory="TcNc3">{050300C8-0000-0000-F000-000000000064}</CLSID>
+				<InitSequence>PSO</InitSequence>
+				<Contexts>
+					<Context>
+						<Id>0</Id>
+						<Name>MET</Name>
+						<ManualConfig>
+							<OTCID>#x02010050</OTCID>
+						</ManualConfig>
+						<Priority>3</Priority>
+						<CycleTime>2000000</CycleTime>
+						<DependOn>ParentObject</DependOn>
+					</Context>
+					<Context>
+						<Id>1</Id>
+						<Name>MPT</Name>
+						<ManualConfig>
+							<OTCID>#x02010060</OTCID>
+						</ManualConfig>
+						<Priority>8</Priority>
+						<CycleTime>10000000</CycleTime>
+						<DependOn>ParentObject</DependOn>
+					</Context>
+				</Contexts>
+				<Parameters>
+					<Parameter HideParameter="true">
+						<Name>TraceLevel</Name>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{8007AE3B-86BB-40F2-B385-EF87FCC239A4}">TcTraceLevel</BaseType>
+						<Default>
+							<Value>2</Value>
+						</Default>
+						<PTCID>#x03002103</PTCID>
+					</Parameter>
+					<Parameter HideParameter="true">
+						<Name>Ctx_TaskOid</Name>
+						<Comment><![CDATA[Task implementing ICyclicCaller for cyclic execution of this module]]></Comment>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+						<PTCID>#x03002060</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Track length</Name>
+						<Comment><![CDATA[Length of the track (read only).]]></Comment>
+						<BitSize>64</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+						<Default>
+							<Value>0.0</Value>
+						</Default>
+						<PTCID>#x05030060</PTCID>
+					</Parameter>
+					<Parameter>
+						<Name>Maximal mover width</Name>
+						<Comment><![CDATA[Maximal width for movers on the track, used for internal collision checks.]]></Comment>
+						<BitSize>64</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+						<Default>
+							<Value>155.0</Value>
+						</Default>
+						<PTCID>#x050300b2</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>Maximal mover height</Name>
+						<Comment><![CDATA[Maximal height for movers on the track, used for internal collision checks.]]></Comment>
+						<BitSize>64</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+						<Default>
+							<Value>155.0</Value>
+						</Default>
+						<PTCID>#x050300b3</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>Check collisions against static objects</Name>
+						<Comment><![CDATA[If TRUE, collisions are also checked against static objects, i.e. tracks and environment.]]></Comment>
+						<BitSize>8</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
+						<Default>
+							<Value>0</Value>
+						</Default>
+						<PTCID>#x050300b4</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>Collision range at start</Name>
+						<Comment><![CDATA[Distance of a mover to the start of the track, where it does not interfere anymore with other tracks also originating from the start of this track.]]></Comment>
+						<BitSize>64</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+						<Default>
+							<Value>250.0</Value>
+						</Default>
+						<PTCID>#x050300bc</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>Collision range at end</Name>
+						<Comment><![CDATA[Distance of a mover to the end of the track, where it does not interfere anymore with other tracks also ending at the end of this track.]]></Comment>
+						<BitSize>64</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+						<Default>
+							<Value>250.0</Value>
+						</Default>
+						<PTCID>#x050300bd</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>Collision range mode</Name>
+						<Comment><![CDATA[Either the collision range at start and end is calculated automatically when the track is enabled, or it is set manually by the user with the collision range parameters.]]></Comment>
+						<BitSize>16</BitSize>
+						<BaseType GUID="{A405473D-A1A7-439E-8C48-FC8F02636891}" Namespace="MC">MC_PLANAR_TRACK_COLLISION_RANGE_MODE</BaseType>
+						<Default>
+							<Value>0</Value>
+						</Default>
+						<PTCID>#x050300d1</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>PartOID</Name>
+						<Comment><![CDATA[Object id of the PlanarPart the track is in.]]></Comment>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+						<PTCID>#x050300e0</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>GroupOID</Name>
+						<Comment><![CDATA[Object id of the PlanarGroup the track is in, read only.]]></Comment>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+						<PTCID>#x050300c3</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>State</Name>
+						<Comment><![CDATA[State, read only.]]></Comment>
+						<BitSize>16</BitSize>
+						<BaseType GUID="{6D2B99B2-A9F2-44AF-A298-4BB7A08AE294}" Namespace="MC">MC_PLANAR_STATE</BaseType>
+						<PTCID>#x050300b6</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Operation mode</Name>
+						<Comment><![CDATA[Track state, read only.]]></Comment>
+						<BitSize>16</BitSize>
+						<BaseType GUID="{6E814ACD-1DD8-4E30-80DB-648BE0A7193D}" Namespace="MC">MC_PLANAR_TRACK_OPERATION_MODE</BaseType>
+						<PTCID>#x050300c4</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Mover count on track</Name>
+						<Comment><![CDATA[Number of movers that are on this track, read only.]]></Comment>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-000000000008}">UDINT</BaseType>
+						<PTCID>#x050300c5</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Moving mover count</Name>
+						<Comment><![CDATA[Number of movers that have requested a movement on the track, read only.]]></Comment>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-000000000008}">UDINT</BaseType>
+						<PTCID>#x050300c6</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Geometric online information</Name>
+						<Comment><![CDATA[Array containing the elements describing the geometric curve of the track.]]></Comment>
+						<BitSize>0</BitSize>
+						<ArraySubItems MaxUnbounded="true">
+							<LBound>1</LBound>
+							<ItemType GUID="{9E820E67-264A-4170-958A-0B26CA5C91FA}" Namespace="MC">MC_POINT_XYC</ItemType>
+							<ItemType GUID="{B48A64D8-464F-4B39-8708-C82C1147C8B6}" Namespace="MC">MC_LINE_XYC</ItemType>
+							<ItemType GUID="{C3BAEC31-7F05-4B2F-A9AE-F0D8872EE557}" Namespace="MC">MC_CIRCLE_XYC_START_CENTER_END</ItemType>
+						</ArraySubItems>
+						<PTCID>#x050300da</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Previous tracks</Name>
+						<Comment><![CDATA[Array containing the object IDs of all tracks that end at this track's start vertex, read only.]]></Comment>
+						<BitSize>0</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+						<ArrayInfo>
+							<LBound>1</LBound>
+							<Elements Min="0" MaxUnbounded="true">0</Elements>
+						</ArrayInfo>
+						<PTCID>#x050300d5</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Subsequent tracks</Name>
+						<Comment><![CDATA[Array containing the object IDs of all tracks that start at this track's end vertex, read only.]]></Comment>
+						<BitSize>0</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+						<ArrayInfo>
+							<LBound>1</LBound>
+							<Elements Min="0" MaxUnbounded="true">0</Elements>
+						</ArrayInfo>
+						<PTCID>#x050300d6</PTCID>
+					</Parameter>
+					<Parameter>
+						<Name>Geometric information</Name>
+						<Comment><![CDATA[Array containing the elements describing the geometric curve of the track.]]></Comment>
+						<BitSize>0</BitSize>
+						<ArraySubItems MaxUnbounded="true">
+							<LBound>1</LBound>
+							<ItemType GUID="{9E820E67-264A-4170-958A-0B26CA5C91FA}" Namespace="MC">MC_POINT_XYC</ItemType>
+							<ItemType GUID="{B48A64D8-464F-4B39-8708-C82C1147C8B6}" Namespace="MC">MC_LINE_XYC</ItemType>
+							<ItemType GUID="{C3BAEC31-7F05-4B2F-A9AE-F0D8872EE557}" Namespace="MC">MC_CIRCLE_XYC_START_CENTER_END</ItemType>
+						</ArraySubItems>
+						<PTCID>#x050300d7</PTCID>
+					</Parameter>
+					<Parameter>
+						<Name>Closed loop</Name>
+						<Comment><![CDATA[Bool setting the tracks init configuration to closed loop.]]></Comment>
+						<BitSize>8</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
+						<Default>
+							<Value>0</Value>
+						</Default>
+						<PTCID>#x05030066</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Closed loop online information</Name>
+						<Comment><![CDATA[Bool indicating if the tracks online configuration is a closed loop.]]></Comment>
+						<BitSize>8</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
+						<Default>
+							<Value>0</Value>
+						</Default>
+						<PTCID>#x050300e1</PTCID>
+					</Parameter>
+					<Parameter>
+						<Name>Starts from tracks</Name>
+						<Comment><![CDATA[Connection data of tracks where this track starts.]]></Comment>
+						<BitSize>0</BitSize>
+						<BaseType GUID="{97041E57-3512-4AEA-B6FE-B323C37ACC32}" Namespace="MC">PlanarTrackConnectionData</BaseType>
+						<ArrayInfo>
+							<LBound>1</LBound>
+							<Elements Min="0" MaxUnbounded="true">0</Elements>
+						</ArrayInfo>
+						<PTCID>#x050300d8</PTCID>
+					</Parameter>
+					<Parameter>
+						<Name>Ends at tracks</Name>
+						<Comment><![CDATA[Connection data of tracks where this track ends.]]></Comment>
+						<BitSize>0</BitSize>
+						<BaseType GUID="{97041E57-3512-4AEA-B6FE-B323C37ACC32}" Namespace="MC">PlanarTrackConnectionData</BaseType>
+						<ArrayInfo>
+							<LBound>1</LBound>
+							<Elements Min="0" MaxUnbounded="true">0</Elements>
+						</ArrayInfo>
+						<PTCID>#x050300d9</PTCID>
+					</Parameter>
+				</Parameters>
+				<DataAreas>
+					<DataArea>
+						<AreaNo AreaType="OutputSrc">1</AreaNo>
+						<Name>McToPlc</Name>
+						<ContextId>0</ContextId>
+						<ByteSize>20</ByteSize>
+						<Symbol>
+							<Name>STD</Name>
+							<BitSize>160</BitSize>
+							<BaseType GUID="{5769ADF0-D6E6-40D9-B474-790A2A7F1D1F}">MC.CDT_MCTOPLC_PLANAR_TRACK</BaseType>
+							<BitOffs>0</BitOffs>
+						</Symbol>
+					</DataArea>
+				</DataAreas>
+				<Properties>
+					<Property>
+						<Name>Category</Name>
+						<Value>MC Object</Value>
+					</Property>
+					<Property>
+						<Name>Category</Name>
+						<Value>McPlanarTrack</Value>
+					</Property>
+					<Property>
+						<Name>Category</Name>
+						<Value>HideTcComContextPP</Value>
+					</Property>
+				</Properties>
+				<ParentOTCID>#x05100010</ParentOTCID>
+				<ParameterValues>
+					<Value>
+						<Name>TraceLevel</Name>
+						<EnumText>tlWarning</EnumText>
+					</Value>
+					<Value>
+						<Name>Ctx_TaskOid</Name>
+						<Value>33620048</Value>
+					</Value>
+					<Value>
+						<Name>Track length</Name>
+						<Value>0</Value>
+					</Value>
+					<Value>
+						<Name>Maximal mover width</Name>
+						<Value>155</Value>
+					</Value>
+					<Value>
+						<Name>Maximal mover height</Name>
+						<Value>155</Value>
+					</Value>
+					<Value>
+						<Name>Check collisions against static objects</Name>
+						<EnumText>FALSE</EnumText>
+					</Value>
+					<Value>
+						<Name>Collision range at start</Name>
+						<Value>250</Value>
+					</Value>
+					<Value>
+						<Name>Collision range at end</Name>
+						<Value>250</Value>
+					</Value>
+					<Value>
+						<Name>Collision range mode</Name>
+						<EnumText>Automatic</EnumText>
+					</Value>
+					<Value>
+						<Name>PartOID</Name>
+						<Value>0</Value>
+					</Value>
+					<Value>
+						<Name>GroupOID</Name>
+						<Value>0</Value>
+					</Value>
+					<Value>
+						<Name>State</Name>
+						<EnumText>Invalid</EnumText>
+					</Value>
+					<Value>
+						<Name>Operation mode</Name>
+						<EnumText>Invalid</EnumText>
+					</Value>
+					<Value>
+						<Name>Mover count on track</Name>
+						<Value>0</Value>
+					</Value>
+					<Value>
+						<Name>Moving mover count</Name>
+						<Value>0</Value>
+					</Value>
+					<Value>
+						<Name>Closed loop</Name>
+						<EnumText>FALSE</EnumText>
+					</Value>
+					<Value>
+						<Name>Closed loop online information</Name>
+						<EnumText>FALSE</EnumText>
+					</Value>
+				</ParameterValues>
+			</TmcDesc>
+		</Group>
+		<Group Id="#x051200f0" ObjectFolder="Stations">
+			<Name>AnyStation08</Name>
+			<TmcDesc GUID="{87201A49-0B3B-48DC-957C-3BC5C2E990F0}" TcSmClass="TComMcGroupObj">
+				<Name>Planar Track</Name>
+				<CLSID ClassFactory="TcNc3">{050300C8-0000-0000-F000-000000000064}</CLSID>
+				<InitSequence>PSO</InitSequence>
+				<Contexts>
+					<Context>
+						<Id>0</Id>
+						<Name>MET</Name>
+						<ManualConfig>
+							<OTCID>#x02010050</OTCID>
+						</ManualConfig>
+						<Priority>3</Priority>
+						<CycleTime>2000000</CycleTime>
+						<DependOn>ParentObject</DependOn>
+					</Context>
+					<Context>
+						<Id>1</Id>
+						<Name>MPT</Name>
+						<ManualConfig>
+							<OTCID>#x02010060</OTCID>
+						</ManualConfig>
+						<Priority>8</Priority>
+						<CycleTime>10000000</CycleTime>
+						<DependOn>ParentObject</DependOn>
+					</Context>
+				</Contexts>
+				<Parameters>
+					<Parameter HideParameter="true">
+						<Name>TraceLevel</Name>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{8007AE3B-86BB-40F2-B385-EF87FCC239A4}">TcTraceLevel</BaseType>
+						<Default>
+							<Value>2</Value>
+						</Default>
+						<PTCID>#x03002103</PTCID>
+					</Parameter>
+					<Parameter HideParameter="true">
+						<Name>Ctx_TaskOid</Name>
+						<Comment><![CDATA[Task implementing ICyclicCaller for cyclic execution of this module]]></Comment>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+						<PTCID>#x03002060</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Track length</Name>
+						<Comment><![CDATA[Length of the track (read only).]]></Comment>
+						<BitSize>64</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+						<Default>
+							<Value>0.0</Value>
+						</Default>
+						<PTCID>#x05030060</PTCID>
+					</Parameter>
+					<Parameter>
+						<Name>Maximal mover width</Name>
+						<Comment><![CDATA[Maximal width for movers on the track, used for internal collision checks.]]></Comment>
+						<BitSize>64</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+						<Default>
+							<Value>155.0</Value>
+						</Default>
+						<PTCID>#x050300b2</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>Maximal mover height</Name>
+						<Comment><![CDATA[Maximal height for movers on the track, used for internal collision checks.]]></Comment>
+						<BitSize>64</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+						<Default>
+							<Value>155.0</Value>
+						</Default>
+						<PTCID>#x050300b3</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>Check collisions against static objects</Name>
+						<Comment><![CDATA[If TRUE, collisions are also checked against static objects, i.e. tracks and environment.]]></Comment>
+						<BitSize>8</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
+						<Default>
+							<Value>0</Value>
+						</Default>
+						<PTCID>#x050300b4</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>Collision range at start</Name>
+						<Comment><![CDATA[Distance of a mover to the start of the track, where it does not interfere anymore with other tracks also originating from the start of this track.]]></Comment>
+						<BitSize>64</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+						<Default>
+							<Value>250.0</Value>
+						</Default>
+						<PTCID>#x050300bc</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>Collision range at end</Name>
+						<Comment><![CDATA[Distance of a mover to the end of the track, where it does not interfere anymore with other tracks also ending at the end of this track.]]></Comment>
+						<BitSize>64</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+						<Default>
+							<Value>250.0</Value>
+						</Default>
+						<PTCID>#x050300bd</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>Collision range mode</Name>
+						<Comment><![CDATA[Either the collision range at start and end is calculated automatically when the track is enabled, or it is set manually by the user with the collision range parameters.]]></Comment>
+						<BitSize>16</BitSize>
+						<BaseType GUID="{A405473D-A1A7-439E-8C48-FC8F02636891}" Namespace="MC">MC_PLANAR_TRACK_COLLISION_RANGE_MODE</BaseType>
+						<Default>
+							<Value>0</Value>
+						</Default>
+						<PTCID>#x050300d1</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>PartOID</Name>
+						<Comment><![CDATA[Object id of the PlanarPart the track is in.]]></Comment>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+						<PTCID>#x050300e0</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>GroupOID</Name>
+						<Comment><![CDATA[Object id of the PlanarGroup the track is in, read only.]]></Comment>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+						<PTCID>#x050300c3</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>State</Name>
+						<Comment><![CDATA[State, read only.]]></Comment>
+						<BitSize>16</BitSize>
+						<BaseType GUID="{6D2B99B2-A9F2-44AF-A298-4BB7A08AE294}" Namespace="MC">MC_PLANAR_STATE</BaseType>
+						<PTCID>#x050300b6</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Operation mode</Name>
+						<Comment><![CDATA[Track state, read only.]]></Comment>
+						<BitSize>16</BitSize>
+						<BaseType GUID="{6E814ACD-1DD8-4E30-80DB-648BE0A7193D}" Namespace="MC">MC_PLANAR_TRACK_OPERATION_MODE</BaseType>
+						<PTCID>#x050300c4</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Mover count on track</Name>
+						<Comment><![CDATA[Number of movers that are on this track, read only.]]></Comment>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-000000000008}">UDINT</BaseType>
+						<PTCID>#x050300c5</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Moving mover count</Name>
+						<Comment><![CDATA[Number of movers that have requested a movement on the track, read only.]]></Comment>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-000000000008}">UDINT</BaseType>
+						<PTCID>#x050300c6</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Geometric online information</Name>
+						<Comment><![CDATA[Array containing the elements describing the geometric curve of the track.]]></Comment>
+						<BitSize>0</BitSize>
+						<ArraySubItems MaxUnbounded="true">
+							<LBound>1</LBound>
+							<ItemType GUID="{9E820E67-264A-4170-958A-0B26CA5C91FA}" Namespace="MC">MC_POINT_XYC</ItemType>
+							<ItemType GUID="{B48A64D8-464F-4B39-8708-C82C1147C8B6}" Namespace="MC">MC_LINE_XYC</ItemType>
+							<ItemType GUID="{C3BAEC31-7F05-4B2F-A9AE-F0D8872EE557}" Namespace="MC">MC_CIRCLE_XYC_START_CENTER_END</ItemType>
+						</ArraySubItems>
+						<PTCID>#x050300da</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Previous tracks</Name>
+						<Comment><![CDATA[Array containing the object IDs of all tracks that end at this track's start vertex, read only.]]></Comment>
+						<BitSize>0</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+						<ArrayInfo>
+							<LBound>1</LBound>
+							<Elements Min="0" MaxUnbounded="true">0</Elements>
+						</ArrayInfo>
+						<PTCID>#x050300d5</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Subsequent tracks</Name>
+						<Comment><![CDATA[Array containing the object IDs of all tracks that start at this track's end vertex, read only.]]></Comment>
+						<BitSize>0</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+						<ArrayInfo>
+							<LBound>1</LBound>
+							<Elements Min="0" MaxUnbounded="true">0</Elements>
+						</ArrayInfo>
+						<PTCID>#x050300d6</PTCID>
+					</Parameter>
+					<Parameter>
+						<Name>Geometric information</Name>
+						<Comment><![CDATA[Array containing the elements describing the geometric curve of the track.]]></Comment>
+						<BitSize>0</BitSize>
+						<ArraySubItems MaxUnbounded="true">
+							<LBound>1</LBound>
+							<ItemType GUID="{9E820E67-264A-4170-958A-0B26CA5C91FA}" Namespace="MC">MC_POINT_XYC</ItemType>
+							<ItemType GUID="{B48A64D8-464F-4B39-8708-C82C1147C8B6}" Namespace="MC">MC_LINE_XYC</ItemType>
+							<ItemType GUID="{C3BAEC31-7F05-4B2F-A9AE-F0D8872EE557}" Namespace="MC">MC_CIRCLE_XYC_START_CENTER_END</ItemType>
+						</ArraySubItems>
+						<PTCID>#x050300d7</PTCID>
+					</Parameter>
+					<Parameter>
+						<Name>Closed loop</Name>
+						<Comment><![CDATA[Bool setting the tracks init configuration to closed loop.]]></Comment>
+						<BitSize>8</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
+						<Default>
+							<Value>0</Value>
+						</Default>
+						<PTCID>#x05030066</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Closed loop online information</Name>
+						<Comment><![CDATA[Bool indicating if the tracks online configuration is a closed loop.]]></Comment>
+						<BitSize>8</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
+						<Default>
+							<Value>0</Value>
+						</Default>
+						<PTCID>#x050300e1</PTCID>
+					</Parameter>
+					<Parameter>
+						<Name>Starts from tracks</Name>
+						<Comment><![CDATA[Connection data of tracks where this track starts.]]></Comment>
+						<BitSize>0</BitSize>
+						<BaseType GUID="{97041E57-3512-4AEA-B6FE-B323C37ACC32}" Namespace="MC">PlanarTrackConnectionData</BaseType>
+						<ArrayInfo>
+							<LBound>1</LBound>
+							<Elements Min="0" MaxUnbounded="true">0</Elements>
+						</ArrayInfo>
+						<PTCID>#x050300d8</PTCID>
+					</Parameter>
+					<Parameter>
+						<Name>Ends at tracks</Name>
+						<Comment><![CDATA[Connection data of tracks where this track ends.]]></Comment>
+						<BitSize>0</BitSize>
+						<BaseType GUID="{97041E57-3512-4AEA-B6FE-B323C37ACC32}" Namespace="MC">PlanarTrackConnectionData</BaseType>
+						<ArrayInfo>
+							<LBound>1</LBound>
+							<Elements Min="0" MaxUnbounded="true">0</Elements>
+						</ArrayInfo>
+						<PTCID>#x050300d9</PTCID>
+					</Parameter>
+				</Parameters>
+				<DataAreas>
+					<DataArea>
+						<AreaNo AreaType="OutputSrc">1</AreaNo>
+						<Name>McToPlc</Name>
+						<ContextId>0</ContextId>
+						<ByteSize>20</ByteSize>
+						<Symbol>
+							<Name>STD</Name>
+							<BitSize>160</BitSize>
+							<BaseType GUID="{5769ADF0-D6E6-40D9-B474-790A2A7F1D1F}">MC.CDT_MCTOPLC_PLANAR_TRACK</BaseType>
+							<BitOffs>0</BitOffs>
+						</Symbol>
+					</DataArea>
+				</DataAreas>
+				<Properties>
+					<Property>
+						<Name>Category</Name>
+						<Value>MC Object</Value>
+					</Property>
+					<Property>
+						<Name>Category</Name>
+						<Value>McPlanarTrack</Value>
+					</Property>
+					<Property>
+						<Name>Category</Name>
+						<Value>HideTcComContextPP</Value>
+					</Property>
+				</Properties>
+				<ParentOTCID>#x05100010</ParentOTCID>
+				<ParameterValues>
+					<Value>
+						<Name>TraceLevel</Name>
+						<EnumText>tlWarning</EnumText>
+					</Value>
+					<Value>
+						<Name>Ctx_TaskOid</Name>
+						<Value>33620048</Value>
+					</Value>
+					<Value>
+						<Name>Track length</Name>
+						<Value>0</Value>
+					</Value>
+					<Value>
+						<Name>Maximal mover width</Name>
+						<Value>155</Value>
+					</Value>
+					<Value>
+						<Name>Maximal mover height</Name>
+						<Value>155</Value>
+					</Value>
+					<Value>
+						<Name>Check collisions against static objects</Name>
+						<EnumText>FALSE</EnumText>
+					</Value>
+					<Value>
+						<Name>Collision range at start</Name>
+						<Value>250</Value>
+					</Value>
+					<Value>
+						<Name>Collision range at end</Name>
+						<Value>250</Value>
+					</Value>
+					<Value>
+						<Name>Collision range mode</Name>
+						<EnumText>Automatic</EnumText>
+					</Value>
+					<Value>
+						<Name>PartOID</Name>
+						<Value>0</Value>
+					</Value>
+					<Value>
+						<Name>GroupOID</Name>
+						<Value>0</Value>
+					</Value>
+					<Value>
+						<Name>State</Name>
+						<EnumText>Invalid</EnumText>
+					</Value>
+					<Value>
+						<Name>Operation mode</Name>
+						<EnumText>Invalid</EnumText>
+					</Value>
+					<Value>
+						<Name>Mover count on track</Name>
+						<Value>0</Value>
+					</Value>
+					<Value>
+						<Name>Moving mover count</Name>
+						<Value>0</Value>
+					</Value>
+					<Value>
+						<Name>Closed loop</Name>
+						<EnumText>FALSE</EnumText>
+					</Value>
+					<Value>
+						<Name>Closed loop online information</Name>
+						<EnumText>FALSE</EnumText>
+					</Value>
+				</ParameterValues>
+			</TmcDesc>
+		</Group>
+		<Group Id="#x05120100" ObjectFolder="Stations">
+			<Name>AnyStation09</Name>
+			<TmcDesc GUID="{87201A49-0B3B-48DC-957C-3BC5C2E990F0}" TcSmClass="TComMcGroupObj">
+				<Name>Planar Track</Name>
+				<CLSID ClassFactory="TcNc3">{050300C8-0000-0000-F000-000000000064}</CLSID>
+				<InitSequence>PSO</InitSequence>
+				<Contexts>
+					<Context>
+						<Id>0</Id>
+						<Name>MET</Name>
+						<ManualConfig>
+							<OTCID>#x02010050</OTCID>
+						</ManualConfig>
+						<Priority>3</Priority>
+						<CycleTime>2000000</CycleTime>
+						<DependOn>ParentObject</DependOn>
+					</Context>
+					<Context>
+						<Id>1</Id>
+						<Name>MPT</Name>
+						<ManualConfig>
+							<OTCID>#x02010060</OTCID>
+						</ManualConfig>
+						<Priority>8</Priority>
+						<CycleTime>10000000</CycleTime>
+						<DependOn>ParentObject</DependOn>
+					</Context>
+				</Contexts>
+				<Parameters>
+					<Parameter HideParameter="true">
+						<Name>TraceLevel</Name>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{8007AE3B-86BB-40F2-B385-EF87FCC239A4}">TcTraceLevel</BaseType>
+						<Default>
+							<Value>2</Value>
+						</Default>
+						<PTCID>#x03002103</PTCID>
+					</Parameter>
+					<Parameter HideParameter="true">
+						<Name>Ctx_TaskOid</Name>
+						<Comment><![CDATA[Task implementing ICyclicCaller for cyclic execution of this module]]></Comment>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+						<PTCID>#x03002060</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Track length</Name>
+						<Comment><![CDATA[Length of the track (read only).]]></Comment>
+						<BitSize>64</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+						<Default>
+							<Value>0.0</Value>
+						</Default>
+						<PTCID>#x05030060</PTCID>
+					</Parameter>
+					<Parameter>
+						<Name>Maximal mover width</Name>
+						<Comment><![CDATA[Maximal width for movers on the track, used for internal collision checks.]]></Comment>
+						<BitSize>64</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+						<Default>
+							<Value>155.0</Value>
+						</Default>
+						<PTCID>#x050300b2</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>Maximal mover height</Name>
+						<Comment><![CDATA[Maximal height for movers on the track, used for internal collision checks.]]></Comment>
+						<BitSize>64</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+						<Default>
+							<Value>155.0</Value>
+						</Default>
+						<PTCID>#x050300b3</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>Check collisions against static objects</Name>
+						<Comment><![CDATA[If TRUE, collisions are also checked against static objects, i.e. tracks and environment.]]></Comment>
+						<BitSize>8</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
+						<Default>
+							<Value>0</Value>
+						</Default>
+						<PTCID>#x050300b4</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>Collision range at start</Name>
+						<Comment><![CDATA[Distance of a mover to the start of the track, where it does not interfere anymore with other tracks also originating from the start of this track.]]></Comment>
+						<BitSize>64</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+						<Default>
+							<Value>250.0</Value>
+						</Default>
+						<PTCID>#x050300bc</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>Collision range at end</Name>
+						<Comment><![CDATA[Distance of a mover to the end of the track, where it does not interfere anymore with other tracks also ending at the end of this track.]]></Comment>
+						<BitSize>64</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+						<Default>
+							<Value>250.0</Value>
+						</Default>
+						<PTCID>#x050300bd</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>Collision range mode</Name>
+						<Comment><![CDATA[Either the collision range at start and end is calculated automatically when the track is enabled, or it is set manually by the user with the collision range parameters.]]></Comment>
+						<BitSize>16</BitSize>
+						<BaseType GUID="{A405473D-A1A7-439E-8C48-FC8F02636891}" Namespace="MC">MC_PLANAR_TRACK_COLLISION_RANGE_MODE</BaseType>
+						<Default>
+							<Value>0</Value>
+						</Default>
+						<PTCID>#x050300d1</PTCID>
+						<ContextId OnlineAccess="true">0</ContextId>
+					</Parameter>
+					<Parameter>
+						<Name>PartOID</Name>
+						<Comment><![CDATA[Object id of the PlanarPart the track is in.]]></Comment>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+						<PTCID>#x050300e0</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>GroupOID</Name>
+						<Comment><![CDATA[Object id of the PlanarGroup the track is in, read only.]]></Comment>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+						<PTCID>#x050300c3</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>State</Name>
+						<Comment><![CDATA[State, read only.]]></Comment>
+						<BitSize>16</BitSize>
+						<BaseType GUID="{6D2B99B2-A9F2-44AF-A298-4BB7A08AE294}" Namespace="MC">MC_PLANAR_STATE</BaseType>
+						<PTCID>#x050300b6</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Operation mode</Name>
+						<Comment><![CDATA[Track state, read only.]]></Comment>
+						<BitSize>16</BitSize>
+						<BaseType GUID="{6E814ACD-1DD8-4E30-80DB-648BE0A7193D}" Namespace="MC">MC_PLANAR_TRACK_OPERATION_MODE</BaseType>
+						<PTCID>#x050300c4</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Mover count on track</Name>
+						<Comment><![CDATA[Number of movers that are on this track, read only.]]></Comment>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-000000000008}">UDINT</BaseType>
+						<PTCID>#x050300c5</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Moving mover count</Name>
+						<Comment><![CDATA[Number of movers that have requested a movement on the track, read only.]]></Comment>
+						<BitSize>32</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-000000000008}">UDINT</BaseType>
+						<PTCID>#x050300c6</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Geometric online information</Name>
+						<Comment><![CDATA[Array containing the elements describing the geometric curve of the track.]]></Comment>
+						<BitSize>0</BitSize>
+						<ArraySubItems MaxUnbounded="true">
+							<LBound>1</LBound>
+							<ItemType GUID="{9E820E67-264A-4170-958A-0B26CA5C91FA}" Namespace="MC">MC_POINT_XYC</ItemType>
+							<ItemType GUID="{B48A64D8-464F-4B39-8708-C82C1147C8B6}" Namespace="MC">MC_LINE_XYC</ItemType>
+							<ItemType GUID="{C3BAEC31-7F05-4B2F-A9AE-F0D8872EE557}" Namespace="MC">MC_CIRCLE_XYC_START_CENTER_END</ItemType>
+						</ArraySubItems>
+						<PTCID>#x050300da</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Previous tracks</Name>
+						<Comment><![CDATA[Array containing the object IDs of all tracks that end at this track's start vertex, read only.]]></Comment>
+						<BitSize>0</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+						<ArrayInfo>
+							<LBound>1</LBound>
+							<Elements Min="0" MaxUnbounded="true">0</Elements>
+						</ArrayInfo>
+						<PTCID>#x050300d5</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Subsequent tracks</Name>
+						<Comment><![CDATA[Array containing the object IDs of all tracks that start at this track's end vertex, read only.]]></Comment>
+						<BitSize>0</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+						<ArrayInfo>
+							<LBound>1</LBound>
+							<Elements Min="0" MaxUnbounded="true">0</Elements>
+						</ArrayInfo>
+						<PTCID>#x050300d6</PTCID>
+					</Parameter>
+					<Parameter>
+						<Name>Geometric information</Name>
+						<Comment><![CDATA[Array containing the elements describing the geometric curve of the track.]]></Comment>
+						<BitSize>0</BitSize>
+						<ArraySubItems MaxUnbounded="true">
+							<LBound>1</LBound>
+							<ItemType GUID="{9E820E67-264A-4170-958A-0B26CA5C91FA}" Namespace="MC">MC_POINT_XYC</ItemType>
+							<ItemType GUID="{B48A64D8-464F-4B39-8708-C82C1147C8B6}" Namespace="MC">MC_LINE_XYC</ItemType>
+							<ItemType GUID="{C3BAEC31-7F05-4B2F-A9AE-F0D8872EE557}" Namespace="MC">MC_CIRCLE_XYC_START_CENTER_END</ItemType>
+						</ArraySubItems>
+						<PTCID>#x050300d7</PTCID>
+					</Parameter>
+					<Parameter>
+						<Name>Closed loop</Name>
+						<Comment><![CDATA[Bool setting the tracks init configuration to closed loop.]]></Comment>
+						<BitSize>8</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
+						<Default>
+							<Value>0</Value>
+						</Default>
+						<PTCID>#x05030066</PTCID>
+					</Parameter>
+					<Parameter OnlineParameter="true" ReadOnly="true">
+						<Name>Closed loop online information</Name>
+						<Comment><![CDATA[Bool indicating if the tracks online configuration is a closed loop.]]></Comment>
+						<BitSize>8</BitSize>
+						<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
+						<Default>
+							<Value>0</Value>
+						</Default>
+						<PTCID>#x050300e1</PTCID>
+					</Parameter>
+					<Parameter>
+						<Name>Starts from tracks</Name>
+						<Comment><![CDATA[Connection data of tracks where this track starts.]]></Comment>
+						<BitSize>0</BitSize>
+						<BaseType GUID="{97041E57-3512-4AEA-B6FE-B323C37ACC32}" Namespace="MC">PlanarTrackConnectionData</BaseType>
+						<ArrayInfo>
+							<LBound>1</LBound>
+							<Elements Min="0" MaxUnbounded="true">0</Elements>
+						</ArrayInfo>
+						<PTCID>#x050300d8</PTCID>
+					</Parameter>
+					<Parameter>
+						<Name>Ends at tracks</Name>
+						<Comment><![CDATA[Connection data of tracks where this track ends.]]></Comment>
+						<BitSize>0</BitSize>
+						<BaseType GUID="{97041E57-3512-4AEA-B6FE-B323C37ACC32}" Namespace="MC">PlanarTrackConnectionData</BaseType>
+						<ArrayInfo>
+							<LBound>1</LBound>
+							<Elements Min="0" MaxUnbounded="true">0</Elements>
+						</ArrayInfo>
+						<PTCID>#x050300d9</PTCID>
+					</Parameter>
+				</Parameters>
+				<DataAreas>
+					<DataArea>
+						<AreaNo AreaType="OutputSrc">1</AreaNo>
+						<Name>McToPlc</Name>
+						<ContextId>0</ContextId>
+						<ByteSize>20</ByteSize>
+						<Symbol>
+							<Name>STD</Name>
+							<BitSize>160</BitSize>
+							<BaseType GUID="{5769ADF0-D6E6-40D9-B474-790A2A7F1D1F}">MC.CDT_MCTOPLC_PLANAR_TRACK</BaseType>
+							<BitOffs>0</BitOffs>
+						</Symbol>
+					</DataArea>
+				</DataAreas>
+				<Properties>
+					<Property>
+						<Name>Category</Name>
+						<Value>MC Object</Value>
+					</Property>
+					<Property>
+						<Name>Category</Name>
+						<Value>McPlanarTrack</Value>
+					</Property>
+					<Property>
+						<Name>Category</Name>
+						<Value>HideTcComContextPP</Value>
+					</Property>
+				</Properties>
+				<ParentOTCID>#x05100010</ParentOTCID>
+				<ParameterValues>
+					<Value>
+						<Name>TraceLevel</Name>
+						<EnumText>tlWarning</EnumText>
+					</Value>
+					<Value>
+						<Name>Ctx_TaskOid</Name>
+						<Value>33620048</Value>
+					</Value>
+					<Value>
+						<Name>Track length</Name>
+						<Value>0</Value>
+					</Value>
+					<Value>
+						<Name>Maximal mover width</Name>
+						<Value>155</Value>
+					</Value>
+					<Value>
+						<Name>Maximal mover height</Name>
+						<Value>155</Value>
+					</Value>
+					<Value>
+						<Name>Check collisions against static objects</Name>
+						<EnumText>FALSE</EnumText>
+					</Value>
+					<Value>
+						<Name>Collision range at start</Name>
+						<Value>250</Value>
+					</Value>
+					<Value>
+						<Name>Collision range at end</Name>
+						<Value>250</Value>
+					</Value>
+					<Value>
+						<Name>Collision range mode</Name>
+						<EnumText>Automatic</EnumText>
+					</Value>
+					<Value>
+						<Name>PartOID</Name>
+						<Value>0</Value>
+					</Value>
+					<Value>
+						<Name>GroupOID</Name>
+						<Value>0</Value>
+					</Value>
+					<Value>
+						<Name>State</Name>
+						<EnumText>Invalid</EnumText>
+					</Value>
+					<Value>
+						<Name>Operation mode</Name>
+						<EnumText>Invalid</EnumText>
+					</Value>
+					<Value>
+						<Name>Mover count on track</Name>
+						<Value>0</Value>
+					</Value>
+					<Value>
+						<Name>Moving mover count</Name>
+						<Value>0</Value>
+					</Value>
+					<Value>
+						<Name>Closed loop</Name>
+						<EnumText>FALSE</EnumText>
+					</Value>
+					<Value>
+						<Name>Closed loop online information</Name>
+						<EnumText>FALSE</EnumText>
+					</Value>
+				</ParameterValues>
+			</TmcDesc>
+		</Group>
 	</MC>
 	<Mappings>
 		<OwnerA Name="Axes^Mover1 (Planar Mover)">
