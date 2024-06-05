@@ -12,7 +12,7 @@ VAR
 	
 	(* XPlanar System - 1 per associated XPlanar 
 		The system is the container and organizer for all subsequent XPlanar objects. All objects are registered with this system*)
-	fbXpSystem : FB_XP_System(METAdsPort := 351);
+	fbXpSystem : FB_XP_System(XPlanarTaskAdsPort := 351);
 	xPlanarPLC : I_XP_System_PLC := fbXpSystem; 
 	
 	(* XPlanar Collision Avoidance Groupe - 1 per associated XPlanar 
@@ -53,12 +53,12 @@ VAR
 			ipAccocietedTrack 	= The track on which the station is located. If the XY position is not on this track, the next possible track position is assumed on this track.
 								  Can be set to 0. In this case, the closest track to the coordinates is automatically used. 
 								  If the station is very close to a transition, it may still be interesting to enter the exact track here.		
-			sUnigueName 		= Unique name that may only exist once.
-			sTargetGroupe 		= A name for a group to which this station belongs. Important for redundant stations	*)	
+			sUniqueName 		= Unique name that may only exist once.
+			sTargetGroup 		= A name for a group to which this station belongs. Important for redundant stations	*)	
 	fbStation1 		: FB_XP_Station(ipSystem 			:= fbXpSystem,
 									ipAccocietedTrack 	:= 0,
-									sUnigueName			:= S_INFEED1,
-									sTargetGroupe		:= G_INFEED,
+									sUniqueName			:= S_INFEED1,
+									sTargetGroup		:= G_INFEED,
 									nMoverQueueSize		:= 2,
 									xPos				:= 100,
 									yPos				:= 360);
@@ -68,28 +68,29 @@ VAR
 	//In this case, a unique name is automatically generated in the background.					
 	fbStationWaiting : FB_XP_Station(ipSystem 			:= fbXpSystem,
 									ipAccocietedTrack 	:= fbTrackA,
-									sUnigueName 		:= '',
-									sTargetGroupe		:= '',
+									sUniqueName 		:= '',
+									sTargetGroup		:= '',
 									nMoverQueueSize		:= 3,
 									xPos				:= 480,
 									yPos				:= 600	);	
 							
 	fbStation2 		: FB_XP_Station(ipSystem 			:= fbXpSystem,
 									ipAccocietedTrack 	:= fbTrackB,
-									sUnigueName 		:= S_OUTFEED1,
-									sTargetGroupe		:= G_OUTFEED,
+									sUniqueName 		:= S_OUTFEED1,
+									sTargetGroup		:= G_OUTFEED,
 									nMoverQueueSize		:= 1,
 									xPos				:= 480,
 									yPos				:= 360);	
 		
 	fbStation3 		: FB_XP_Station(ipSystem 			:= fbXpSystem,
 									ipAccocietedTrack 	:= 0, // =closest track
-									sUnigueName 		:= S_OUTFEED2,
-									sTargetGroupe		:= G_OUTFEED,
+									sUniqueName 		:= S_OUTFEED2,
+									sTargetGroup		:= G_OUTFEED,
 									nMoverQueueSize		:= 1,
 									xPos				:= 840,
 									yPos				:= 360);						
 								
+
 
 END_VAR
 VAR CONSTANT
@@ -156,6 +157,7 @@ END_VAR
  	xPlanarPLC.Initialize();
 	RETURN;
 END_IF
+
 
 IF bEnable AND xPlanarPLC.Disabled THEN
 	bEnable := FALSE;
