@@ -124,7 +124,7 @@
       <Resolution>CHALET_Nc, * (Beckhoff CH)</Resolution>
     </PlaceholderResolution>
     <PlaceholderResolution Include="CHALET_XPlanar">
-      <Resolution>CHALET_XPlanar, 4.3.2 (Beckhoff CH)</Resolution>
+      <Resolution>CHALET_XPlanar, 4.3.3 (Beckhoff CH)</Resolution>
     </PlaceholderResolution>
     <PlaceholderResolution Include="CmpApp">
       <Resolution>CmpApp, * (System)</Resolution>
