@@ -33,7 +33,11 @@ END_IF
 
 
 //Get interface to StationB
-ipStationModify := MAIN.xPlanarPLC.Station(MAIN.S_INFEED1);
+ipStationModify := MAIN.ipXPlanarPLC.Station(MAIN.S_INFEED1);
+IF ipStationModify = 0 THEN
+	//ERROR
+	RETURN;
+END_IF
 
 //This is executed once when the mover arrives at the station
 fbTriggerMoverInPlace(CLK:= ipStationModify.MoversInPlace);

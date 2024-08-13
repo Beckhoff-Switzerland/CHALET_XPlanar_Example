@@ -45,12 +45,17 @@
     </Compile>
     <Compile Include="THREADs\MAIN.TcPOU">
       <SubType>Code</SubType>
+      <ExcludeFromBuild>false</ExcludeFromBuild>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <PlaceholderReference Include="CHALET_BaseComponents">
       <DefaultResolution>CHALET_BaseComponents, * (Beckhoff CH)</DefaultResolution>
       <Namespace>CHALET_BaseComponents</Namespace>
+    </PlaceholderReference>
+    <PlaceholderReference Include="CHALET_Nc">
+      <DefaultResolution>CHALET_Nc, * (Beckhoff CH)</DefaultResolution>
+      <Namespace>CHALET_Nc</Namespace>
     </PlaceholderReference>
     <PlaceholderReference Include="CHALET_XPlanar">
       <DefaultResolution>CHALET_XPlanar, * (Beckhoff CH)</DefaultResolution>
@@ -100,11 +105,6 @@
     <Folder Include="THREADs\Example Product Data" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Plc.tmc">
-      <SubType>Content</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <PlaceholderResolution Include="CAA Callback">
       <Resolution>CAA Callback Extern, * (CAA Technical Workgroup)</Resolution>
     </PlaceholderResolution>
@@ -118,13 +118,13 @@
       <Resolution>CAA Types Extern, * (CAA Technical Workgroup)</Resolution>
     </PlaceholderResolution>
     <PlaceholderResolution Include="CHALET_BaseComponents">
-      <Resolution>CHALET_BaseComponents, 3.2.5 (Beckhoff CH)</Resolution>
+      <Resolution>CHALET_BaseComponents, 3.4.5 (Beckhoff CH)</Resolution>
     </PlaceholderResolution>
     <PlaceholderResolution Include="CHALET_Nc">
-      <Resolution>CHALET_Nc, * (Beckhoff CH)</Resolution>
+      <Resolution>CHALET_Nc, 3.2.1 (Beckhoff CH)</Resolution>
     </PlaceholderResolution>
     <PlaceholderResolution Include="CHALET_XPlanar">
-      <Resolution>CHALET_XPlanar, 4.3.3 (Beckhoff CH)</Resolution>
+      <Resolution>CHALET_XPlanar, 4.4.9 (Beckhoff CH)</Resolution>
     </PlaceholderResolution>
     <PlaceholderResolution Include="CmpApp">
       <Resolution>CmpApp, * (System)</Resolution>
@@ -244,28 +244,28 @@
       <Resolution>Tc2_MC2_Drive, * (Beckhoff Automation GmbH)</Resolution>
     </PlaceholderResolution>
     <PlaceholderResolution Include="Tc2_Standard">
-      <Resolution>Tc2_Standard, 3.3.3.0 (Beckhoff Automation GmbH)</Resolution>
+      <Resolution>Tc2_Standard, * (Beckhoff Automation GmbH)</Resolution>
     </PlaceholderResolution>
     <PlaceholderResolution Include="Tc2_System">
-      <Resolution>Tc2_System, 3.6.2.0 (Beckhoff Automation GmbH)</Resolution>
+      <Resolution>Tc2_System, * (Beckhoff Automation GmbH)</Resolution>
     </PlaceholderResolution>
     <PlaceholderResolution Include="Tc2_Utilities">
-      <Resolution>Tc2_Utilities, 3.6.1.0 (Beckhoff Automation GmbH)</Resolution>
+      <Resolution>Tc2_Utilities, * (Beckhoff Automation GmbH)</Resolution>
     </PlaceholderResolution>
     <PlaceholderResolution Include="Tc3_EventLogger">
-      <Resolution>Tc3_EventLogger, 3.3.7.0 (Beckhoff Automation GmbH)</Resolution>
+      <Resolution>Tc3_EventLogger, * (Beckhoff Automation GmbH)</Resolution>
     </PlaceholderResolution>
     <PlaceholderResolution Include="Tc3_Mc3Definitions">
-      <Resolution>Tc3_Mc3Definitions, 3.2.60.0 (Beckhoff Automation GmbH)</Resolution>
+      <Resolution>Tc3_Mc3Definitions, * (Beckhoff Automation GmbH)</Resolution>
     </PlaceholderResolution>
     <PlaceholderResolution Include="Tc3_Mc3PlanarMotion">
-      <Resolution>Tc3_Mc3PlanarMotion, 3.2.60.0 (Beckhoff Automation GmbH)</Resolution>
+      <Resolution>Tc3_Mc3PlanarMotion, * (Beckhoff Automation GmbH)</Resolution>
     </PlaceholderResolution>
     <PlaceholderResolution Include="Tc3_Module">
-      <Resolution>Tc3_Module, 3.3.23.0 (Beckhoff Automation GmbH)</Resolution>
+      <Resolution>Tc3_Module, * (Beckhoff Automation GmbH)</Resolution>
     </PlaceholderResolution>
     <PlaceholderResolution Include="Tc3_Physics">
-      <Resolution>Tc3_Physics, 3.2.60.0 (Beckhoff Automation GmbH)</Resolution>
+      <Resolution>Tc3_Physics, * (Beckhoff Automation GmbH)</Resolution>
     </PlaceholderResolution>
     <PlaceholderResolution Include="Tc3_XPlanarUtility">
       <Resolution>Tc3_XPlanarUtility, * (Beckhoff Automation GmbH &amp; Co. KG)</Resolution>
@@ -276,6 +276,11 @@
     <PlaceholderResolution Include="VisuDialogs">
       <Resolution>VisuDialogs, * (System)</Resolution>
     </PlaceholderResolution>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Plc.tmc">
+      <SubType>Content</SubType>
+    </None>
   </ItemGroup>
   <ProjectExtensions>
     <PlcProjectOptions>

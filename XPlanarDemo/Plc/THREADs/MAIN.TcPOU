@@ -8,12 +8,18 @@ VAR
 	bDisable, bReset	: BOOL;
 	bSetSettings 		: BOOL := TRUE;
 	
+	(* EtherCAt diagnostics - TC3_Eventlogger
+	This function block instance scans the entire EtherCat master. 
+	Each EtherCat slave device is recognized and a message is written to the TC3_Eventlogger as soon as an unwanted state occurs.*)
+//	fbEtherCatDiagLAN_X1 : FB_EtherCatMasterDiag;
+//	fbEtherCatDiagLAN_X2 : FB_EtherCatMasterDiag;
+	
 	//////////////////////////////////////////////////////////////////////////
 	
 	(* XPlanar System - 1 per associated XPlanar 
 		The system is the container and organizer for all subsequent XPlanar objects. All objects are registered with this system*)
-	fbXpSystem : FB_XP_System(XPlanarTaskAdsPort := 351);
-	xPlanarPLC : I_XP_System_PLC := fbXpSystem; 
+	fbXpSystem : FB_XP_System;
+	ipXPlanarPLC : I_XP_System_PLC := fbXpSystem; 
 	
 	(* XPlanar Collision Avoidance Groupe - 1 per associated XPlanar 
 		The Planar group is a software object that prevents collisions between Planar movers as well as collisions of Planar movers with the boundary of 
@@ -109,14 +115,14 @@ END_VAR
 
 //Example ExternalSetpoint Clamp
 VAR
-	bSetpointExample : BOOL; //Set this variable to run external setpoint example
+	bExternalSetpointExample : BOOL; //Set this variable to run external setpoint example
 	nSeqStation1 : UINT;
 	ipMover1, ipMover2 : I_XP_Mover_PLC;
 END_VAR
 
 //Example ExternalSetpoint MoveToExactStationCoordinates
 VAR
-	bSetpointExample2 : BOOL; //Set this variable to run external setpoint example
+	bExternalSetpointExample2 : BOOL; //Set this variable to run external setpoint example
 	nSeqStation2 : UINT;
 	ipMoverExample2 : I_XP_Mover_PLC;
 	fPositionOffsetX, fPositionOffsetY : LREAL;//Target position (position next to track) - Actual position (position on the track)
@@ -132,10 +138,12 @@ END_VAR
 
 //Example SimulationMode
 VAR
-	bStartSimulation,bStopSimulation : BOOL;
+	bSimulation : BOOL;
 	bStation1_Ready : BOOL := TRUE; 
 	bStation2_Ready : BOOL := TRUE;  
 	bStation3_Ready : BOOL := TRUE;  
+	fbRTriggerSimulation : R_TRIG;
+	fbFTriggerSimulation : F_TRIG;
 END_VAR
 
 //Example Change dynamic constraint
@@ -153,35 +161,35 @@ END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[IF NOT bInitDone THEN
-	bInitDone := xPlanarPLC.Initialized;
- 	xPlanarPLC.Initialize();
+	bInitDone := ipXPlanarPLC.Initialized;
+ 	ipXPlanarPLC.Initialize();
+	//fbEtherCatDiagLAN_X1.Initialize();
 	RETURN;
 END_IF
 
 
-IF bEnable AND xPlanarPLC.Disabled THEN
+IF bEnable AND ipXPlanarPLC.Disabled THEN
 	bEnable := FALSE;
-	xPlanarPLC.Enable();
+	ipXPlanarPLC.Enable();
 END_IF
 
 IF bDisable OR bReset THEN
 	bDisable := FALSE; bReset := FALSE;
-	xPlanarPLC.Disable();
+	ipXPlanarPLC.Disable();
 END_IF
 
-(* Toggle bit to run the examples *)
-bStartSimulation := bStartSimulation;			//after a given time in the station, the mover is sent to the target station 
-bSetpointExample := bSetpointExample; 			//Clamping in Station S_INFEED1
-bSetpointExample2 := bSetpointExample2; 		//Leave track and move to exact coordinates of station
+(* Set bit to run the examples *)
+bSimulation := bSimulation;			//after a given time in the station, the mover is sent to the target station 
+bExternalSetpointExample := bExternalSetpointExample; 			//Clamping in Station S_INFEED1
+bExternalSetpointExample2 := bExternalSetpointExample2; 		//Leave track and move to exact coordinates of station S_OUTFEED1
 bChangeDynConstraint := bChangeDynConstraint;	//The movers have different speeds depending on the section of the route
 
-bStopSimulation := bStopSimulation;
 
 
 IF bSetSettings THEN
 	bSetSettings := FALSE;
-	xPlanarPLC.Station(S_OUTFEED1).MoverGapAtExit := 200.0;
-	xPlanarPLC.Station(S_OUTFEED2).MoverGapAtExit := 200.0;
+	ipXPlanarPLC.Station(S_OUTFEED1).MoverGapAtExit := 200.0;
+	ipXPlanarPLC.Station(S_OUTFEED2).MoverGapAtExit := 200.0;
 END_IF
 
 
@@ -196,8 +204,9 @@ PRG_Example_ProductData_Simple();
 
 
 (* Update is called at the end of the program *)
-xPlanarPLC.Update();
-
+ipXPlanarPLC.Update();
+//fbEtherCatDiagLAN_X1.Update();
+//fbEtherCatDiagLAN_X2.Update();
 ]]></ST>
     </Implementation>
     <Method Name="Example_ChangeDynamicConstraint" Id="{0c48dace-8681-4ab7-b111-a1f02d902bb0}">
@@ -215,24 +224,24 @@ END_VAR
 //Set this variable to run this example
 IF bChangeDynConstraint THEN
 		
-	IF xPlanarPLC.Station(S_INFEED1).MoversInPlace THEN
+	IF ipXPlanarPLC.Station(S_INFEED1).MoversInPlace THEN
 		//For all movers in queue
-		FOR nIdx:=0 TO (xPlanarPLC.Station(S_INFEED1).MoverQueueSize-1) DO
-			xPlanarPLC.Station(S_INFEED1).MoversInQueue[nIdx].SetDynConstraint_Path(V:= 200, A:= 100, D:= 100, J:= 1000);
+		FOR nIdx:=0 TO (ipXPlanarPLC.Station(S_INFEED1).MoverQueueSize-1) DO
+			ipXPlanarPLC.Station(S_INFEED1).MoversInQueue[nIdx].SetDynConstraint_Path(V:= 200, A:= 100, D:= 100, J:= 1000);
 		END_FOR
 	END_IF	
 	
-	IF xPlanarPLC.Station(S_OUTFEED1).MoversInPlace THEN
+	IF ipXPlanarPLC.Station(S_OUTFEED1).MoversInPlace THEN
 		//For all movers in queue
-		FOR nIdx:=0 TO (xPlanarPLC.Station(S_OUTFEED1).MoverQueueSize-1) DO
-			xPlanarPLC.Station(S_OUTFEED1).MoversInQueue[nIdx].SetDynConstraint_Path(V:= 1000, A:= MC_MAXIMUM, D:= 500, J:= 1000);
+		FOR nIdx:=0 TO (ipXPlanarPLC.Station(S_OUTFEED1).MoverQueueSize-1) DO
+			ipXPlanarPLC.Station(S_OUTFEED1).MoversInQueue[nIdx].SetDynConstraint_Path(V:= 1000, A:= MC_MAXIMUM, D:= 500, J:= 1000);
 		END_FOR
 	END_IF	
 	
-	IF xPlanarPLC.Station(S_OUTFEED2).MoversInPlace THEN
+	IF ipXPlanarPLC.Station(S_OUTFEED2).MoversInPlace THEN
 		//For all movers in queue
-		FOR nIdx:=0 TO (xPlanarPLC.Station(S_OUTFEED2).MoverQueueSize-1) DO
-			xPlanarPLC.Station(S_OUTFEED2).MoversInQueue[nIdx].SetDynConstraint_Path(V:= 1000, A:= MC_DEFAULT, D:= 500, J:= 1000);
+		FOR nIdx:=0 TO (ipXPlanarPLC.Station(S_OUTFEED2).MoverQueueSize-1) DO
+			ipXPlanarPLC.Station(S_OUTFEED2).MoversInQueue[nIdx].SetDynConstraint_Path(V:= 1000, A:= MC_DEFAULT, D:= 500, J:= 1000);
 		END_FOR
 	END_IF	
 	
@@ -251,18 +260,18 @@ END_IF]]></ST>
 *)
 
 //Set this variable to run external setpoint example
-IF bSetpointExample THEN
+IF bExternalSetpointExample THEN
 	//fix 2 Movers are used in example
-	xPlanarPLC.Station(S_INFEED1).MoverQueueSize := 2;
+	ipXPlanarPLC.Station(S_INFEED1).MoverQueueSize := 2;
 	//Switch off simulation in Station 1
-	xPlanarPLC.Station(S_INFEED1).SimulationMode(fProcessDuration := 0, sTargedStation := '');
+	ipXPlanarPLC.Station(S_INFEED1).SimulationStart(fProcessDuration := 0, sTargedStation := '');
 	
 	CASE nSeqStation1 OF	
 		0: //Wait for Mover
-			IF xPlanarPLC.Station(S_INFEED1).MoversInPlace THEN
+			IF ipXPlanarPLC.Station(S_INFEED1).MoversInPlace THEN
 				//Get interface to mover
-				ipMover1 := xPlanarPLC.Station(S_INFEED1).MoversInQueue[0];
-				ipMover2 := xPlanarPLC.Station(S_INFEED1).MoversInQueue[1];
+				ipMover1 := ipXPlanarPLC.Station(S_INFEED1).MoversInQueue[0];
+				ipMover2 := ipXPlanarPLC.Station(S_INFEED1).MoversInQueue[1];
 				nSeqStation1 := nSeqStation1 + 1;
 			END_IF
 			
@@ -335,14 +344,14 @@ IF bSetpointExample THEN
 			END_IF					
 			
 		13: //Finish. Send Mover in next Station
-			xPlanarPLC.Station(S_INFEED1).SendMoversToStation(G_OUTFEED);
+			ipXPlanarPLC.Station(S_INFEED1).SendMoversToStation(G_OUTFEED);
 			nSeqStation1 := 0;
 	END_CASE
 
 
 END_IF
 //Reset seq
-IF xPlanarPLC.Disabled THEN
+IF ipXPlanarPLC.Disabled THEN
 	nSeqStation1 := 0;
 END_IF]]></ST>
       </Implementation>
@@ -358,15 +367,15 @@ END_VAR
    As this coordinate is not always on a track (especially tricky in the curve), the station is moved to the coordinate that is closest to the track.
    However, if the mover needs to move to the exact original position, regardless of the track, the mover can use this sequence to move to this point.
 *)
-ipThisStation := xPlanarPLC.Station(S_OUTFEED1);
+ipThisStation := ipXPlanarPLC.Station(S_OUTFEED1);
 
 //Set this variable to run external setpoint example
-IF bSetpointExample2 AND ipThisStation <> 0 THEN
+IF bExternalSetpointExample2 AND ipThisStation <> 0 THEN
 	
 	//fix 1 Movers are used in example
 	ipThisStation.MoverQueueSize := 1;
 	//Switch off simulation in Station 2
-	ipThisStation.SimulationMode(fProcessDuration := 0, sTargedStation := '');
+	ipThisStation.SimulationStop();
 	
 	CASE nSeqStation2 OF	
 		0: //Wait for Mover
@@ -431,7 +440,7 @@ IF bSetpointExample2 AND ipThisStation <> 0 THEN
 
 END_IF
 //Reset seq
-IF xPlanarPLC.Disabled THEN
+IF ipXPlanarPLC.Disabled THEN
 	nSeqStation2 := 0;
 END_IF]]></ST>
       </Implementation>
@@ -444,7 +453,7 @@ END_IF]]></ST>
    the track progression can also be set here in the PLC. 
    To change values in the PLC, the track must be disabled (system is disabled) and the value to be changed must not be described in the object. 
 *)
-IF bDoConfigTrackC AND xPlanarPLC.Disabled THEN
+IF bDoConfigTrackC AND ipXPlanarPLC.Disabled THEN
 	CASE nSeqConfigTrack OF
 		0: //Clears the geometric information of the Planar Track.
 			fbTrackC.PlanarTrack.Clear(fbTrackFeedback);
@@ -503,7 +512,7 @@ END_IF
 *)
 
 //Requestet cts of mover are in station. Example: rototer can start to place prodcts
-bToUpstreamProcessCanStart := xPlanarPLC.Station(S_INFEED1).MoversInPlace;
+bToUpstreamProcessCanStart := ipXPlanarPLC.Station(S_INFEED1).MoversInPlace;
 
 //The upstream process can set this bool if the process is finish and the mover can leave the station
 bFromUpsreamProcessIsFinish := bFromUpsreamProcessIsFinish;
@@ -512,39 +521,45 @@ bFromUpsreamProcessIsFinish := bFromUpsreamProcessIsFinish;
 //A group is specified here that contains several different. equivalent stations
 sFromUpstreamTagedStation := G_OUTFEED;
 
-IF bFromUpsreamProcessIsFinish AND bToUpstreamProcessCanStart AND xPlanarPLC.Enabled THEN
+IF bFromUpsreamProcessIsFinish AND bToUpstreamProcessCanStart AND ipXPlanarPLC.Enabled THEN
 	bFromUpsreamProcessIsFinish := FALSE;
-	xPlanarPLC.Station(S_INFEED1).SendMoversToStation(sFromUpstreamTagedStation);
+	ipXPlanarPLC.Station(S_INFEED1).SendMoversToStation(sFromUpstreamTagedStation);
 END_IF]]></ST>
       </Implementation>
     </Method>
     <Method Name="Example_SimulationMode" Id="{b3a32842-fad6-4345-9762-703a0dd1aab5}">
       <Declaration><![CDATA[METHOD Example_SimulationMode : BOOL
+
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[(* Each station has a "Ready to recive Mover" property. 
    This BOOL can be used to control whether the station should continue to be moved to *)
-xPlanarPLC.Station(S_INFEED1).ReadyToRecvMovers 	:= bStation1_Ready;
-xPlanarPLC.Station(S_OUTFEED1).ReadyToRecvMovers 	:= bStation2_Ready;
-xPlanarPLC.Station(S_OUTFEED2).ReadyToRecvMovers 	:= bStation3_Ready;
+ipXPlanarPLC.Station(S_INFEED1).ReadyToRecvMovers 	:= bStation1_Ready;
+ipXPlanarPLC.Station(S_OUTFEED1).ReadyToRecvMovers 	:= bStation2_Ready;
+ipXPlanarPLC.Station(S_OUTFEED2).ReadyToRecvMovers 	:= bStation3_Ready;
+
+
+
 
 
 // Configure and Start Simulation
-IF bStartSimulation THEN
-	bStartSimulation := FALSE;
+fbRTriggerSimulation(CLK := bSimulation);
+IF fbRTriggerSimulation.Q THEN
 	//xPlanarPLC.SuppressAllDynamicsChanges := FALSE;	//Enable to adjust Gap + Dynamic depending on Station
-	xPlanarPLC.Station(S_INFEED1).SimulationMode(fProcessDuration := 2.0, 	sTargedStation := G_OUTFEED);
-	xPlanarPLC.Station(S_OUTFEED1).SimulationMode(fProcessDuration := 1.5, 	sTargedStation := G_INFEED);
-	xPlanarPLC.Station(S_OUTFEED2).SimulationMode(fProcessDuration := 1.5, 	sTargedStation := G_INFEED);
+	ipXPlanarPLC.Station(S_INFEED1).SimulationStart(fProcessDuration := 2.0, 	sTargedStation := G_OUTFEED);
+	ipXPlanarPLC.Station(S_OUTFEED1).SimulationStart(fProcessDuration := 1.5, 	sTargedStation := G_INFEED);
+	ipXPlanarPLC.Station(S_OUTFEED2).SimulationStart(fProcessDuration := 1.5, 	sTargedStation := G_INFEED);
 END_IF
 
 // Stop Simulation
-IF bStopSimulation THEN
-	bStopSimulation := FALSE;
-	xPlanarPLC.Station(S_INFEED1).SimulationMode(fProcessDuration := 0, sTargedStation := '');
-	xPlanarPLC.Station(S_OUTFEED1).SimulationMode(fProcessDuration := 0, sTargedStation := '');
-	xPlanarPLC.Station(S_OUTFEED2).SimulationMode(fProcessDuration := 0, sTargedStation := '');
+fbFTriggerSimulation(CLK := bSimulation);
+IF fbFTriggerSimulation.Q THEN
+	ipXPlanarPLC.Station(S_INFEED1).SimulationStop();
+	ipXPlanarPLC.Station(S_OUTFEED1).SimulationStop();
+	ipXPlanarPLC.Station(S_OUTFEED2).SimulationStop();
 END_IF
+
+
 ]]></ST>
       </Implementation>
     </Method>
