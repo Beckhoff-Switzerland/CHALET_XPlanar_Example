@@ -2,13 +2,12 @@
 This repository is a detailed example application how to use the [CHALET_XPlanar](https://github.com/Beckhoff-Switzerland/CHALET_XPlanar) framework
 
 The following layout has been selected with 3 movers.
-Station "Infeed1" on the left-hand side requires several movers to start interacting with the process.
-The two stations on the right-hand side "Outfeed1" and "Outfeed2" require one mover. They are redundant. 
-If one of the two stations fails, the movers will automatically move to the other station.
-![image](https://github.com/Beckhoff-Switzerland/CHALET_XPlanar_Example/blob/master/Layout.png)
+
+
+![image](https://github.com/user-attachments/assets/d8d6c46d-9b93-48af-81e2-3aab3ca74152)
+
 
 - Easily configurable simulation mode to simulate a process and detect bottlenecks at an early stage
-- Two movers standing in a station make a clamping movement with the help of the external setpint generator
 - Changing the mover dynamics on different sections of the track
 - Configuration of the tracks either online from the PLC or offline in the track object
 
