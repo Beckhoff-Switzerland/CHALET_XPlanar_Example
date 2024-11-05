@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="PRG_Example_ProductData_Simple" Id="{07be1db7-c588-4ce7-bb4d-c6cf191de787}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM PRG_Example_ProductData_Simple
+VAR
+	bInitDone : BOOL;
+		
+	aProductsFormatA 		: ARRAY[1..MAIN.cCtsXpMovers] OF FB_ProductDataA;
+	ipMover					: I_XP_Mover_PLC;
+	ipProductDataOnMover 	: I_ProductDataA;
+	ipStationModify 		: I_XP_Station_PLC;
+	fbTriggerMoverInPlace 	: R_TRIG; 
+	
+	nIdx : UDINT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(* This example shows how easy it is to access the product data on the Mover. 
+   The structure "ST_ProductDataA" can be edited to change the contained data.
+*)
+
+//Do this once during initialization
+IF NOT bInitDone THEN
+	bInitDone := TRUE;
+	
+	//A separate FB with product data is added to each mover
+	FOR nIdx := 1 TO MAIN.cCtsXpMovers DO
+		ipMover := MAIN.aMovers[nIdx]; 
+		ipMover.ProductData := aProductsFormatA[nIdx];
+	END_FOR
+END_IF
+
+
+
+//Get interface to StationB
+ipStationModify := MAIN.ipXPlanarPLC.Station(MAIN.S_INFEED1);
+IF ipStationModify = 0 THEN
+	//Abort, Station is unknown
+	RETURN;
+END_IF
+
+//This is executed once when the mover arrives at the station
+fbTriggerMoverInPlace(CLK:= ipStationModify.MoversInPlace);
+IF fbTriggerMoverInPlace.Q THEN
+	
+	//Do this for each mover inside the station
+	FOR nIdx := 0 TO (ipStationModify.MoverQueueSize-1) DO
+		
+		//Query whether the FB behind this instance implements the following interface and get it.
+		IF __QUERYINTERFACE(ipStationModify.MoversInQueue[nIdx].ProductData, ipProductDataOnMover) THEN 
+			//Modify data. read and write
+			ipProductDataOnMover.Data.nQuality 		:= (ipProductDataOnMover.Data.nQuality + 42)MOD 100;	
+			ipProductDataOnMover.Data.bGoodProduct 	:= ipProductDataOnMover.Data.nQuality >= 80;
+			//ipProductDataOnMover. ...
+		END_IF
+	
+	END_FOR
+END_IF
+
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,312 @@
+<?xml version="1.0"?>
+<TcSmItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.55" ClassName="CTComMcObjDef" SubType="72" TcProjectVariant="Simulation">
+	<DataTypes>
+		<DataType>
+			<Name GUID="{6D2B99B2-A9F2-44AF-A298-4BB7A08AE294}" Namespace="MC" TcBaseType="true">MC_PLANAR_STATE</Name>
+			<Comment><![CDATA[Indicates the enable state of a component.]]></Comment>
+			<BitSize>16</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000005}">UINT</BaseType>
+			<EnumInfo>
+				<Text><![CDATA[Invalid]]></Text>
+				<Enum>0</Enum>
+				<Comment><![CDATA[Indicates no or invalid information, e.g. no connection or component not yet ready.]]></Comment>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[Disabled]]></Text>
+				<Enum>1</Enum>
+				<Comment><![CDATA[Indicates a disabled component.]]></Comment>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[Enabling]]></Text>
+				<Enum>2</Enum>
+				<Comment><![CDATA[Indicates an enabling component.]]></Comment>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[Enabled]]></Text>
+				<Enum>3</Enum>
+				<Comment><![CDATA[Indicates an enabled component.]]></Comment>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[Disabling]]></Text>
+				<Enum>4</Enum>
+				<Comment><![CDATA[Indicates a disabling component.]]></Comment>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[Error]]></Text>
+				<Enum>5</Enum>
+				<Comment><![CDATA[Indicates a component in error state.]]></Comment>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[ErrorPending]]></Text>
+				<Enum>6</Enum>
+				<Comment><![CDATA[Indicates that a component is transitioning from any non error state to the error state.]]></Comment>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[Resetting]]></Text>
+				<Enum>7</Enum>
+				<Comment><![CDATA[Indicates that a component is resetting after it was in error state.]]></Comment>
+			</EnumInfo>
+			<Properties>
+				<Property>
+					<Name>plcAttribute_qualified_only</Name>
+				</Property>
+			</Properties>
+		</DataType>
+		<DataType>
+			<Name GUID="{8FAB942E-30F9-4D31-8024-0DCBB6047BF4}" Namespace="MC">PlanarPartInfo</Name>
+			<Comment><![CDATA[The oid and state of a planar part, including planar state, active position index, and active position.]]></Comment>
+			<BitSize>320</BitSize>
+			<SubItem>
+				<Name>partOID</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</Type>
+				<Comment><![CDATA[Object Id of the part (or transfer area) object, controlled by the environment.]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>planarState</Name>
+				<Type GUID="{6D2B99B2-A9F2-44AF-A298-4BB7A08AE294}" Namespace="MC">MC_PLANAR_STATE</Type>
+				<Comment><![CDATA[State of the planar part, e.g. disabled.]]></Comment>
+				<BitSize>16</BitSize>
+				<BitOffs>32</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>activePositionIndex</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000005}">UINT</Type>
+				<Comment><![CDATA[Index of the current active part position.]]></Comment>
+				<BitSize>16</BitSize>
+				<BitOffs>48</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>coordinateSystemId</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<Comment><![CDATA[OID of the coordinate the part is in.]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>64</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>x</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<Comment><![CDATA[x position of the part in the given coordinate system.]]></Comment>
+				<BitSize>64</BitSize>
+				<BitOffs>128</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>y</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<Comment><![CDATA[y position of the part in the given coordinate system.]]></Comment>
+				<BitSize>64</BitSize>
+				<BitOffs>192</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>disabledForced</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<Comment><![CDATA[True if the part is forced to disabled state.]]></Comment>
+				<BitSize>8</BitSize>
+				<BitOffs>256</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{79107B5F-AFEC-4E5A-AF95-460E7D782CE1}" Namespace="MC" TcBaseType="true">CDT_MCTOPLC_PLANAR_ENVIRONMENT</Name>
+			<Comment><![CDATA[CDT provides current planar environment information.]]></Comment>
+			<BitSize>128</BitSize>
+			<SubItem>
+				<Name>EnvironmentOID</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</Type>
+				<Comment><![CDATA[Object id of the planar environment.]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>GroupOID</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</Type>
+				<Comment><![CDATA[Object id of the planar group the environment is in.]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>32</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>StatorCount</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<Comment><![CDATA[Number of stators the environment is holding.]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>64</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>BoundaryElementCount</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<Comment><![CDATA[Number of outer sides of the stators that form the boundary of the environment.]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>96</BitOffs>
+			</SubItem>
+		</DataType>
+	</DataTypes>
+	<GroupModule Id="#x05120020">
+		<Name>__FILENAME__</Name>
+		<ImageId>228</ImageId>
+		<TmcDesc GUID="{9A40A34B-DD2F-4271-8FEE-3ADE2271DB79}" TcSmClass="TComMcGroupObj">
+			<Name>Planar Environment</Name>
+			<CLSID ClassFactory="TcNc3">{050300CB-0000-0000-F000-000000000064}</CLSID>
+			<InitSequence>PSO</InitSequence>
+			<Contexts>
+				<Context>
+					<Id>0</Id>
+					<Name>MET</Name>
+					<ManualConfig>
+						<OTCID>#x02010050</OTCID>
+					</ManualConfig>
+					<Priority>3</Priority>
+					<CycleTime>2000000</CycleTime>
+					<DependOn>ParentObject</DependOn>
+				</Context>
+				<Context>
+					<Id>1</Id>
+					<Name>MPT</Name>
+					<ManualConfig>
+						<OTCID>#x02010060</OTCID>
+					</ManualConfig>
+					<Priority>8</Priority>
+					<CycleTime>10000000</CycleTime>
+					<DependOn>ParentObject</DependOn>
+				</Context>
+			</Contexts>
+			<Parameters>
+				<Parameter HideParameter="true">
+					<Name>TraceLevel</Name>
+					<BitSize>32</BitSize>
+					<BaseType GUID="{8007AE3B-86BB-40F2-B385-EF87FCC239A4}">TcTraceLevel</BaseType>
+					<Default>
+						<Value>2</Value>
+					</Default>
+					<PTCID>#x03002103</PTCID>
+				</Parameter>
+				<Parameter HideParameter="true">
+					<Name>Ctx_TaskOid</Name>
+					<Comment><![CDATA[Task implementing ICyclicCaller for cyclic execution of this module]]></Comment>
+					<BitSize>32</BitSize>
+					<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+					<PTCID>#x03002060</PTCID>
+				</Parameter>
+				<Parameter>
+					<Name>XPlanar processing unit OID</Name>
+					<Comment><![CDATA[Object ID of the IoXPlanar processing unit, needed if tile configuration should be read automatically from IoXPlanar driver.]]></Comment>
+					<BitSize>32</BitSize>
+					<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+					<PTCID>#x050300c0</PTCID>
+					<ContextId OnlineAccess="true">0</ContextId>
+				</Parameter>
+				<Parameter>
+					<Name>Reset timeout for the parts of this environment</Name>
+					<BitSize>64</BitSize>
+					<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+					<Unit><![CDATA[s]]></Unit>
+					<Default>
+						<Value>2</Value>
+					</Default>
+					<PTCID>#x0503d004</PTCID>
+				</Parameter>
+				<Parameter OnlineParameter="true" ReadOnly="true">
+					<Name>GroupOID</Name>
+					<Comment><![CDATA[Object id of the PlanarGroup the environment is in, read only.]]></Comment>
+					<BitSize>32</BitSize>
+					<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+					<PTCID>#x050300c3</PTCID>
+				</Parameter>
+				<Parameter OnlineParameter="true" ReadOnly="true">
+					<Name>StatorCount</Name>
+					<Comment><![CDATA[Number of stators in the environment, read only.]]></Comment>
+					<BitSize>32</BitSize>
+					<BaseType GUID="{18071995-0000-0000-0000-000000000008}">UDINT</BaseType>
+					<PTCID>#x050300c7</PTCID>
+				</Parameter>
+				<Parameter OnlineParameter="true" ReadOnly="true">
+					<Name>BoundaryElementCount</Name>
+					<Comment><![CDATA[Number of boundary elements, i.e. number of outer sides of all stators, read only.]]></Comment>
+					<BitSize>32</BitSize>
+					<BaseType GUID="{18071995-0000-0000-0000-000000000008}">UDINT</BaseType>
+					<PTCID>#x050300c8</PTCID>
+				</Parameter>
+				<Parameter OnlineParameter="true" ReadOnly="true">
+					<Name>PartCount</Name>
+					<Comment><![CDATA[Number of parts, i.e. collection of stators with fixed position relative to each other.]]></Comment>
+					<BitSize>32</BitSize>
+					<BaseType GUID="{18071995-0000-0000-0000-000000000008}">UDINT</BaseType>
+					<PTCID>#x050300de</PTCID>
+				</Parameter>
+				<Parameter OnlineParameter="true" ReadOnly="true">
+					<Name>PlanarPartsInfo</Name>
+					<Comment><![CDATA[Array containing the planar states, active position index, and active position of each part.]]></Comment>
+					<BitSize>0</BitSize>
+					<BaseType GUID="{8FAB942E-30F9-4D31-8024-0DCBB6047BF4}" Namespace="MC">PlanarPartInfo</BaseType>
+					<ArrayInfo>
+						<LBound>1</LBound>
+						<Elements Min="0" MaxUnbounded="true">0</Elements>
+					</ArrayInfo>
+					<PTCID>#x050300e2</PTCID>
+				</Parameter>
+			</Parameters>
+			<DataAreas>
+				<DataArea>
+					<AreaNo AreaType="OutputSrc">1</AreaNo>
+					<Name>McToPlc</Name>
+					<ContextId>0</ContextId>
+					<ByteSize>16</ByteSize>
+					<Symbol>
+						<Name>STD</Name>
+						<BitSize>128</BitSize>
+						<BaseType GUID="{79107B5F-AFEC-4E5A-AF95-460E7D782CE1}">MC.CDT_MCTOPLC_PLANAR_ENVIRONMENT</BaseType>
+						<BitOffs>0</BitOffs>
+					</Symbol>
+				</DataArea>
+			</DataAreas>
+			<Properties>
+				<Property>
+					<Name>Category</Name>
+					<Value>MC Object</Value>
+				</Property>
+				<Property>
+					<Name>Category</Name>
+					<Value>HideTcComContextPP</Value>
+				</Property>
+				<Property>
+					<Name>Category</Name>
+					<Value>MC GroupModule</Value>
+				</Property>
+			</Properties>
+			<ParentOTCID>#x05100010</ParentOTCID>
+			<ParameterValues>
+				<Value>
+					<Name>TraceLevel</Name>
+					<EnumText>tlWarning</EnumText>
+				</Value>
+				<Value>
+					<Name>Ctx_TaskOid</Name>
+					<Value>33620048</Value>
+				</Value>
+				<Value>
+					<Name>XPlanar processing unit OID</Name>
+					<Value>16842768</Value>
+				</Value>
+				<Value>
+					<Name>Reset timeout for the parts of this environment</Name>
+					<Value>2</Value>
+				</Value>
+				<Value>
+					<Name>GroupOID</Name>
+					<Value>0</Value>
+				</Value>
+				<Value>
+					<Name>StatorCount</Name>
+					<Value>0</Value>
+				</Value>
+				<Value>
+					<Name>BoundaryElementCount</Name>
+					<Value>0</Value>
+				</Value>
+				<Value>
+					<Name>PartCount</Name>
+					<Value>0</Value>
+				</Value>
+			</ParameterValues>
+		</TmcDesc>
+	</GroupModule>
+</TcSmItem>

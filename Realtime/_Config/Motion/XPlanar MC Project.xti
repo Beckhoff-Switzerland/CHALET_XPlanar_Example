@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<TcSmItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.55" ClassName="CMcPrjDef" SubType="70" TcProjectVariant="Hardware">
+	<MC Id="#x051f0010">
+		<Name>__FILENAME__</Name>
+		<MET OTCID="#x02010050"/>
+		<MPT OTCID="#x02010060"/>
+		<MJT OTCID="#x02010040"/>
+		<Axis File="Mover1 (Planar Mover).xti"/>
+		<Axis File="Mover2 (Planar Mover).xti"/>
+		<Axis File="Mover3 (Planar Mover).xti"/>
+		<Group File="Track1.xti"/>
+		<Group File="Track2.xti"/>
+		<Group File="Track3.xti"/>
+		<Group File="Track4.xti"/>
+		<Group File="Track5.xti"/>
+		<Group File="Track6.xti"/>
+		<Group File="AnyStation01.xti"/>
+		<Group File="AnyStation02.xti"/>
+		<Group File="AnyStation03.xti"/>
+		<Group File="AnyStation04.xti"/>
+		<Group File="AnyStation05.xti"/>
+		<Group File="AnyStation06.xti"/>
+		<Group File="AnyStation07.xti"/>
+		<Group File="AnyStation08.xti"/>
+		<Group File="Environment.xti"/>
+		<Group File="XPlanar.xti"/>
+	</MC>
+</TcSmItem>

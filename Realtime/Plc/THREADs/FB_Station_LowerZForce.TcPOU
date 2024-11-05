@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_Station_LowerZForce" Id="{986f1d68-bf8e-4783-9c03-c01052f5acdc}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Station_LowerZForce EXTENDS FB_CH_Object
+VAR
+
+	ipStation : I_XP_Station_PLC;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="FB_init" Id="{4337220f-62bf-48d1-af24-ba632db2ff2c}">
+      <Declaration><![CDATA[METHOD FB_init : BOOL
+VAR_INPUT
+	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
+	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
+	
+	ipStation : I_XP_Station_PLC;
+	
+END_VAR
+VAR
+	fbGetCurTaskIdx  : GETCURTASKINDEX;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.ipStation := ipStation;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Update" Id="{dc7ca279-7959-4b33-8e61-bcdf95f8089d}">
+      <Declaration><![CDATA[METHOD Update : HRESULT
+VAR
+	refPlanarTrack : REFERENCE TO MC_PlanarTrack;
+END_VAR
+
+VAR_INST
+	nSeq : UINT;
+	fbFeedback : MC_PlanarFeedback;
+	fbTon : TON;
+	ipMoverInStation : I_XP_Mover_PLC;
+	stForceLimitMax, stForceLimitMin : Force6D;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF ipStation = 0 THEN
+	RETURN; // ERROR
+END_IF
+
+IF ipStation.System.Disabled THEN
+	nSeq := 0;
+END_IF
+
+ipStation.SimulationStop();
+
+CASE nSeq OF 
+
+	0: //wait for mover
+		IF ipStation.MoversInPlace THEN
+			ipMoverInStation := ipStation.MoversInQueue[0];
+			nSeq := 1;
+		END_IF
+		
+	1: //Z = 0
+		ipMoverInStation.MoveZ(0);
+		
+		stForceLimitMax := ipMoverInStation.TcIoXPlanarMover.GetForceLimitMax();
+		stForceLimitMin := ipMoverInStation.TcIoXPlanarMover.GetForceLimitMin();
+		
+		stForceLimitMax.Fz := 0.1;		
+		stForceLimitMin.Fz := 0.01;
+		stForceLimitMax.Mx := 0.1;		
+		stForceLimitMin.Mx := 0.01;
+		stForceLimitMax.My := 0.1;		
+		stForceLimitMin.My := 0.01;
+		
+		//Min musste be < Max
+		ipMoverInStation.TcIoXPlanarMover.SetForceLimitMin(stForceLimitMin);		
+		ipMoverInStation.TcIoXPlanarMover.SetForceLimitMax(stForceLimitMax);
+
+		nSeq := 2;				
+
+	2: // wait until disable is finish
+		IF ipMoverInStation.Feedback.Done THEN
+			fbTon.IN := FALSE;
+			nSeq := 3;	
+		END_IF
+		
+	3: //Delay 5s
+		fbTon.IN := TRUE;
+		IF fbTon.q THEN
+			nSeq := 4;	
+		END_IF			
+
+	4: //Z=4
+		ipMoverInStation.MoveZ(4.0);
+		
+		stForceLimitMax.Fz := 50;		
+		stForceLimitMin.Fz := 20;
+		stForceLimitMax.Mx := 2.0;		
+		stForceLimitMin.Mx := 0.2;
+		stForceLimitMax.My := 2.0;		
+		stForceLimitMin.My := 0.2;
+		
+		//Max must be >Min
+		ipMoverInStation.TcIoXPlanarMover.SetForceLimitMax(stForceLimitMax);
+		ipMoverInStation.TcIoXPlanarMover.SetForceLimitMin(stForceLimitMin);
+		nSeq := 5;				
+
+	5: // wait until enable is finish
+		IF ipMoverInStation.Feedback.Done THEN
+			fbTon.IN := FALSE;
+			nSeq := 6;	
+		END_IF
+		
+	6: //join Track
+		refPlanarTrack REF= ipStation.AccocietedTrack.PlanarTrack;
+		ipMoverInStation.PlanarMover.JoinTrack(	commandFeedback	:= fbFeedback, 
+												targetTrack		:= refPlanarTrack, 
+												constraint		:= ipMoverInStation.DynConstraint, 
+												options			:= 0);
+		nSeq := 7;				
+
+	7: // wait until enable is finish
+		IF fbFeedback.Done THEN
+			fbTon.IN := FALSE;
+			nSeq := 8;	
+		END_IF
+		
+	8: // send movers away
+		ipStation.SendMoversToStation(MAIN.G_WorkBench);
+		nSeq := 0;	
+	
+END_CASE
+fbFeedback.Update();
+fbTon(PT:= T#5S);]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

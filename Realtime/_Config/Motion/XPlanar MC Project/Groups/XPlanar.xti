@@ -1,0 +1,195 @@
+<?xml version="1.0"?>
+<TcSmItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.55" ClassName="CTComMcObjDef" SubType="72" TcProjectVariant="Hardware">
+	<DataTypes>
+		<DataType>
+			<Name GUID="{6D2B99B2-A9F2-44AF-A298-4BB7A08AE294}" Namespace="MC" TcBaseType="true">MC_PLANAR_STATE</Name>
+			<Comment><![CDATA[Indicates the enable state of a component.]]></Comment>
+			<BitSize>16</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000005}">UINT</BaseType>
+			<EnumInfo>
+				<Text><![CDATA[Invalid]]></Text>
+				<Enum>0</Enum>
+				<Comment><![CDATA[Indicates no or invalid information, e.g. no connection or component not yet ready.]]></Comment>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[Disabled]]></Text>
+				<Enum>1</Enum>
+				<Comment><![CDATA[Indicates a disabled component.]]></Comment>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[Enabling]]></Text>
+				<Enum>2</Enum>
+				<Comment><![CDATA[Indicates an enabling component.]]></Comment>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[Enabled]]></Text>
+				<Enum>3</Enum>
+				<Comment><![CDATA[Indicates an enabled component.]]></Comment>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[Disabling]]></Text>
+				<Enum>4</Enum>
+				<Comment><![CDATA[Indicates a disabling component.]]></Comment>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[Error]]></Text>
+				<Enum>5</Enum>
+				<Comment><![CDATA[Indicates a component in error state.]]></Comment>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[ErrorPending]]></Text>
+				<Enum>6</Enum>
+				<Comment><![CDATA[Indicates that a component is transitioning from any non error state to the error state.]]></Comment>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[Resetting]]></Text>
+				<Enum>7</Enum>
+				<Comment><![CDATA[Indicates that a component is resetting after it was in error state.]]></Comment>
+			</EnumInfo>
+			<Properties>
+				<Property>
+					<Name>plcAttribute_qualified_only</Name>
+				</Property>
+			</Properties>
+		</DataType>
+		<DataType>
+			<Name GUID="{E06D295F-3D94-4B18-B587-C89D73DA41F4}" Namespace="MC" TcBaseType="true">CDT_MCTOPLC_GROUP_PLANAR</Name>
+			<Comment><![CDATA[CDT provides current planar group information.]]></Comment>
+			<BitSize>96</BitSize>
+			<SubItem>
+				<Name>GroupOID</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</Type>
+				<Comment><![CDATA[Object id of the planar group.]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>GroupObjectCount</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<Comment><![CDATA[Number of objects in the planar group.]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>32</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>State</Name>
+				<Type GUID="{6D2B99B2-A9F2-44AF-A298-4BB7A08AE294}" Namespace="MC">MC_PLANAR_STATE</Type>
+				<Comment><![CDATA[State of the planar group, e.g. disabled.]]></Comment>
+				<BitSize>16</BitSize>
+				<BitOffs>64</BitOffs>
+			</SubItem>
+		</DataType>
+	</DataTypes>
+	<ImageDatas>
+		<ImageData Id="1000">424dd6020000000000003600000028000000100000000e00000001001800000000000000000000000000000000000000000000000000939393939393939393939393939393939393939393939393939393939393939393939393939393939393939393939393939393bdbbbb5d5c5c5d5c5c5d5c5c5d5c5c5d5c5c5d5c5c5d5c5c5d5c5c5d5c5c5d5c5c5d5c5c5d5c5c5d5c5c939393939393c5c3c35d5c5c9e9d9d5d5c5c636363c5c3c3c5c3c37d7c7b6c6b6cc0bebd545454c0bebdbdbbbb636363939393939393c5c3c35d5c5cadababc8c6c5605f5ea8a6a4c5c3c3c5c3c3adabab9e9d9dc5c3c3939393605f5e70706f939393939393cccccc5d5c5c5454549a9a976c6b6cc5c3c3c5c3c3c5c3c3c5c3c3c5c3c3c5c3c3605f5eb2b2b2b0aeae939393939393d0cecd5d5c5c8785859696965d5c5caaa8a7545454747474c5c3c3c5c3c36c6b6caaa8a7b2b2b2b2b2b2939393939393d5d3d3605f5ed5d3d35d5c5ccccccc5d5c5cb0aeae7d7c7b9e9c9ac5c3c35d5c5cbdbbbbb2b2b2bdbbbb939393939393dddddd5d5c5cdddddd6c6b6cadababcbcbcbcbcbcb9493915d5c5c545454939393c0bebdbdbbbbb2b2b2939393939393dddddd5d5c5ce3e3e3adabab6c6b6cd0cecdcbcbcbcbcbcbc8c6c55d5c5cc5c3c3c0bebdbdbbbbb2b2b2939393939393e3e3e3605f5ee3e3e3e3e3e3636363adababd0cecdcbcbcb8a8988878585c5c3c3c5c3c3bdbbbbbdbbbb939393939393e3e3e35d5c5ceaeaeaeaeaeae3e3e3545454adabab9a9a975d5c5ccbcbcbc8c6c5c5c3c3bdbbbbb2b2b2939393939393e3e3e35d5c5cf1f1f1eaeaeae3e3e3e3e3e36c6b6c797977d5d3d3cbcbcbc8c6c5c5c3c3bdbbbbb2b2b2939393939393e3e3e3605f5eeaeaeaeaeaeae3e3e3ddddddddddddd5d3d3d5d3d3ccccccc8c6c5c5c3c3bdbbbbbdbbbb939393939393939393939393939393939393939393939393939393939393939393939393939393939393939393939393939393</ImageData>
+	</ImageDatas>
+	<GroupModule Id="#x05120030">
+		<Name>__FILENAME__</Name>
+		<ImageId>1000</ImageId>
+		<TmcDesc GUID="{C2D951C9-E4FA-409C-8B5E-58B3BE9EB676}" TcSmClass="TComMcGroupObj">
+			<Name>Planar Group</Name>
+			<CLSID ClassFactory="TcNc3">{050300C9-0000-0000-F000-000000000064}</CLSID>
+			<InitSequence>PSO</InitSequence>
+			<Contexts>
+				<Context>
+					<Id>0</Id>
+					<Name>MET</Name>
+					<ManualConfig>
+						<OTCID>#x02010050</OTCID>
+					</ManualConfig>
+					<Priority>3</Priority>
+					<CycleTime>2000000</CycleTime>
+					<DependOn>ParentObject</DependOn>
+				</Context>
+				<Context>
+					<Id>1</Id>
+					<Name>MPT</Name>
+					<ManualConfig>
+						<OTCID>#x02010060</OTCID>
+					</ManualConfig>
+					<Priority>8</Priority>
+					<CycleTime>10000000</CycleTime>
+					<DependOn>ParentObject</DependOn>
+				</Context>
+			</Contexts>
+			<Parameters>
+				<Parameter HideParameter="true">
+					<Name>TraceLevel</Name>
+					<BitSize>32</BitSize>
+					<BaseType GUID="{8007AE3B-86BB-40F2-B385-EF87FCC239A4}">TcTraceLevel</BaseType>
+					<Default>
+						<Value>2</Value>
+					</Default>
+					<PTCID>#x03002103</PTCID>
+				</Parameter>
+				<Parameter HideParameter="true">
+					<Name>Ctx_TaskOid</Name>
+					<Comment><![CDATA[Task implementing ICyclicCaller for cyclic execution of this module]]></Comment>
+					<BitSize>32</BitSize>
+					<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+					<PTCID>#x03002060</PTCID>
+				</Parameter>
+				<Parameter OnlineParameter="true" ReadOnly="true">
+					<Name>Group object count</Name>
+					<Comment><![CDATA[Number of objects in the group, read only.]]></Comment>
+					<BitSize>32</BitSize>
+					<BaseType GUID="{18071995-0000-0000-0000-000000000008}">UDINT</BaseType>
+					<PTCID>#x050300c9</PTCID>
+				</Parameter>
+				<Parameter OnlineParameter="true" ReadOnly="true">
+					<Name>State</Name>
+					<Comment><![CDATA[State, read only.]]></Comment>
+					<BitSize>16</BitSize>
+					<BaseType GUID="{6D2B99B2-A9F2-44AF-A298-4BB7A08AE294}" Namespace="MC">MC_PLANAR_STATE</BaseType>
+					<PTCID>#x050300b6</PTCID>
+				</Parameter>
+			</Parameters>
+			<DataAreas>
+				<DataArea>
+					<AreaNo AreaType="OutputSrc">1</AreaNo>
+					<Name>McToPlc</Name>
+					<ContextId>0</ContextId>
+					<ByteSize>12</ByteSize>
+					<Symbol>
+						<Name>STD</Name>
+						<BitSize>96</BitSize>
+						<BaseType GUID="{E06D295F-3D94-4B18-B587-C89D73DA41F4}">MC.CDT_MCTOPLC_GROUP_PLANAR</BaseType>
+						<BitOffs>0</BitOffs>
+					</Symbol>
+				</DataArea>
+			</DataAreas>
+			<Properties>
+				<Property>
+					<Name>Category</Name>
+					<Value>MC Object</Value>
+				</Property>
+				<Property>
+					<Name>Category</Name>
+					<Value>HideTcComContextPP</Value>
+				</Property>
+				<Property>
+					<Name>Category</Name>
+					<Value>MC GroupModule</Value>
+				</Property>
+			</Properties>
+			<ParentOTCID>#x05100010</ParentOTCID>
+			<ParameterValues>
+				<Value>
+					<Name>TraceLevel</Name>
+					<EnumText>tlWarning</EnumText>
+				</Value>
+				<Value>
+					<Name>Ctx_TaskOid</Name>
+					<Value>33620048</Value>
+				</Value>
+				<Value>
+					<Name>Group object count</Name>
+					<Value>0</Value>
+				</Value>
+				<Value>
+					<Name>State</Name>
+					<EnumText>Invalid</EnumText>
+				</Value>
+			</ParameterValues>
+		</TmcDesc>
+	</GroupModule>
+</TcSmItem>
