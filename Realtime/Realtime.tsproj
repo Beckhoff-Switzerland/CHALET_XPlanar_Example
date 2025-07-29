@@ -1,6 +1,88 @@
 <?xml version="1.0"?>
-<TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.55" TcProjectVariant="Simulation">
+<TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4026.17" TcProjectVariant="Simulation">
 	<DataTypes>
+		<DataType>
+			<Name GUID="{5AC0538E-BDFA-4B58-A6B5-99E997DABADA}" Namespace="MC">MoverVector</Name>
+			<Comment><![CDATA[A vector of six numeric values corresponding to the six coordinates of the PlanarMover. May be used e.g. for position, velocity or acceleration of the PlanarMover.]]></Comment>
+			<BitSize>384</BitSize>
+			<SubItem>
+				<Name>x</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<Comment><![CDATA[X coordinate.]]></Comment>
+				<BitSize>64</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>y</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<Comment><![CDATA[Y coordinate.]]></Comment>
+				<BitSize>64</BitSize>
+				<BitOffs>64</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>z</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<Comment><![CDATA[Z coordinate.]]></Comment>
+				<BitSize>64</BitSize>
+				<BitOffs>128</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>a</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<Comment><![CDATA[A coordinate.]]></Comment>
+				<BitSize>64</BitSize>
+				<BitOffs>192</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<Comment><![CDATA[B coordinate.]]></Comment>
+				<BitSize>64</BitSize>
+				<BitOffs>256</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>c</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<Comment><![CDATA[C coordinate.]]></Comment>
+				<BitSize>64</BitSize>
+				<BitOffs>320</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{F92FC05B-6D35-4772-9AFF-FBAB22BAFE54}" Namespace="TcIoXPlanar">IXPlanarExternalFeedback</Name>
+			<BitSize X64="64">32</BitSize>
+			<BaseType GUID="{00000001-0000-0000-E000-000000000064}">ITcUnknown</BaseType>
+			<Method>
+				<Name>Update</Name>
+				<ReturnType GUID="{18071995-0000-0000-0000-000000000019}">HRESULT</ReturnType>
+				<ReturnBitSize>32</ReturnBitSize>
+				<Parameter>
+					<Name>internalMeasuredPosition</Name>
+					<Type GUID="{5AC0538E-BDFA-4B58-A6B5-99E997DABADA}" Namespace="MC" ReferenceTo="true">MoverVector</Type>
+					<BitSize X64="64">32</BitSize>
+				</Parameter>
+				<Parameter>
+					<Name>internalEstimatedPosition</Name>
+					<Type GUID="{5AC0538E-BDFA-4B58-A6B5-99E997DABADA}" Namespace="MC" ReferenceTo="true">MoverVector</Type>
+					<BitSize X64="64">32</BitSize>
+				</Parameter>
+				<Parameter>
+					<Name>externalEstimatedPosition</Name>
+					<Type GUID="{5AC0538E-BDFA-4B58-A6B5-99E997DABADA}" Namespace="MC" ReferenceTo="true">MoverVector</Type>
+					<BitSize X64="64">32</BitSize>
+				</Parameter>
+				<Parameter>
+					<Name>externalMeasuredPosition</Name>
+					<Type GUID="{5AC0538E-BDFA-4B58-A6B5-99E997DABADA}" Namespace="MC" ReferenceTo="true">MoverVector</Type>
+					<BitSize X64="64">32</BitSize>
+				</Parameter>
+			</Method>
+			<Relations>
+				<Relation>
+					<Type GUID="{2137AC36-123E-4F5C-B41C-2BB63239FB6C}">IXPlanarExternalFeedback</Type>
+				</Relation>
+			</Relations>
+		</DataType>
 		<DataType>
 			<Name GUID="{6AE7E673-63EC-47D2-8848-B05746BFA1B6}" Namespace="TcIoXPlanar">MlInstructionSet</Name>
 			<BitSize>16</BitSize>
@@ -121,7 +203,7 @@
 			</Relations>
 		</DataType>
 		<DataType>
-			<Name GUID="{D490BE6C-E2BF-4198-A3C9-2AD1EC0EB64D}" Namespace="TcIoXPlanar">XPlanarMoverType</Name>
+			<Name GUID="{3ED0362E-AEE3-442B-BB1E-CD6012F602CD}" Namespace="TcIoXPlanar">XPlanarMoverType</Name>
 			<BitSize>16</BitSize>
 			<BaseType GUID="{18071995-0000-0000-0000-000000000006}">INT</BaseType>
 			<EnumInfo>
@@ -133,8 +215,20 @@
 				<Enum>#x0003</Enum>
 			</EnumInfo>
 			<EnumInfo>
+				<Text><![CDATA[APM4230]]></Text>
+				<Enum>#x0004</Enum>
+			</EnumInfo>
+			<EnumInfo>
 				<Text><![CDATA[APM4330]]></Text>
 				<Enum>#x0000</Enum>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[APM4330_0001]]></Text>
+				<Enum>#x0100</Enum>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[APM4350]]></Text>
+				<Enum>#x0005</Enum>
 			</EnumInfo>
 			<EnumInfo>
 				<Text><![CDATA[APM4550]]></Text>
@@ -145,7 +239,22 @@
 			</Default>
 			<Relations>
 				<Relation>
+					<Type GUID="{8E83AD6C-61D4-4CFD-B94F-A7888F3186A9}" Namespace="TcIoXPlanar">XPlanarMoverType</Type>
+				</Relation>
+				<Relation>
+					<Type GUID="{D490BE6C-E2BF-4198-A3C9-2AD1EC0EB64D}" Namespace="XPlanar">XPlanarMoverType</Type>
+				</Relation>
+				<Relation>
 					<Type GUID="{A10D68B9-E2C8-47E9-9739-EA3B7F7F6730}" Namespace="XPlanar">XPlanarMoverType</Type>
+				</Relation>
+				<Relation>
+					<Type GUID="{62297CAE-6196-46DE-B8AA-593D323C56D0}" Namespace="XPlanar">XPlanarMoverType</Type>
+				</Relation>
+				<Relation>
+					<Type GUID="{7A54DB32-DA91-4D90-A88C-098002F16B44}" Namespace="XPlanar">XPlanarMoverType</Type>
+				</Relation>
+				<Relation>
+					<Type GUID="{4C3556CE-FB92-4643-B54E-5BE4CF9B06C8}">MoverType</Type>
 				</Relation>
 				<Relation>
 					<Type GUID="{1406DB49-02D1-440A-8B4F-9385A7182127}">MoverType</Type>
@@ -159,14 +268,17 @@
 				<Relation>
 					<Type GUID="{5B1B0327-048C-4E38-B755-C35DAD6D96A6}">MoverType</Type>
 				</Relation>
+				<Relation>
+					<Type GUID="{DEBC0BE7-DFDE-4188-9531-0811D0DB81A4}">MoverType</Type>
+				</Relation>
 			</Relations>
 		</DataType>
 		<DataType>
-			<Name GUID="{397C9D23-023F-4DFD-BAF8-30ACB5EF21BB}" Namespace="TcIoXPlanar">MoverDetectionSetup</Name>
+			<Name GUID="{55242005-02B9-41B9-8797-CE074E2B5109}" Namespace="TcIoXPlanar">MoverDetectionSetup</Name>
 			<BitSize>32</BitSize>
 			<SubItem>
 				<Name>MoverType</Name>
-				<Type GUID="{D490BE6C-E2BF-4198-A3C9-2AD1EC0EB64D}" Namespace="TcIoXPlanar">XPlanarMoverType</Type>
+				<Type GUID="{3ED0362E-AEE3-442B-BB1E-CD6012F602CD}" Namespace="TcIoXPlanar">XPlanarMoverType</Type>
 				<BitSize>16</BitSize>
 				<BitOffs>0</BitOffs>
 			</SubItem>
@@ -177,6 +289,18 @@
 				<BitOffs>16</BitOffs>
 			</SubItem>
 			<Relations>
+				<Relation>
+					<Type GUID="{397C9D23-023F-4DFD-BAF8-30ACB5EF21BB}" Namespace="TcIoXPlanar">MoverDetectionSetup</Type>
+				</Relation>
+				<Relation>
+					<Type GUID="{06952D5B-009F-4EC0-A139-F86D3E02B11B}" Namespace="TcIoXPlanar">MoverDetectionSetup</Type>
+				</Relation>
+				<Relation>
+					<Type GUID="{38BB6EF2-EA4D-4F88-AC42-4C9DCBEA49D3}">MoverDetectionSetup</Type>
+				</Relation>
+				<Relation>
+					<Type GUID="{33026B7E-8CA2-4FA0-AEEE-91C315465D73}">MoverDetectionSetup</Type>
+				</Relation>
 				<Relation>
 					<Type GUID="{5D4FC090-62D0-408D-AA64-9C01525D8D92}">MoverDetectionSetup</Type>
 				</Relation>
@@ -312,8 +436,8 @@
 			</Relations>
 		</DataType>
 		<DataType>
-			<Name GUID="{AC69E643-A2CF-43F0-8DAA-5A19FD61A06C}" Namespace="TcIoXPlanar">XpuMoverDetectionInfos</Name>
-			<BitSize>320</BitSize>
+			<Name GUID="{4B466926-03E0-4213-882C-CD6527B393FC}" Namespace="TcIoXPlanar">XpuMoverDetectionInfos</Name>
+			<BitSize>512</BitSize>
 			<SubItem>
 				<Name>Total</Name>
 				<Type GUID="{29C233F9-881E-4786-B0F8-42085600CD2C}" Namespace="TcIoXPlanar">DetectionCountInfo</Type>
@@ -333,18 +457,45 @@
 				<BitOffs>128</BitOffs>
 			</SubItem>
 			<SubItem>
-				<Name>APM4330</Name>
+				<Name>APM4230</Name>
 				<Type GUID="{29C233F9-881E-4786-B0F8-42085600CD2C}" Namespace="TcIoXPlanar">DetectionCountInfo</Type>
 				<BitSize>64</BitSize>
 				<BitOffs>192</BitOffs>
 			</SubItem>
 			<SubItem>
-				<Name>APM4550</Name>
+				<Name>APM4330</Name>
 				<Type GUID="{29C233F9-881E-4786-B0F8-42085600CD2C}" Namespace="TcIoXPlanar">DetectionCountInfo</Type>
 				<BitSize>64</BitSize>
 				<BitOffs>256</BitOffs>
 			</SubItem>
+			<SubItem>
+				<Name>APM4330_0001</Name>
+				<Type GUID="{29C233F9-881E-4786-B0F8-42085600CD2C}" Namespace="TcIoXPlanar">DetectionCountInfo</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>320</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>APM4350</Name>
+				<Type GUID="{29C233F9-881E-4786-B0F8-42085600CD2C}" Namespace="TcIoXPlanar">DetectionCountInfo</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>384</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>APM4550</Name>
+				<Type GUID="{29C233F9-881E-4786-B0F8-42085600CD2C}" Namespace="TcIoXPlanar">DetectionCountInfo</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>448</BitOffs>
+			</SubItem>
 			<Relations>
+				<Relation>
+					<Type GUID="{AC69E643-A2CF-43F0-8DAA-5A19FD61A06C}" Namespace="TcIoXPlanar">XpuMoverDetectionInfos</Type>
+				</Relation>
+				<Relation>
+					<Type GUID="{A0772325-01B5-47DB-9797-167FB92FFA74}" Namespace="TcIoXPlanar">XpuMoverDetectionInfos</Type>
+				</Relation>
+				<Relation>
+					<Type GUID="{6876C7F5-5180-4503-AFC8-08A14D3B88FD}">XpuMoverDetectionInfos</Type>
+				</Relation>
 				<Relation>
 					<Type GUID="{167E516C-83AA-486E-9FFA-FDE9605B5EDA}">XpuMoverDetectionInfos</Type>
 				</Relation>
@@ -387,7 +538,7 @@
 			</Relations>
 		</DataType>
 		<DataType>
-			<Name GUID="{94D92E0F-449F-4F3E-99E4-7B8D12796B44}" Namespace="TcIoXPlanar">DetectedMoverInfo</Name>
+			<Name GUID="{42CE4BA1-4EC8-421B-AC5E-A5DBE9C63F53}" Namespace="TcIoXPlanar">DetectedMoverInfo</Name>
 			<BitSize>192</BitSize>
 			<SubItem>
 				<Name>DetectedPosition</Name>
@@ -397,7 +548,7 @@
 			</SubItem>
 			<SubItem>
 				<Name>MoverType</Name>
-				<Type GUID="{D490BE6C-E2BF-4198-A3C9-2AD1EC0EB64D}" Namespace="TcIoXPlanar">XPlanarMoverType</Type>
+				<Type GUID="{3ED0362E-AEE3-442B-BB1E-CD6012F602CD}" Namespace="TcIoXPlanar">XPlanarMoverType</Type>
 				<BitSize>16</BitSize>
 				<BitOffs>96</BitOffs>
 			</SubItem>
@@ -414,6 +565,15 @@
 				<BitOffs>160</BitOffs>
 			</SubItem>
 			<Relations>
+				<Relation>
+					<Type GUID="{4ACA3A97-0C67-48C4-B9E9-3A35D3E9BAD1}" Namespace="TcIoXPlanar">DetectedMoverInfo</Type>
+				</Relation>
+				<Relation>
+					<Type GUID="{E803425A-AB24-45EE-89E9-7AB0719876FA}">DetectedMoverInfo</Type>
+				</Relation>
+				<Relation>
+					<Type GUID="{94D92E0F-449F-4F3E-99E4-7B8D12796B44}" Namespace="TcIoXPlanar">DetectedMoverInfo</Type>
+				</Relation>
 				<Relation>
 					<Type GUID="{5C192B11-88BB-4C7E-8A5C-71C9C62C0CC5}">DetectedMoverInfo</Type>
 				</Relation>
@@ -490,7 +650,7 @@
 			</Relations>
 		</DataType>
 		<DataType>
-			<Name GUID="{32F49A33-5989-4077-851B-7D9068938AC1}" Namespace="TcIoXPlanar">XPlanarEvents</Name>
+			<Name GUID="{13066D61-08C3-495B-AA41-2259D07198C3}" Namespace="TcIoXPlanar">XPlanarEvents</Name>
 			<DisplayName TxtId=""><![CDATA[XPlanarEvents]]></DisplayName>
 			<Comment TxtId=""><![CDATA[Manages all XPlanar event logger messages]]></Comment>
 			<EventId>
@@ -514,13 +674,13 @@
 				<Severity>Info</Severity>
 			</EventId>
 			<EventId>
-				<Name Id="#x13170007">I0007_CoordinatedMoverComm_Started</Name>
-				<DisplayName TxtId=""><![CDATA[Coordinated mover communication started.]]></DisplayName>
+				<Name Id="#x13170007">I0007_CoordinatedMoverComm_Started_IdentifyAndFindAllConfigured</Name>
+				<DisplayName TxtId=""><![CDATA[Coordinated mover communication started to identify and find all configured movers.]]></DisplayName>
 				<Severity>Info</Severity>
 			</EventId>
 			<EventId>
 				<Name Id="#x13170008">I0008_CoordinatedMoverComm_Successful</Name>
-				<DisplayName TxtId=""><![CDATA[Coordinated mover communication was successful.]]></DisplayName>
+				<DisplayName TxtId=""><![CDATA[Coordinated mover communication finished.]]></DisplayName>
 				<Severity>Info</Severity>
 			</EventId>
 			<EventId>
@@ -532,6 +692,41 @@
 				<Name Id="#x1317000A">I000A_CoordinatedMoverComm_MoverRemoved</Name>
 				<DisplayName TxtId=""><![CDATA[Mover with object ID 0x{0,X} was removed from the system.]]></DisplayName>
 				<Severity>Verbose</Severity>
+			</EventId>
+			<EventId>
+				<Name Id="#x1317000B">I000B_CoordinatedMoverComm_Started_IdentifyAndAssignPossible</Name>
+				<DisplayName TxtId=""><![CDATA[Coordinated mover communication started to identify and assign movers if possible.]]></DisplayName>
+				<Severity>Info</Severity>
+			</EventId>
+			<EventId>
+				<Name Id="#x1317000C">I000C_CoordinatedMoverComm_Started_ReadBTNs</Name>
+				<DisplayName TxtId=""><![CDATA[Coordinated mover communication started to read BTN of all movers.]]></DisplayName>
+				<Severity>Info</Severity>
+			</EventId>
+			<EventId>
+				<Name Id="#x1317000D">I000D_CoordinatedMoverComm_Started_DetermineOrientations</Name>
+				<DisplayName TxtId=""><![CDATA[Coordinated mover communication started to determine orientations of all movers.]]></DisplayName>
+				<Severity>Info</Severity>
+			</EventId>
+			<EventId>
+				<Name Id="#x1317000E">I000E_CoordinatedMoverComm_Started_DetermineOrientationsWithoutTurning</Name>
+				<DisplayName TxtId=""><![CDATA[Coordinated mover communication started to determine orientations of all movers without turning.]]></DisplayName>
+				<Severity>Info</Severity>
+			</EventId>
+			<EventId>
+				<Name Id="#x1317000F">I000F_CoordinatedMoverComm_PreparingMovers</Name>
+				<DisplayName TxtId=""><![CDATA[Preparing movers for communication.]]></DisplayName>
+				<Severity>Info</Severity>
+			</EventId>
+			<EventId>
+				<Name Id="#x13170010">I0010_CoordinatedMoverComm_InProgress</Name>
+				<DisplayName TxtId=""><![CDATA[Communication in progress...]]></DisplayName>
+				<Severity>Info</Severity>
+			</EventId>
+			<EventId>
+				<Name Id="#x13170011">I0011_CoordinatedMoverComm_RearrangingMovers</Name>
+				<DisplayName TxtId=""><![CDATA[Rearrange movers.]]></DisplayName>
+				<Severity>Info</Severity>
 			</EventId>
 			<EventId>
 				<Name Id="#x13175000">I5000_DeterminedNcCycleTime</Name>
@@ -610,7 +805,7 @@
 			</EventId>
 			<EventId>
 				<Name Id="#x1317B007">IB007_RequestedMoverAdoption</Name>
-				<DisplayName TxtId=""><![CDATA[Mover-OID 0x{0,X} from system {1} requested mover adoption by Mover-OID 0x{2,X}]]></DisplayName>
+				<DisplayName TxtId=""><![CDATA[Mover-OID 0x{0,X} from system {1} requested mover adoption of Mover-OID 0x{2,X}]]></DisplayName>
 				<Severity>Info</Severity>
 			</EventId>
 			<EventId>
@@ -654,8 +849,8 @@
 				<Severity>Warning</Severity>
 			</EventId>
 			<EventId>
-				<Name Id="#x2317500F">W500F_ExternalFeedbackDeviationTooLarge</Name>
-				<DisplayName TxtId=""><![CDATA[[Event ID: 0x{0,X}] External feedback deviation too large on axis {1}.]]></DisplayName>
+				<Name Id="#x2317500F">W500F_SyncInterruptedStateActive</Name>
+				<DisplayName TxtId=""><![CDATA[[Event ID: 0x{0,X}] DC synchronization interrupted during mover transfer.]]></DisplayName>
 				<Severity>Warning</Severity>
 			</EventId>
 			<EventId>
@@ -664,8 +859,8 @@
 				<Severity>Warning</Severity>
 			</EventId>
 			<EventId>
-				<Name Id="#x23175012">W5012_ExternalFeedbackOidInvalid</Name>
-				<DisplayName TxtId=""><![CDATA[[Event ID: 0x{0,X}] External feedback OID parameter invalid.]]></DisplayName>
+				<Name Id="#x23175012">W5012_ExternalFeedbackInterfaceMissing</Name>
+				<DisplayName TxtId=""><![CDATA[[Event ID: 0x{0,X}] Failed to retrieve external feedback interface. Check the external feedback OID parameter is correct.]]></DisplayName>
 				<Severity>Warning</Severity>
 			</EventId>
 			<EventId>
@@ -689,11 +884,6 @@
 				<Severity>Error</Severity>
 			</EventId>
 			<EventId>
-				<Name Id="#x23175017">W5017_ExternalFeedbackOidMissing</Name>
-				<DisplayName TxtId=""><![CDATA[[Event ID: 0x{0,X}] External feedback OID parameter missing.]]></DisplayName>
-				<Severity>Warning</Severity>
-			</EventId>
-			<EventId>
 				<Name Id="#x23175018">W5018_ExternalFeedbackParametrizationSetNotFound</Name>
 				<DisplayName TxtId=""><![CDATA[[Event ID: 0x{0,X}] Defined external feedback parametrization set could not be found.]]></DisplayName>
 				<Severity>Warning</Severity>
@@ -706,6 +896,21 @@
 			<EventId>
 				<Name Id="#x23176002">W6002_TileHardwareWarning</Name>
 				<DisplayName TxtId=""><![CDATA[[Event ID: 0x{0,X}] Tile hardware warning (Value of CoE register 0x81430: 0x{1,X}).]]></DisplayName>
+				<Severity>Warning</Severity>
+			</EventId>
+			<EventId>
+				<Name Id="#x23176003">W6003_TileSwitchPositionNotChangedWarning</Name>
+				<DisplayName TxtId=""><![CDATA[[Event ID: 0x{0,X}] FB Inputs have not changed since last cycle.]]></DisplayName>
+				<Severity>Warning</Severity>
+			</EventId>
+			<EventId>
+				<Name Id="#x23176004">W6004_TileSwitchPositionMissedCycleWarning</Name>
+				<DisplayName TxtId=""><![CDATA[[Event ID: 0x{0,X}] FB Inputs were missed for one cycle.]]></DisplayName>
+				<Severity>Warning</Severity>
+			</EventId>
+			<EventId>
+				<Name Id="#x23176005">W6005_TileSwitchPositionImplausibleWarning</Name>
+				<DisplayName TxtId=""><![CDATA[[Event ID: 0x{0,X}] FB Inputs implausible switch position (expected: {1}, actual: {2}).]]></DisplayName>
 				<Severity>Warning</Severity>
 			</EventId>
 			<EventId>
@@ -1030,7 +1235,7 @@
 			</EventId>
 			<EventId>
 				<Name Id="#x33175032">E5032_Communication_MoverNotAbleToCommunicate</Name>
-				<DisplayName TxtId=""><![CDATA[[Event ID: 0x{0,X}] Mover is not able to communicate. Communication aborted.]]></DisplayName>
+				<DisplayName TxtId=""><![CDATA[[Event ID: 0x{0,X}] Mover communication not possible. Either no ID bumper is configured or the configured mover type does not allow communication.]]></DisplayName>
 				<Severity>Error</Severity>
 			</EventId>
 			<EventId>
@@ -1069,6 +1274,21 @@
 				<Severity>Error</Severity>
 			</EventId>
 			<EventId>
+				<Name Id="#x3317503A">E503A_ExternalFeedbackDeviationTooLarge</Name>
+				<DisplayName TxtId=""><![CDATA[[Event ID: 0x{0,X}] External feedback deviation too large on axis {1}.]]></DisplayName>
+				<Severity>Error</Severity>
+			</EventId>
+			<EventId>
+				<Name Id="#x3317503C">E503C_ActivateMoverTransferFailed</Name>
+				<DisplayName TxtId=""><![CDATA[[Event ID: 0x{0,X}] Activate mover transfer failed.]]></DisplayName>
+				<Severity>Error</Severity>
+			</EventId>
+			<EventId>
+				<Name Id="#x3317503D">E503D_CanceledTransferDueToSnycNotOk</Name>
+				<DisplayName TxtId=""><![CDATA[[Event ID: 0x{0,X}] Canceled mover transfer because of interrupted DC synchronization.]]></DisplayName>
+				<Severity>Error</Severity>
+			</EventId>
+			<EventId>
 				<Name Id="#x33175041">E5041_Communication_MoverTransferNotActivated</Name>
 				<DisplayName TxtId=""><![CDATA[[Event ID: 0x{0,X}] Mover is between to XPlanar systems and mover transfer is not activated. Communication aborted.]]></DisplayName>
 				<Severity>Error</Severity>
@@ -1080,7 +1300,7 @@
 			</EventId>
 			<EventId>
 				<Name Id="#x33175043">E5043_Communication_OrientationWrongMoverFirmware</Name>
-				<DisplayName TxtId=""><![CDATA[[Event ID: 0x{0,X}] Wrong mover firmware, firmware must be >= 4. Mover orientation cannot be determined.]]></DisplayName>
+				<DisplayName TxtId=""><![CDATA[[Event ID: 0x{0,X}] Wrong mover firmware. Firmware version must be greater than 3. Mover orientation cannot be determined.]]></DisplayName>
 				<Severity>Error</Severity>
 			</EventId>
 			<EventId>
@@ -1096,6 +1316,11 @@
 			<EventId>
 				<Name Id="#x33175046">E5046_Communication_DecodingFailed</Name>
 				<DisplayName TxtId=""><![CDATA[[Event ID: 0x{0,X}] Decoding of the message from the mover failed. Mover communication failed.]]></DisplayName>
+				<Severity>Error</Severity>
+			</EventId>
+			<EventId>
+				<Name Id="#x33175047">E5047_Communication_OrientingMoverFailed</Name>
+				<DisplayName TxtId=""><![CDATA[[Event ID: 0x{0,X}] Mover is rotated and cannot be orientated. Communication aborted.]]></DisplayName>
 				<Severity>Error</Severity>
 			</EventId>
 			<EventId>
@@ -1129,13 +1354,13 @@
 				<Severity>Error</Severity>
 			</EventId>
 			<EventId>
-				<Name Id="#x3317600C">E600C_UnderrunDcLinkVoltageThreshold</Name>
-				<DisplayName TxtId=""><![CDATA[[Event ID: 0x{0,X}] Underrun DC-Link voltage threshold]]></DisplayName>
+				<Name Id="#x33178006">E8006_TileHardwareError</Name>
+				<DisplayName TxtId=""><![CDATA[[Event ID: 0x{0,X}] One tile of this part has an error. The part, its tiles and its movers are shutting down.]]></DisplayName>
 				<Severity>Error</Severity>
 			</EventId>
 			<EventId>
-				<Name Id="#x33178006">E8006_TileHardwareError</Name>
-				<DisplayName TxtId=""><![CDATA[[Event ID: 0x{0,X}] One tile of this part has an error. The part, its tiles and its movers are shutting down.]]></DisplayName>
+				<Name Id="#x33178009">E8009_PartDetectionNotPossible</Name>
+				<DisplayName TxtId=""><![CDATA[[Event ID: 0x{0,X}] Part redetection is not possible.]]></DisplayName>
 				<Severity>Error</Severity>
 			</EventId>
 			<EventId>
@@ -1195,6 +1420,184 @@
 			</EventId>
 		</DataType>
 		<DataType>
+			<Name GUID="{960D5D3A-1C8A-4482-844E-842A4F399F8E}" Namespace="TcIoXPlanar">SetpointInterpolation</Name>
+			<BitSize>16</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000006}">INT</BaseType>
+			<EnumInfo>
+				<Text><![CDATA[NcDynamics]]></Text>
+				<Enum>0</Enum>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[BSpline]]></Text>
+				<Enum>1</Enum>
+			</EnumInfo>
+			<Default>
+				<EnumText>NcDynamics</EnumText>
+			</Default>
+			<Relations>
+				<Relation>
+					<Type GUID="{65A20807-500A-4D37-804B-505611AEF231}">SetpointInterpolation</Type>
+				</Relation>
+			</Relations>
+		</DataType>
+		<DataType>
+			<Name GUID="{93EFF533-445A-499F-B877-8FDA3E4311E2}" Namespace="TcIoXPlanar">PositionReferenceMode</Name>
+			<BitSize>16</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000006}">INT</BaseType>
+			<EnumInfo>
+				<Text><![CDATA[NoCommonReference]]></Text>
+				<Enum>0</Enum>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[TileTopSurface]]></Text>
+				<Enum>1</Enum>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[TileBottomSurface]]></Text>
+				<Enum>2</Enum>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[UserSpecifiedCommonReference]]></Text>
+				<Enum>3</Enum>
+			</EnumInfo>
+			<Default>
+				<EnumText>NoCommonReference</EnumText>
+			</Default>
+			<Relations>
+				<Relation>
+					<Type GUID="{ED813484-0EE8-4306-9949-E77D6DA31354}">PositionReferenceMode</Type>
+				</Relation>
+			</Relations>
+		</DataType>
+		<DataType>
+			<Name GUID="{70954D12-5B1F-46F1-8D45-40C9481F0D4D}" Namespace="TcIoXPlanar">Inertia</Name>
+			<BitSize>448</BitSize>
+			<SubItem>
+				<Name>Mass</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<Comment><![CDATA[Mass]]></Comment>
+				<BitSize>64</BitSize>
+				<BitOffs>0</BitOffs>
+				<Unit><![CDATA[kg]]></Unit>
+				<Default>
+					<Value>0.0</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>Ixx</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<Comment><![CDATA[Ixx. Defined about the centre of mass.]]></Comment>
+				<BitSize>64</BitSize>
+				<BitOffs>64</BitOffs>
+				<Unit><![CDATA[kg*m^2]]></Unit>
+				<Default>
+					<Value>0.0</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>Iyy</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<Comment><![CDATA[Iyy. Defined about the centre of mass.]]></Comment>
+				<BitSize>64</BitSize>
+				<BitOffs>128</BitOffs>
+				<Unit><![CDATA[kg*m^2]]></Unit>
+				<Default>
+					<Value>0.0</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>Izz</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<Comment><![CDATA[Izz. Defined about the centre of mass.]]></Comment>
+				<BitSize>64</BitSize>
+				<BitOffs>192</BitOffs>
+				<Unit><![CDATA[kg*m^2]]></Unit>
+				<Default>
+					<Value>0.0</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>CentreOfMassX</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<Comment><![CDATA[X-distance from setpoint origin to centre of mass.]]></Comment>
+				<BitSize>64</BitSize>
+				<BitOffs>256</BitOffs>
+				<Unit><![CDATA[mm]]></Unit>
+				<Default>
+					<Value>0.0</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>CentreOfMassY</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<Comment><![CDATA[Y-distance from setpoint origin to centre of mass.]]></Comment>
+				<BitSize>64</BitSize>
+				<BitOffs>320</BitOffs>
+				<Unit><![CDATA[mm]]></Unit>
+				<Default>
+					<Value>0.0</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>CentreOfMassZ</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<Comment><![CDATA[Z-distance from setpoint origin to centre of mass.]]></Comment>
+				<BitSize>64</BitSize>
+				<BitOffs>384</BitOffs>
+				<Unit><![CDATA[mm]]></Unit>
+				<Default>
+					<Value>0.0</Value>
+				</Default>
+			</SubItem>
+			<Relations>
+				<Relation>
+					<Type GUID="{37C687C7-4849-49C3-9378-1D55EE704BE2}">Inertia</Type>
+				</Relation>
+			</Relations>
+		</DataType>
+		<DataType>
+			<Name GUID="{D695FF89-E870-4A02-9D41-2147DD54482F}" Namespace="TcIoXPlanar">ProductsOfInertia</Name>
+			<BitSize>192</BitSize>
+			<SubItem>
+				<Name>Ixy</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<Comment><![CDATA[Ixy. Defined about the centre of mass.]]></Comment>
+				<BitSize>64</BitSize>
+				<BitOffs>0</BitOffs>
+				<Unit><![CDATA[kg*m^2]]></Unit>
+				<Default>
+					<Value>0.0</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>Ixz</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<Comment><![CDATA[Ixz. Defined about the centre of mass.]]></Comment>
+				<BitSize>64</BitSize>
+				<BitOffs>64</BitOffs>
+				<Unit><![CDATA[kg*m^2]]></Unit>
+				<Default>
+					<Value>0.0</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>Iyz</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<Comment><![CDATA[Iyz. Defined about the centre of mass.]]></Comment>
+				<BitSize>64</BitSize>
+				<BitOffs>128</BitOffs>
+				<Unit><![CDATA[kg*m^2]]></Unit>
+				<Default>
+					<Value>0.0</Value>
+				</Default>
+			</SubItem>
+			<Relations>
+				<Relation>
+					<Type GUID="{94765AD4-FB69-4AA2-8A09-FC4A9767FFE9}">ProductsOfInertia</Type>
+				</Relation>
+			</Relations>
+		</DataType>
+		<DataType>
 			<Name GUID="{6D2B99B2-A9F2-44AF-A298-4BB7A08AE294}" Namespace="MC" TcBaseType="true">MC_PLANAR_STATE</Name>
 			<Comment><![CDATA[Indicates the enable state of a component.]]></Comment>
 			<BitSize>16</BitSize>
@@ -1242,6 +1645,9 @@
 			<Properties>
 				<Property>
 					<Name>plcAttribute_qualified_only</Name>
+				</Property>
+				<Property>
+					<Name>plcAttribute_to_string</Name>
 				</Property>
 			</Properties>
 		</DataType>
@@ -1342,16 +1748,24 @@
 			<EnumInfo>
 				<Text><![CDATA[CRotationFreeMovement]]></Text>
 				<Enum>106</Enum>
-				<Comment><![CDATA[Indicates that the PlanarMover only rotating the C coordinate in free movement, X and Y are standing.]]></Comment>
+				<Comment><![CDATA[Indicates that the PlanarMover is only rotating the C coordinate in free movement, X and Y are standing.]]></Comment>
 			</EnumInfo>
 			<EnumInfo>
 				<Text><![CDATA[CRotationOnTrack]]></Text>
 				<Enum>107</Enum>
-				<Comment><![CDATA[Indicates that the PlanarMover only rotating the C coordinate on a track, X and Y are standing.]]></Comment>
+				<Comment><![CDATA[Indicates that the PlanarMover is only rotating the C coordinate on a track, X and Y are standing.]]></Comment>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[ExternalBodeplot]]></Text>
+				<Enum>109</Enum>
+				<Comment><![CDATA[Indicates that the PlanarMover is following external bodeplot setpoints.]]></Comment>
 			</EnumInfo>
 			<Properties>
 				<Property>
 					<Name>plcAttribute_qualified_only</Name>
+				</Property>
+				<Property>
+					<Name>plcAttribute_to_string</Name>
 				</Property>
 			</Properties>
 		</DataType>
@@ -1464,53 +1878,6 @@
 			</SubItem>
 		</DataType>
 		<DataType>
-			<Name GUID="{5AC0538E-BDFA-4B58-A6B5-99E997DABADA}" Namespace="MC">MoverVector</Name>
-			<Comment><![CDATA[A vector of six numeric values corresponding to the six coordinates of the PlanarMover. May be used e.g. for position, velocity or acceleration of the PlanarMover.]]></Comment>
-			<BitSize>384</BitSize>
-			<SubItem>
-				<Name>x</Name>
-				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
-				<Comment><![CDATA[X coordinate.]]></Comment>
-				<BitSize>64</BitSize>
-				<BitOffs>0</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>y</Name>
-				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
-				<Comment><![CDATA[Y coordinate.]]></Comment>
-				<BitSize>64</BitSize>
-				<BitOffs>64</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>z</Name>
-				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
-				<Comment><![CDATA[Z coordinate.]]></Comment>
-				<BitSize>64</BitSize>
-				<BitOffs>128</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>a</Name>
-				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
-				<Comment><![CDATA[A coordinate.]]></Comment>
-				<BitSize>64</BitSize>
-				<BitOffs>192</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>b</Name>
-				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
-				<Comment><![CDATA[B coordinate.]]></Comment>
-				<BitSize>64</BitSize>
-				<BitOffs>256</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>c</Name>
-				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
-				<Comment><![CDATA[C coordinate.]]></Comment>
-				<BitSize>64</BitSize>
-				<BitOffs>320</BitOffs>
-			</SubItem>
-		</DataType>
-		<DataType>
 			<Name GUID="{D7D4F146-9962-4745-8631-17F5FB457164}" Namespace="MC" TcBaseType="true">CDT_MCTOPLC_PLANAR_MOVER_SET</Name>
 			<Comment><![CDATA[CDT provides the current planar mover setpoint.]]></Comment>
 			<BitSize>1280</BitSize>
@@ -1611,6 +1978,9 @@
 			<Properties>
 				<Property>
 					<Name>plcAttribute_qualified_only</Name>
+				</Property>
+				<Property>
+					<Name>plcAttribute_to_string</Name>
 				</Property>
 			</Properties>
 		</DataType>
@@ -2155,13 +2525,13 @@
 			<Name GUID="{F7B9FC50-054E-4547-B468-83A9E72D8064}" Namespace="MC" TcBaseType="true" HideType="true">NCTOPLC_AXIS_REF_STATE3_FLAGS</Name>
 			<BitSize>32</BitSize>
 			<SubItem>
-				<Name>TouchProbe1InputState </Name>
+				<Name>TouchProbe1InputState</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
 				<BitSize>1</BitSize>
 				<BitOffs>0</BitOffs>
 			</SubItem>
 			<SubItem>
-				<Name>TouchProbe2InputState </Name>
+				<Name>TouchProbe2InputState</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
 				<BitSize>1</BitSize>
 				<BitOffs>1</BitOffs>
@@ -2606,6 +2976,9 @@ External Setpoint Generation:
 				<Property>
 					<Name>plcAttribute_qualified_only</Name>
 				</Property>
+				<Property>
+					<Name>plcAttribute_to_string</Name>
+				</Property>
 			</Properties>
 		</DataType>
 		<DataType>
@@ -2878,18 +3251,21 @@ External Setpoint Generation:
 	</DataTypes>
 	<ImageDatas>
 		<ImageData Id="1000">424d360300000000000036000000280000001000000010000000010018000000000000000000c30e0000c30e000000000000000000003d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b297a766e7a756d79746b7772697671689a968f736e63716c629a968f6c675c6a655a686357656054635d513d3b293d3b297f7a737e79727e79717c776f7a756d3d3b299a968f746f643d3b299a968f6d675d6b655a6863576560543d3b293d3b2988837d89857d89857d88837b8580783d3b299a968f9a968f3d3b299a968f6f6a606d685d6b655a6862573d3b293d3b2994908b96928c96928c95918a3d3b293d3b293d3b293d3b293d3b293d3b299a968f6f6a606d675d6a655a3d3b293d3b29a09d98a29f99a29f993d3b29d2d0ce9a968f9490888c877f837f767b766c3d3b299a968f9a968f6c675c3d3b293d3b29aba8a43d3b293d3b293d3b29d2d0cea5a29c9f9c9596928b8e8a82847f773d3b293d3b293d3b299a968f3d3b293d3b29b6b3afb8b5b1b9b6b33d3b29d2d0ceb0ada8a9a6a0a09c9697938c8d88803d3b299a968f746f64716c623d3b293d3b29c1bebbc3c1bdc5c3c03d3b29d2d0cebbb8b4b3b0abaaa6a0a09c9695918a3d3b299a968f9a968f736e643d3b293d3b29c9c7c53d3b293d3b293d3b29d2d0cec4c1bdbbb9b4b1aea9a6a39d9b98913d3b293d3b293d3b299a968f3d3b293d3b29d0ceccd5d3d1d8d7d53d3b29d2d0ced2d0ced2d0ced2d0ced2d0ced2d0ce3d3b2987837b7b776e7671683d3b293d3b29d5d4d2dcdbd9dfdedcdedddb3d3b293d3b293d3b293d3b293d3b293d3b2997938d8b867f7e797177726a3d3b293d3b29d7d6d4dfdedde4e3e2e2e1e0d9d8d63d3b29c7c5c2bcb9b63d3b29a5a29c99958f8c88817f7b7279746c3d3b293d3b29d6d5d4dddcdbe1e0dedfdedcd9d7d53d3b29c6c4c1bcb9b53d3b29a5a29c9995908d8882807b747a756d3d3b293d3b29d2d1cfd7d6d4d9d8d6d8d7d5d3d2d0cccbc8c3c2bfb9b7b3aeaca8a4a09b98948f8c8781807b747a766e3d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b29</ImageData>
+		<ImageData Id="1001">424d360300000000000036000000280000001000000010000000010018000000000000000000741200007412000000000000000000003d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b297b766f7a766d79756c9f9c957772697570679b97913d3b296f6a5f6d675d6b665b696458666155645e533d3b293d3b297f7b737f7b737f7a723d3b299f9c959f9c953d3b293d3b299b97919b97919b97919b97919b97916661553d3b293d3b2989857f8b867f3d3b2989857d3d3b293d3b297d796f3d3b293d3b293d3b293d3b293d3b293d3b299b97913d3b293d3b2996928c97938e3d3b2996928c938f888f8b8489847c3d3b297b766d9b97919b9791706b603d3b299b97913d3b293d3b29a19e99a3a09aa3a09a3d3b299f9c959b979195918a3d3b298581783d3b293d3b29736e633d3b299b97913d3b293d3b29aca9a53d3b293d3b29adaaa5aaa7a2a6a39d3d3b293d3b29858178b2afa9b2afa97570663d3b299b97913d3b293d3b29b7b4b03d3b29b9b7b2b8b6b0b5b3ae3d3b29a9a6a03d3b2998948d3d3b293d3b2979746b3d3b299b97913d3b293d3b29c1bfbc3d3b29c5c3c0c3c1bdc0bdb93d3b29b3b0ab3d3b29a19d97b2afa9b2afa97f7b723d3b299b97913d3b293d3b29cac8c53d3b293d3b29ceccc9cac8c5c4c2be3d3b293d3b29adaaa43d3b293d3b298581783d3b299b97913d3b293d3b29d1cfcdd6d4d2d8d7d53d3b29d2d0cecbc9c6c1beba3d3b29adaaa4a19e98a19e988d89813d3b299b97913d3b293d3b29d6d4d2dcdbd93d3b29dedddcd8d6d4d0cecbc5c3c03d3b29b0ada8a5a19c8d89818d89813d3b299b97913d3b293d3b29d8d7d5e0dfdd3d3b29e2e1e03d3b293d3b29c8c6c33d3b293d3b293d3b293d3b293d3b293d3b299b97913d3b293d3b29d7d6d5dddcdbe1e0df3d3b29d9d8d6d1cfcd3d3b293d3b29b1afaaa7a39e9b97928f8b84827e767a766e3d3b293d3b29d3d2d1d8d7d6dad9d7d9d8d6d4d2d0cdcbc9c4c2c03d3b29b0ada9a5a29d9a96918e8a84817d767b776f3d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b29</ImageData>
+		<ImageData Id="1002">424d360300000000000036000000280000001000000010000000010018000000000000000000741200007412000000000000000000003d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b297b766f7a766d7a766da6a39da6a39da6a39da6a39da6a39da6a39da6a39da6a39da6a39d666155645e533d3b293d3b297f7b737f7b733d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b29a6a39d6661553d3b293d3b2989857f8b867f3d3b2989857d9b9791837e759b97919b97919b97919b9791706b603d3b29a6a39d6863583d3b293d3b2996928c97938e3d3b2996928c3d3b298f8b843d3b293d3b293d3b293d3b29736e633d3b29a6a39d6b665b3d3b293d3b29a19e99a3a09a3d3b29a29e98b1aea89b9791b1aea8b1aea8b1aea8b1aea87671673d3b29a6a39d6d675d3d3b293d3b29aca9a5aeaba73d3b29adaaa53d3b29a6a39d3d3b293d3b293d3b293d3b297c776d3d3b29a6a39d6f6a603d3b293d3b29b7b4b0b9b6b13d3b29b8b6b1cac8c5b1aea8cac8c5cac8c5cac8c5cac8c5837f763d3b29a6a39d716c623d3b293d3b29c1bfbcc3c1be3d3b29c4c2be3d3b29bbb9b33d3b293d3b293d3b293d3b298b877f3d3b29a6a39d736e643d3b293d3b29cac8c5cccbc83d3b29ceccc9cac8c5c4c2bebbb8b4b2afa9a7a49e9d9993918d863d3b29a6a39d7570663d3b293d3b29d1cfcdd6d4d23d3b29d6d4d2d2d0cecbc9c6c2bfbbb7b5af3d3b293d3b293d3b293d3b29a6a39d7772693d3b293d3b29d6d4d2dcdbd93d3b29dedddcd8d6d4d0cecbc6c4c1bbb8b33d3b29a6a39da6a39d3d3b29a6a39d78736b3d3b293d3b29d8d7d5e0dfdd3d3b29e2e1e0d9d8d6d1cfccc8c6c3bcbab53d3b29a6a39d3d3b298e8a83817d757a756c3d3b293d3b29d7d6d5dddcdb3d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b299b97928f8b84827e767a766e3d3b293d3b29d3d2d1d8d7d6dad9d7d9d8d6d4d2d0cdcbc9c4c2c0bab8b3b0ada9a5a29d9a96918e8a84817d767b776f3d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b29</ImageData>
 	</ImageDatas>
-	<Project ProjectGUID="{DF226E6F-8A03-4588-A115-9FF5CE962A14}" Target64Bit="true" SaveToTarget="false" HideSaveToTarget="true" ShowHideConfigurations="#x106">
+	<Project ProjectGUID="{DF226E6F-8A03-4588-A115-9FF5CE962A14}" TargetNetId="192.168.1.31.1.1" Target64Bit="true" RelativeTargetNetId="true" RelativeIpAddresses="true" SaveToTarget="false" HideSaveToTarget="true" ShowHideConfigurations="#x106">
 		<System>
-			<Settings MaxCpus="12" NonWinCpus="1">
-				<Cpu CpuId="11" BaseTime="2500"/>
+			<Settings MaxCpus="4" NonWinCpus="2" FastTickPossible="-3">
+				<Cpu CpuId="2" BaseTime="2500"/>
+				<Cpu CpuId="3" BaseTime="2500"/>
 			</Settings>
 			<Tasks>
 				<Task Id="4" Priority="32" AdtTasks="true" JobTask="true">
 					<Name>Job Task</Name>
 					<ImageId>327</ImageId>
 				</Task>
-				<Task Id="5" Priority="3" CycleTime="20000" AmsPort="521" AdtTasks="true">
+				<Task Id="5" Priority="3" CycleTime="20000" AmsPort="521" Affinity="#x00000004" AdtTasks="true">
 					<Name>MC-Task (MET)</Name>
 				</Task>
 				<Task Id="6" Priority="8" CycleTime="100000" AmsPort="531" AdtTasks="true">
@@ -2898,12 +3274,12 @@ External Setpoint Generation:
 				<Task Id="8" Priority="6" CycleTime="100000" AmsPort="352" AdtTasks="true">
 					<Name>PlcTask</Name>
 				</Task>
-				<Task Id="3" Priority="2" CycleTime="2500" AmsPort="351" AdtTasks="true">
+				<Task Id="3" Priority="2" CycleTime="2500" AmsPort="351" Affinity="#x00000008" AdtTasks="true">
 					<Name>XPlanar Task1</Name>
 				</Task>
 			</Tasks>
 			<Modules>
-				<Module Id="#x01010010" KeepUnrestoredLinks="2">
+				<Module Id="#x01010010" KeepUnrestoredLinks="2" ClassFactoryId="Beckhoff Automation GmbH|TcIoXPlanar|4.4.21.0">
 					<Name>XPlanar</Name>
 					<ImageId>1000</ImageId>
 					<ProjectVariant PvUseSParameter="2">
@@ -2920,9 +3296,12 @@ External Setpoint Generation:
 							</Parameters>
 						</Variant>
 					</ProjectVariant>
-					<TmcDesc GUID="{FCCD755F-8FB3-4417-A3BA-ECA6580E285B}">
+					<TmcDesc GUID="{FCCD755F-8FB3-4417-A3BA-ECA6580E285B}" ClassFactoryId="Beckhoff Automation GmbH|TcIoXPlanar|4.4.21.0">
 						<Name>XPlanarProcessingUnit</Name>
 						<CLSID ClassFactory="TcIoXPlanar">{FCCD755F-8FB3-4417-A3BA-ECA6580E285B}</CLSID>
+						<Info>
+							<ImageData>424d360300000000000036000000280000001000000010000000010018000000000000000000c30e0000c30e000000000000000000003d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b297a766e7a756d79746b7772697671689a968f736e63716c629a968f6c675c6a655a686357656054635d513d3b293d3b297f7a737e79727e79717c776f7a756d3d3b299a968f746f643d3b299a968f6d675d6b655a6863576560543d3b293d3b2988837d89857d89857d88837b8580783d3b299a968f9a968f3d3b299a968f6f6a606d685d6b655a6862573d3b293d3b2994908b96928c96928c95918a3d3b293d3b293d3b293d3b293d3b293d3b299a968f6f6a606d675d6a655a3d3b293d3b29a09d98a29f99a29f993d3b29d2d0ce9a968f9490888c877f837f767b766c3d3b299a968f9a968f6c675c3d3b293d3b29aba8a43d3b293d3b293d3b29d2d0cea5a29c9f9c9596928b8e8a82847f773d3b293d3b293d3b299a968f3d3b293d3b29b6b3afb8b5b1b9b6b33d3b29d2d0ceb0ada8a9a6a0a09c9697938c8d88803d3b299a968f746f64716c623d3b293d3b29c1bebbc3c1bdc5c3c03d3b29d2d0cebbb8b4b3b0abaaa6a0a09c9695918a3d3b299a968f9a968f736e643d3b293d3b29c9c7c53d3b293d3b293d3b29d2d0cec4c1bdbbb9b4b1aea9a6a39d9b98913d3b293d3b293d3b299a968f3d3b293d3b29d0ceccd5d3d1d8d7d53d3b29d2d0ced2d0ced2d0ced2d0ced2d0ced2d0ce3d3b2987837b7b776e7671683d3b293d3b29d5d4d2dcdbd9dfdedcdedddb3d3b293d3b293d3b293d3b293d3b293d3b2997938d8b867f7e797177726a3d3b293d3b29d7d6d4dfdedde4e3e2e2e1e0d9d8d63d3b29c7c5c2bcb9b63d3b29a5a29c99958f8c88817f7b7279746c3d3b293d3b29d6d5d4dddcdbe1e0dedfdedcd9d7d53d3b29c6c4c1bcb9b53d3b29a5a29c9995908d8882807b747a756d3d3b293d3b29d2d1cfd7d6d4d9d8d6d8d7d5d3d2d0cccbc8c3c2bfb9b7b3aeaca8a4a09b98948f8c8781807b747a766e3d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b29</ImageData>
+						</Info>
 						<Licenses>
 							<License>
 								<LicenseId>{C362DA3A-1771-4019-9AF9-F39972E4A76D}</LicenseId>
@@ -2944,6 +3323,9 @@ External Setpoint Generation:
 							<Interface DisableCodeGeneration="true">
 								<Type GUID="{03000018-0000-0000-E000-000000000064}">ITcWatchSource</Type>
 							</Interface>
+							<Interface DisableCodeGeneration="true">
+								<Type GUID="{F92FC05B-6D35-4772-9AFF-FBAB22BAFE54}" Namespace="TcIoXPlanar">IXPlanarExternalFeedback</Type>
+							</Interface>
 						</Interfaces>
 						<Parameters>
 							<Group><![CDATA[General]]></Group>
@@ -2958,6 +3340,7 @@ External Setpoint Generation:
 							<Group Collapsed="true"><![CDATA[ProcessingUnit]]></Group>
 							<Group Collapsed="true"><![CDATA[ProcessingLines]]></Group>
 							<Group Collapsed="true"><![CDATA[Calibration]]></Group>
+							<Group Collapsed="true"><![CDATA[CycleTimeBalancing]]></Group>
 							<Parameter HideParameter="true" Group="General">
 								<Name>TraceLevelMax</Name>
 								<Comment><![CDATA[Controls the amount of log messages.]]></Comment>
@@ -2983,7 +3366,7 @@ External Setpoint Generation:
 								<BitSize>8</BitSize>
 								<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
 								<Default>
-									<EnumText>FALSE</EnumText>
+									<EnumText>TRUE</EnumText>
 								</Default>
 								<PTCID>#x03170001</PTCID>
 								<ContextId>1</ContextId>
@@ -3036,25 +3419,14 @@ External Setpoint Generation:
 								<PTCID>#x03171006</PTCID>
 								<ContextId>1</ContextId>
 							</Parameter>
-							<Parameter HideParameter="true" DisableCodeGeneration="true" Group="MoverDetection">
-								<Name>MoverDetectionMaxDeviation</Name>
-								<Comment><![CDATA[Maximum Mean Deviation for B-field pattern detection.]]></Comment>
-								<BitSize>16</BitSize>
-								<BaseType GUID="{18071995-0000-0000-0000-000000000005}">UINT</BaseType>
-								<Default>
-									<Value>600</Value>
-								</Default>
-								<PTCID>#x03170003</PTCID>
-								<ContextId>1</ContextId>
-							</Parameter>
 							<Parameter DisableCodeGeneration="true" ShowSubItems="true" Group="MoverDetection">
 								<Name>MoverDetectionSetup</Name>
 								<Comment><![CDATA[Can be adjusted if e.g. configured movers are not on the system and should not be detected.]]></Comment>
 								<BitSize>0</BitSize>
-								<BaseType GUID="{397C9D23-023F-4DFD-BAF8-30ACB5EF21BB}" Namespace="TcIoXPlanar">MoverDetectionSetup</BaseType>
+								<BaseType GUID="{55242005-02B9-41B9-8797-CE074E2B5109}" Namespace="TcIoXPlanar">MoverDetectionSetup</BaseType>
 								<ArrayInfo>
 									<LBound>0</LBound>
-									<Elements Min="0" Max="6">0</Elements>
+									<Elements Min="0" Max="7">0</Elements>
 								</ArrayInfo>
 								<PTCID>#x03170015</PTCID>
 								<ContextId>1</ContextId>
@@ -3095,7 +3467,7 @@ External Setpoint Generation:
 								<PTCID>#x03170005</PTCID>
 								<ContextId>1</ContextId>
 							</Parameter>
-							<Parameter OnlineParameter="true" DisableCodeGeneration="true" ShowSubItems="true" ReadOnly="true" Group="Movers">
+							<Parameter OnlineParameter="true" DisableCodeGeneration="true" ReadOnly="true" Group="Movers">
 								<Name>MoverPositionInfos</Name>
 								<Comment><![CDATA[Actual positions, part and movement area OIDs]]></Comment>
 								<BitSize>1344</BitSize>
@@ -3259,11 +3631,11 @@ External Setpoint Generation:
 								<PTCID>#x03171001</PTCID>
 								<ContextId>1</ContextId>
 							</Parameter>
-							<Parameter OnlineParameter="true" DisableCodeGeneration="true" ShowSubItems="true" ReadOnly="true" Group="Movers">
+							<Parameter OnlineParameter="true" DisableCodeGeneration="true" ReadOnly="true" Group="Movers">
 								<Name>MoverDetectionInfos</Name>
 								<Comment><![CDATA[Expected and detected mover count of each different movertype.]]></Comment>
-								<BitSize>320</BitSize>
-								<BaseType GUID="{AC69E643-A2CF-43F0-8DAA-5A19FD61A06C}" Namespace="TcIoXPlanar">XpuMoverDetectionInfos</BaseType>
+								<BitSize>512</BitSize>
+								<BaseType GUID="{4B466926-03E0-4213-882C-CD6527B393FC}" Namespace="TcIoXPlanar">XpuMoverDetectionInfos</BaseType>
 								<PTCID>#x03170014</PTCID>
 								<ContextId>1</ContextId>
 							</Parameter>
@@ -3279,7 +3651,7 @@ External Setpoint Generation:
 								<Name>AmbiguouslyDetectedMovers</Name>
 								<Comment><![CDATA[Information about detected movers that could not be assigned to a configuration object.]]></Comment>
 								<BitSize>0</BitSize>
-								<BaseType GUID="{94D92E0F-449F-4F3E-99E4-7B8D12796B44}" Namespace="TcIoXPlanar">DetectedMoverInfo</BaseType>
+								<BaseType GUID="{42CE4BA1-4EC8-421B-AC5E-A5DBE9C63F53}" Namespace="TcIoXPlanar">DetectedMoverInfo</BaseType>
 								<ArrayInfo>
 									<LBound>0</LBound>
 									<Elements Min="0" Max="500">0</Elements>
@@ -3315,10 +3687,32 @@ External Setpoint Generation:
 								<PTCID>#x0317002b</PTCID>
 								<ContextId>1</ContextId>
 							</Parameter>
+							<Parameter HideParameter="true" DisableCodeGeneration="true" Group="CycleTimeBalancing">
+								<Name>MaxCycleTimeDifference</Name>
+								<Comment><![CDATA[Max cycle time difference compared to previous cycle]]></Comment>
+								<BitSize>64</BitSize>
+								<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+								<Default>
+									<Value>10.0</Value>
+								</Default>
+								<PTCID>#x0317002a</PTCID>
+								<ContextId>1</ContextId>
+							</Parameter>
+							<Parameter HideParameter="true" DisableCodeGeneration="true" Group="CycleTimeBalancing">
+								<Name>MaxExtensionTime</Name>
+								<Comment><![CDATA[Max cycle extension time of slowest task (<10.0: no extenion)]]></Comment>
+								<BitSize>64</BitSize>
+								<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+								<Default>
+									<Value>150.0</Value>
+								</Default>
+								<PTCID>#x03170033</PTCID>
+								<ContextId>1</ContextId>
+							</Parameter>
 						</Parameters>
 						<EventClasses>
 							<EventClass>
-								<Type GUID="{32F49A33-5989-4077-851B-7D9068938AC1}" Namespace="TcIoXPlanar">XPlanarEvents</Type>
+								<Type GUID="{13066D61-08C3-495B-AA41-2259D07198C3}" Namespace="TcIoXPlanar">XPlanarEvents</Type>
 							</EventClass>
 						</EventClasses>
 						<Properties>
@@ -3357,312 +3751,12 @@ External Setpoint Generation:
 								<EnumText>ByConfigOrDetectionSetup</EnumText>
 							</Value>
 							<Value>
-								<Name>MoverDetectionMaxDeviation</Name>
-								<Value>800</Value>
+								<Name>MaxCycleTimeDifference</Name>
+								<Value>10</Value>
 							</Value>
 							<Value>
-								<Name>DriverVersion[0]</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>DriverVersion[1]</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>DriverVersion[2]</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>DriverVersion[3]</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>MoverCount</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>MoverObjectIDs[0]</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>MoverObjectIDs[1]</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>MoverObjectIDs[2]</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>MoverPositionInfos[0].ActualPosition.x</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>MoverPositionInfos[0].ActualPosition.y</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>MoverPositionInfos[0].ActualPosition.z</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>MoverPositionInfos[0].ActualPosition.a</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>MoverPositionInfos[0].ActualPosition.b</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>MoverPositionInfos[0].ActualPosition.c</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>MoverPositionInfos[0].PartOID</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>MoverPositionInfos[0].MovementAreaOID</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>MoverPositionInfos[1].ActualPosition.x</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>MoverPositionInfos[1].ActualPosition.y</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>MoverPositionInfos[1].ActualPosition.z</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>MoverPositionInfos[1].ActualPosition.a</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>MoverPositionInfos[1].ActualPosition.b</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>MoverPositionInfos[1].ActualPosition.c</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>MoverPositionInfos[1].PartOID</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>MoverPositionInfos[1].MovementAreaOID</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>MoverPositionInfos[2].ActualPosition.x</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>MoverPositionInfos[2].ActualPosition.y</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>MoverPositionInfos[2].ActualPosition.z</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>MoverPositionInfos[2].ActualPosition.a</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>MoverPositionInfos[2].ActualPosition.b</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>MoverPositionInfos[2].ActualPosition.c</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>MoverPositionInfos[2].PartOID</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>MoverPositionInfos[2].MovementAreaOID</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>MoverCouplingCount</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>MoverCouplingObjectIDs[0]</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>MoverCouplingPositionInfos[0].ActualPosition.x</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>MoverCouplingPositionInfos[0].ActualPosition.y</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>MoverCouplingPositionInfos[0].ActualPosition.z</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>MoverCouplingPositionInfos[0].ActualPosition.a</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>MoverCouplingPositionInfos[0].ActualPosition.b</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>MoverCouplingPositionInfos[0].ActualPosition.c</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>MoverCouplingPositionInfos[0].PartOID</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>MoverCouplingPositionInfos[0].MovementAreaOID</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>TileCount</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>TileObjectIDs[0]</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>TileObjectIDs[1]</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>TileObjectIDs[2]</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>TileObjectIDs[3]</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>TileObjectIDs[4]</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>TileObjectIDs[5]</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>TileObjectIDs[6]</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>TileObjectIDs[7]</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>PartCount</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>PartObjectIDs[0]</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>ParametrizationSetCount</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>ParametrizationSetObjectIDs[0]</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>ProcessingLinesCount</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>ProcessingLinesObjectIDs[0]</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>MovementAreaCount</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>MovementAreaObjectIDs[0]</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>TaskCount</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>TaskObjectIDs[0]</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>MoverDetectionInfos.Total.Expected</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>MoverDetectionInfos.Total.Detected</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>MoverDetectionInfos.APM4220.Expected</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>MoverDetectionInfos.APM4220.Detected</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>MoverDetectionInfos.APM4221.Expected</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>MoverDetectionInfos.APM4221.Detected</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>MoverDetectionInfos.APM4330.Expected</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>MoverDetectionInfos.APM4330.Detected</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>MoverDetectionInfos.APM4550.Expected</Name>
-								<Value>2255709824</Value>
-							</Value>
-							<Value>
-								<Name>MoverDetectionInfos.APM4550.Detected</Name>
-								<Value>2282074624</Value>
-							</Value>
-							<Value>
-								<Name>AmbiguouslyDetectedMoverCount</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>MoverDetectionStatus</Name>
-								<EnumText>NotInitialized</EnumText>
-							</Value>
-							<Value>
-								<Name>CoordinatedMoverCommStatus</Name>
-								<EnumText>Ready</EnumText>
-							</Value>
-							<Value>
-								<Name>CoordinatedMoverCommErrorID</Name>
-								<Value>0</Value>
-							</Value>
-							<Value>
-								<Name>TileCalibrationAnchorReference</Name>
-								<String></String>
+								<Name>MaxExtensionTime</Name>
+								<Value>150</Value>
 							</Value>
 						</ParameterValues>
 					</TmcDesc>
@@ -3671,6 +3765,1028 @@ External Setpoint Generation:
 					<Module File="Mover4220_1.xti"/>
 					<Module File="Mover4220_2.xti"/>
 					<Module File="Mover4220_3.xti"/>
+					<Module Id="#x01010110" KeepUnrestoredLinks="2" ClassFactoryId="Beckhoff Automation GmbH|TcIoXPlanar|4.4.21.0">
+						<Name>Empty-Mover (XPlanarMoverParametrizationSet)</Name>
+						<ImageId>1001</ImageId>
+						<TmcDesc GUID="{B62463F0-AB4B-4D3B-B3F8-B9ACE62F6CA5}" ClassFactoryId="Beckhoff Automation GmbH|TcIoXPlanar|4.4.21.0">
+							<Name>XPlanarMoverParametrizationSet</Name>
+							<CLSID ClassFactory="TcIoXPlanar">{B62463F0-AB4B-4D3B-B3F8-B9ACE62F6CA5}</CLSID>
+							<Info>
+								<ImageData>424d360300000000000036000000280000001000000010000000010018000000000000000000741200007412000000000000000000003d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b297b766f7a766d79756c9f9c957772697570679b97913d3b296f6a5f6d675d6b665b696458666155645e533d3b293d3b297f7b737f7b737f7a723d3b299f9c959f9c953d3b293d3b299b97919b97919b97919b97919b97916661553d3b293d3b2989857f8b867f3d3b2989857d3d3b293d3b297d796f3d3b293d3b293d3b293d3b293d3b293d3b299b97913d3b293d3b2996928c97938e3d3b2996928c938f888f8b8489847c3d3b297b766d9b97919b9791706b603d3b299b97913d3b293d3b29a19e99a3a09aa3a09a3d3b299f9c959b979195918a3d3b298581783d3b293d3b29736e633d3b299b97913d3b293d3b29aca9a53d3b293d3b29adaaa5aaa7a2a6a39d3d3b293d3b29858178b2afa9b2afa97570663d3b299b97913d3b293d3b29b7b4b03d3b29b9b7b2b8b6b0b5b3ae3d3b29a9a6a03d3b2998948d3d3b293d3b2979746b3d3b299b97913d3b293d3b29c1bfbc3d3b29c5c3c0c3c1bdc0bdb93d3b29b3b0ab3d3b29a19d97b2afa9b2afa97f7b723d3b299b97913d3b293d3b29cac8c53d3b293d3b29ceccc9cac8c5c4c2be3d3b293d3b29adaaa43d3b293d3b298581783d3b299b97913d3b293d3b29d1cfcdd6d4d2d8d7d53d3b29d2d0cecbc9c6c1beba3d3b29adaaa4a19e98a19e988d89813d3b299b97913d3b293d3b29d6d4d2dcdbd93d3b29dedddcd8d6d4d0cecbc5c3c03d3b29b0ada8a5a19c8d89818d89813d3b299b97913d3b293d3b29d8d7d5e0dfdd3d3b29e2e1e03d3b293d3b29c8c6c33d3b293d3b293d3b293d3b293d3b293d3b299b97913d3b293d3b29d7d6d5dddcdbe1e0df3d3b29d9d8d6d1cfcd3d3b293d3b29b1afaaa7a39e9b97928f8b84827e767a766e3d3b293d3b29d3d2d1d8d7d6dad9d7d9d8d6d4d2d0cdcbc9c4c2c03d3b29b0ada9a5a29d9a96918e8a84817d767b776f3d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b29</ImageData>
+							</Info>
+							<InitSequence>PSO</InitSequence>
+							<Contexts>
+								<Context>
+									<Id>1</Id>
+								</Context>
+							</Contexts>
+							<Interfaces>
+								<Interface DisableCodeGeneration="true">
+									<Type GUID="{00000012-0000-0000-E000-000000000064}">ITComObject</Type>
+								</Interface>
+								<Interface DisableCodeGeneration="true">
+									<Type GUID="{03000012-0000-0000-E000-000000000064}">ITcADI</Type>
+								</Interface>
+								<Interface DisableCodeGeneration="true">
+									<Type GUID="{03000018-0000-0000-E000-000000000064}">ITcWatchSource</Type>
+								</Interface>
+							</Interfaces>
+							<Parameters>
+								<Parameter OnlineParameter="true" DisableCodeGeneration="true" ReadOnly="true" Group="Info">
+									<Name>GeneralParametrizationObjectID</Name>
+									<Comment><![CDATA[Object IDs of general parametrization]]></Comment>
+									<BitSize>32</BitSize>
+									<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+									<PTCID>#x0317a000</PTCID>
+									<ContextId>1</ContextId>
+								</Parameter>
+								<Parameter OnlineParameter="true" DisableCodeGeneration="true" ReadOnly="true" Group="Info">
+									<Name>ObserverParametrizationObjectID</Name>
+									<Comment><![CDATA[Object IDs of observer parametrization]]></Comment>
+									<BitSize>32</BitSize>
+									<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+									<PTCID>#x0317a001</PTCID>
+									<ContextId>1</ContextId>
+								</Parameter>
+								<Parameter OnlineParameter="true" DisableCodeGeneration="true" ReadOnly="true" Group="Info">
+									<Name>ControllerParametrizationObjectID</Name>
+									<Comment><![CDATA[Object IDs of controller parametrization]]></Comment>
+									<BitSize>32</BitSize>
+									<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+									<PTCID>#x0317a002</PTCID>
+									<ContextId>1</ContextId>
+								</Parameter>
+								<Parameter OnlineParameter="true" DisableCodeGeneration="true" ReadOnly="true" Group="Info">
+									<Name>FilterParametrizationObjectID</Name>
+									<Comment><![CDATA[Object IDs of filter parametrization]]></Comment>
+									<BitSize>32</BitSize>
+									<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+									<PTCID>#x0317a003</PTCID>
+									<ContextId>1</ContextId>
+								</Parameter>
+								<Parameter OnlineParameter="true" DisableCodeGeneration="true" ReadOnly="true" Group="Info">
+									<Name>InertiaParametrizationObjectID</Name>
+									<Comment><![CDATA[Object IDs of inertia parametrization]]></Comment>
+									<BitSize>32</BitSize>
+									<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+									<PTCID>#x0317a004</PTCID>
+									<ContextId>1</ContextId>
+								</Parameter>
+								<Parameter OnlineParameter="true" DisableCodeGeneration="true" ReadOnly="true" Group="Info">
+									<Name>IsExternalFeedbackParametrizationSet</Name>
+									<Comment><![CDATA[TRUE: Parametrization set is an external feedback parametrization set]]></Comment>
+									<BitSize>8</BitSize>
+									<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
+									<PTCID>#x0317a006</PTCID>
+									<ContextId>1</ContextId>
+								</Parameter>
+							</Parameters>
+							<Properties>
+								<Property>
+									<Name>Category</Name>
+									<Value>ProcessingUnit</Value>
+								</Property>
+								<Property>
+									<Name>ChildCategory</Name>
+									<Value>ParametrizationSet</Value>
+								</Property>
+							</Properties>
+							<ParentOTCID>#x01010010</ParentOTCID>
+						</TmcDesc>
+						<Module Id="#x01010130" KeepUnrestoredLinks="2" ClassFactoryId="Beckhoff Automation GmbH|TcIoXPlanar|4.4.21.0">
+							<Name>GeneralParametrization</Name>
+							<ImageId>1002</ImageId>
+							<TmcDesc GUID="{C63F18DF-B502-42EF-BD16-12D7BB245AA1}" ClassFactoryId="Beckhoff Automation GmbH|TcIoXPlanar|4.4.21.0">
+								<Name>GeneralParametrization</Name>
+								<CLSID ClassFactory="TcIoXPlanar">{F473098A-A7AE-4234-8708-97FC41621122}</CLSID>
+								<Info>
+									<ImageData>424d360300000000000036000000280000001000000010000000010018000000000000000000741200007412000000000000000000003d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b297b766f7a766d7a766da6a39da6a39da6a39da6a39da6a39da6a39da6a39da6a39da6a39d666155645e533d3b293d3b297f7b737f7b733d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b29a6a39d6661553d3b293d3b2989857f8b867f3d3b2989857d9b9791837e759b97919b97919b97919b9791706b603d3b29a6a39d6863583d3b293d3b2996928c97938e3d3b2996928c3d3b298f8b843d3b293d3b293d3b293d3b29736e633d3b29a6a39d6b665b3d3b293d3b29a19e99a3a09a3d3b29a29e98b1aea89b9791b1aea8b1aea8b1aea8b1aea87671673d3b29a6a39d6d675d3d3b293d3b29aca9a5aeaba73d3b29adaaa53d3b29a6a39d3d3b293d3b293d3b293d3b297c776d3d3b29a6a39d6f6a603d3b293d3b29b7b4b0b9b6b13d3b29b8b6b1cac8c5b1aea8cac8c5cac8c5cac8c5cac8c5837f763d3b29a6a39d716c623d3b293d3b29c1bfbcc3c1be3d3b29c4c2be3d3b29bbb9b33d3b293d3b293d3b293d3b298b877f3d3b29a6a39d736e643d3b293d3b29cac8c5cccbc83d3b29ceccc9cac8c5c4c2bebbb8b4b2afa9a7a49e9d9993918d863d3b29a6a39d7570663d3b293d3b29d1cfcdd6d4d23d3b29d6d4d2d2d0cecbc9c6c2bfbbb7b5af3d3b293d3b293d3b293d3b29a6a39d7772693d3b293d3b29d6d4d2dcdbd93d3b29dedddcd8d6d4d0cecbc6c4c1bbb8b33d3b29a6a39da6a39d3d3b29a6a39d78736b3d3b293d3b29d8d7d5e0dfdd3d3b29e2e1e0d9d8d6d1cfccc8c6c3bcbab53d3b29a6a39d3d3b298e8a83817d757a756c3d3b293d3b29d7d6d5dddcdb3d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b299b97928f8b84827e767a766e3d3b293d3b29d3d2d1d8d7d6dad9d7d9d8d6d4d2d0cdcbc9c4c2c0bab8b3b0ada9a5a29d9a96918e8a84817d767b776f3d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b29</ImageData>
+								</Info>
+								<InitSequence>PSO</InitSequence>
+								<Contexts>
+									<Context>
+										<Id>1</Id>
+									</Context>
+								</Contexts>
+								<Interfaces>
+									<Interface DisableCodeGeneration="true">
+										<Type GUID="{00000012-0000-0000-E000-000000000064}">ITComObject</Type>
+									</Interface>
+									<Interface DisableCodeGeneration="true">
+										<Type GUID="{03000012-0000-0000-E000-000000000064}">ITcADI</Type>
+									</Interface>
+									<Interface DisableCodeGeneration="true">
+										<Type GUID="{03000018-0000-0000-E000-000000000064}">ITcWatchSource</Type>
+									</Interface>
+								</Interfaces>
+								<Parameters>
+									<Group><![CDATA[Base]]></Group>
+									<Group Collapsed="true"><![CDATA[MoverEnablingDisabling]]></Group>
+									<Group Collapsed="true"><![CDATA[PositionReference]]></Group>
+									<Group Collapsed="true"><![CDATA[MoverCommunication]]></Group>
+									<Parameter DisableCodeGeneration="true" Group="MoverEnablingDisabling">
+										<Name>zPosAtEnable</Name>
+										<Comment><![CDATA[When enabling/activating the mover, it will fly at this Z position.]]></Comment>
+										<BitSize>64</BitSize>
+										<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+										<Unit><![CDATA[mm]]></Unit>
+										<Default>
+											<Value>2.0</Value>
+										</Default>
+										<PTCID>#x03175030</PTCID>
+										<ContextId>1</ContextId>
+									</Parameter>
+									<Parameter HideParameter="true" DisableCodeGeneration="true" Group="MoverEnablingDisabling">
+										<Name>zRangeAtEnable</Name>
+										<Comment><![CDATA[Acceptance range, in which the mover has to stay for a while after enabling. The acceptance region is zPosAtEnable +- zRangeAtEnable]]></Comment>
+										<BitSize>64</BitSize>
+										<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+										<Unit><![CDATA[mm]]></Unit>
+										<Default>
+											<Value>0.1</Value>
+										</Default>
+										<PTCID>#x03175039</PTCID>
+										<ContextId>1</ContextId>
+									</Parameter>
+									<Parameter HideParameter="true" DisableCodeGeneration="true" Group="MoverEnablingDisabling">
+										<Name>TimeToStayAtEnablingHeight</Name>
+										<Comment><![CDATA[After reaching the enabling height, the mover remains there for this time to ensure it is stable. Max. 4 seconds.]]></Comment>
+										<BitSize>64</BitSize>
+										<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+										<Unit><![CDATA[s]]></Unit>
+										<Default>
+											<Value>1.0</Value>
+										</Default>
+										<PTCID>#x0317503a</PTCID>
+										<ContextId>1</ContextId>
+									</Parameter>
+									<Parameter DisableCodeGeneration="true" Group="MoverEnablingDisabling">
+										<Name>EnablingForceIncrement</Name>
+										<Comment><![CDATA[Defines the smoothness of the mover enabling. During the enabling, the mover's force is increased by this amount. Set to 0 if you want to enable the mover based on EnablingTime.]]></Comment>
+										<BitSize>64</BitSize>
+										<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+										<Unit><![CDATA[N/cycle]]></Unit>
+										<Default>
+											<Value>0.0</Value>
+										</Default>
+										<PTCID>#x03175061</PTCID>
+										<ContextId>1</ContextId>
+									</Parameter>
+									<Parameter DisableCodeGeneration="true" Group="MoverEnablingDisabling">
+										<Name>DisablingForceDecrement</Name>
+										<Comment><![CDATA[Defines the smoothness of the mover disabling. During the disabling, the mover's force is decreased by this amount. Set to 0 if you want to disable the mover based on DisablingTime.]]></Comment>
+										<BitSize>64</BitSize>
+										<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+										<Unit><![CDATA[N/cycle]]></Unit>
+										<Default>
+											<Value>0.0</Value>
+										</Default>
+										<PTCID>#x03175062</PTCID>
+										<ContextId>1</ContextId>
+									</Parameter>
+									<Parameter DisableCodeGeneration="true" Group="MoverEnablingDisabling">
+										<Name>EnablingTime</Name>
+										<Comment><![CDATA[Defines the time that the mover needs for enabling. Has to be between 0.1s and 4s.]]></Comment>
+										<BitSize>64</BitSize>
+										<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+										<Unit><![CDATA[s]]></Unit>
+										<Default>
+											<Value>0.5</Value>
+										</Default>
+										<PTCID>#x0317506b</PTCID>
+										<ContextId>1</ContextId>
+									</Parameter>
+									<Parameter DisableCodeGeneration="true" Group="MoverEnablingDisabling">
+										<Name>DisablingTime</Name>
+										<Comment><![CDATA[Defines the time that the mover needs for disabling. Has to be between 0.1s and 4s.]]></Comment>
+										<BitSize>64</BitSize>
+										<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+										<Unit><![CDATA[s]]></Unit>
+										<Default>
+											<Value>0.5</Value>
+										</Default>
+										<PTCID>#x0317506c</PTCID>
+										<ContextId>1</ContextId>
+									</Parameter>
+									<Parameter DisableCodeGeneration="true" Group="Base">
+										<Name>SetpointInterpolation</Name>
+										<Comment><![CDATA[External setpoints can be interpolated by the setpoint dynamics or an internal calculated BSpline.]]></Comment>
+										<BitSize>16</BitSize>
+										<BaseType GUID="{960D5D3A-1C8A-4482-844E-842A4F399F8E}" Namespace="TcIoXPlanar">SetpointInterpolation</BaseType>
+										<PTCID>#x03175022</PTCID>
+										<ContextId>1</ContextId>
+									</Parameter>
+									<Parameter DisableCodeGeneration="true" Group="Base">
+										<Name>BrakeAcceleration</Name>
+										<Comment><![CDATA[Brake acceleration in case of an emergency stop.]]></Comment>
+										<BitSize>64</BitSize>
+										<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+										<Unit><![CDATA[mm/s^2]]></Unit>
+										<Default>
+											<Value>10000.0</Value>
+										</Default>
+										<PTCID>#x03175031</PTCID>
+										<ContextId>1</ContextId>
+									</Parameter>
+									<Parameter DisableCodeGeneration="true" Group="Base">
+										<Name>DefaultSetpointCycleTime</Name>
+										<Comment><![CDATA[Default value for setpoint cycle time if no time stamp is generated.]]></Comment>
+										<BitSize>64</BitSize>
+										<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+										<Unit><![CDATA[s]]></Unit>
+										<Default>
+											<Value>0.002</Value>
+										</Default>
+										<PTCID>#x03175032</PTCID>
+										<ContextId>1</ContextId>
+									</Parameter>
+									<Parameter DisableCodeGeneration="true" Group="PositionReference">
+										<Name>PositionReferenceMode</Name>
+										<Comment><![CDATA[NoCommonReference: each mover is at z=0 when resting. TileTopSurface/TileBottomSurface: predefined references. UserSpecified: define your own reference via the reference zOffset.]]></Comment>
+										<BitSize>16</BitSize>
+										<BaseType GUID="{93EFF533-445A-499F-B877-8FDA3E4311E2}" Namespace="TcIoXPlanar">PositionReferenceMode</BaseType>
+										<PTCID>#x03175067</PTCID>
+										<ContextId>1</ContextId>
+									</Parameter>
+									<Parameter DisableCodeGeneration="true" Group="PositionReference">
+										<Name>PositionReferenceZOffset</Name>
+										<Comment><![CDATA[Only taken into account when PositionReferenceMode=UserSpecified. Offset of 0.0 means the tile bottom surface is taken as reference surface.]]></Comment>
+										<BitSize>64</BitSize>
+										<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+										<Unit><![CDATA[mm]]></Unit>
+										<Default>
+											<Value>0.0</Value>
+										</Default>
+										<PTCID>#x03175068</PTCID>
+										<ContextId>1</ContextId>
+									</Parameter>
+									<Parameter HideParameter="true" DisableCodeGeneration="true" Group="MoverCommunication">
+										<Name>MoverCommAmplitude</Name>
+										<Comment><![CDATA[Value between 4000 and 14000. Standard is 10000.]]></Comment>
+										<BitSize>32</BitSize>
+										<BaseType GUID="{18071995-0000-0000-0000-000000000008}">UDINT</BaseType>
+										<Default>
+											<Value>10000</Value>
+										</Default>
+										<PTCID>#x03175104</PTCID>
+										<ContextId>1</ContextId>
+									</Parameter>
+									<Parameter HideParameter="true" DisableCodeGeneration="true" Group="MoverCommunication">
+										<Name>MoverCommPeriodsPerSymbol</Name>
+										<Comment><![CDATA[Even value between 8 and 40. Standard is 20. Low value is faster communication, high value is slower but safer communication.]]></Comment>
+										<BitSize>32</BitSize>
+										<BaseType GUID="{18071995-0000-0000-0000-000000000008}">UDINT</BaseType>
+										<Default>
+											<Value>20</Value>
+										</Default>
+										<PTCID>#x03175096</PTCID>
+										<ContextId>1</ContextId>
+									</Parameter>
+									<Parameter HideParameter="true" DisableCodeGeneration="true" Group="MoverCommunication">
+										<Name>MoverCommUseOneEtherCatBranch</Name>
+										<Comment><![CDATA[Set to true if no synchronized EtherCAT ports are available.]]></Comment>
+										<BitSize>8</BitSize>
+										<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
+										<Default>
+											<EnumText>TRUE</EnumText>
+										</Default>
+										<PTCID>#x03175103</PTCID>
+										<ContextId>1</ContextId>
+									</Parameter>
+									<Parameter HideParameter="true" DisableCodeGeneration="true" Group="MoverCommunication">
+										<Name>MoverOrientationDcCurrentFactor</Name>
+										<BitSize>64</BitSize>
+										<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+										<Default>
+											<Value>1.0</Value>
+										</Default>
+										<PTCID>#x0317509f</PTCID>
+										<ContextId>1</ContextId>
+									</Parameter>
+									<Parameter HideParameter="true" DisableCodeGeneration="true" Group="MoverCommunication">
+										<Name>MoverOrientationDeviationDiffThreshold</Name>
+										<BitSize>64</BitSize>
+										<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+										<Default>
+											<Value>30.0</Value>
+										</Default>
+										<PTCID>#x03175100</PTCID>
+										<ContextId>1</ContextId>
+									</Parameter>
+									<Parameter HideParameter="true" DisableCodeGeneration="true" Group="MoverCommunication">
+										<Name>MoverHallSensorRepetitions</Name>
+										<BitSize>32</BitSize>
+										<BaseType GUID="{18071995-0000-0000-0000-000000000008}">UDINT</BaseType>
+										<Default>
+											<Value>32</Value>
+										</Default>
+										<PTCID>#x03175089</PTCID>
+										<ContextId>1</ContextId>
+									</Parameter>
+								</Parameters>
+								<EventClasses>
+									<EventClass>
+										<Type GUID="{13066D61-08C3-495B-AA41-2259D07198C3}" Namespace="TcIoXPlanar">XPlanarEvents</Type>
+									</EventClass>
+								</EventClasses>
+								<Properties>
+									<Property>
+										<Name>Category</Name>
+										<Value>ParametrizationSet</Value>
+									</Property>
+									<Property>
+										<Name>ChildCategory</Name>
+										<Value>GeneralParametrization</Value>
+									</Property>
+								</Properties>
+								<ParentOTCID>#x01010110</ParentOTCID>
+								<ParameterValues>
+									<Value>
+										<Name>zPosAtEnable</Name>
+										<Value>2</Value>
+									</Value>
+									<Value>
+										<Name>zRangeAtEnable</Name>
+										<Value>0.1</Value>
+									</Value>
+									<Value>
+										<Name>TimeToStayAtEnablingHeight</Name>
+										<Value>1</Value>
+									</Value>
+									<Value>
+										<Name>EnablingForceIncrement</Name>
+										<Value>0</Value>
+									</Value>
+									<Value>
+										<Name>DisablingForceDecrement</Name>
+										<Value>0</Value>
+									</Value>
+									<Value>
+										<Name>EnablingTime</Name>
+										<Value>0.5</Value>
+									</Value>
+									<Value>
+										<Name>DisablingTime</Name>
+										<Value>0.5</Value>
+									</Value>
+									<Value>
+										<Name>SetpointInterpolation</Name>
+										<EnumText>NcDynamics</EnumText>
+									</Value>
+									<Value>
+										<Name>BrakeAcceleration</Name>
+										<Value>10000</Value>
+									</Value>
+									<Value>
+										<Name>DefaultSetpointCycleTime</Name>
+										<Value>0.002</Value>
+									</Value>
+									<Value>
+										<Name>PositionReferenceMode</Name>
+										<EnumText>NoCommonReference</EnumText>
+									</Value>
+									<Value>
+										<Name>PositionReferenceZOffset</Name>
+										<Value>0</Value>
+									</Value>
+									<Value>
+										<Name>MoverCommAmplitude</Name>
+										<Value>10000</Value>
+									</Value>
+									<Value>
+										<Name>MoverCommPeriodsPerSymbol</Name>
+										<Value>20</Value>
+									</Value>
+									<Value>
+										<Name>MoverCommUseOneEtherCatBranch</Name>
+										<EnumText>TRUE</EnumText>
+									</Value>
+									<Value>
+										<Name>MoverOrientationDcCurrentFactor</Name>
+										<Value>1</Value>
+									</Value>
+									<Value>
+										<Name>MoverOrientationDeviationDiffThreshold</Name>
+										<Value>30</Value>
+									</Value>
+									<Value>
+										<Name>MoverHallSensorRepetitions</Name>
+										<Value>32</Value>
+									</Value>
+								</ParameterValues>
+							</TmcDesc>
+						</Module>
+						<Module Id="#x01010140" KeepUnrestoredLinks="2" ClassFactoryId="Beckhoff Automation GmbH|TcIoXPlanar|4.4.21.0">
+							<Name>InertiaParametrization</Name>
+							<ImageId>1002</ImageId>
+							<TmcDesc GUID="{7AD21AD3-09A0-40F7-8252-8B309095137B}" ClassFactoryId="Beckhoff Automation GmbH|TcIoXPlanar|4.4.21.0">
+								<Name>InertiaParametrization</Name>
+								<CLSID ClassFactory="TcIoXPlanar">{7AD21AD3-09A0-40F7-8252-8B309095137B}</CLSID>
+								<Info>
+									<ImageData>424d360300000000000036000000280000001000000010000000010018000000000000000000741200007412000000000000000000003d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b297b766f7a766d7a766da6a39da6a39da6a39da6a39da6a39da6a39da6a39da6a39da6a39d666155645e533d3b293d3b297f7b737f7b733d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b29a6a39d6661553d3b293d3b2989857f8b867f3d3b2989857d9b9791837e759b97919b97919b97919b9791706b603d3b29a6a39d6863583d3b293d3b2996928c97938e3d3b2996928c3d3b298f8b843d3b293d3b293d3b293d3b29736e633d3b29a6a39d6b665b3d3b293d3b29a19e99a3a09a3d3b29a29e98b1aea89b9791b1aea8b1aea8b1aea8b1aea87671673d3b29a6a39d6d675d3d3b293d3b29aca9a5aeaba73d3b29adaaa53d3b29a6a39d3d3b293d3b293d3b293d3b297c776d3d3b29a6a39d6f6a603d3b293d3b29b7b4b0b9b6b13d3b29b8b6b1cac8c5b1aea8cac8c5cac8c5cac8c5cac8c5837f763d3b29a6a39d716c623d3b293d3b29c1bfbcc3c1be3d3b29c4c2be3d3b29bbb9b33d3b293d3b293d3b293d3b298b877f3d3b29a6a39d736e643d3b293d3b29cac8c5cccbc83d3b29ceccc9cac8c5c4c2bebbb8b4b2afa9a7a49e9d9993918d863d3b29a6a39d7570663d3b293d3b29d1cfcdd6d4d23d3b29d6d4d2d2d0cecbc9c6c2bfbbb7b5af3d3b293d3b293d3b293d3b29a6a39d7772693d3b293d3b29d6d4d2dcdbd93d3b29dedddcd8d6d4d0cecbc6c4c1bbb8b33d3b29a6a39da6a39d3d3b29a6a39d78736b3d3b293d3b29d8d7d5e0dfdd3d3b29e2e1e0d9d8d6d1cfccc8c6c3bcbab53d3b29a6a39d3d3b298e8a83817d757a756c3d3b293d3b29d7d6d5dddcdb3d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b299b97928f8b84827e767a766e3d3b293d3b29d3d2d1d8d7d6dad9d7d9d8d6d4d2d0cdcbc9c4c2c0bab8b3b0ada9a5a29d9a96918e8a84817d767b776f3d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b29</ImageData>
+								</Info>
+								<InitSequence>PSO</InitSequence>
+								<Contexts>
+									<Context>
+										<Id>1</Id>
+									</Context>
+								</Contexts>
+								<Interfaces>
+									<Interface DisableCodeGeneration="true">
+										<Type GUID="{00000012-0000-0000-E000-000000000064}">ITComObject</Type>
+									</Interface>
+									<Interface DisableCodeGeneration="true">
+										<Type GUID="{03000012-0000-0000-E000-000000000064}">ITcADI</Type>
+									</Interface>
+									<Interface DisableCodeGeneration="true">
+										<Type GUID="{03000018-0000-0000-E000-000000000064}">ITcWatchSource</Type>
+									</Interface>
+								</Interfaces>
+								<Parameters>
+									<Parameter DisableCodeGeneration="true" ShowSubItems="true" Group="General">
+										<Name>BasicInertia</Name>
+										<Comment><![CDATA[Total Inertia of e.g. mover + permanent tooling or coupled movers + frame. Additional flexible payload inertia can be set in the mover object parameters.]]></Comment>
+										<BitSize>448</BitSize>
+										<BaseType GUID="{70954D12-5B1F-46F1-8D45-40C9481F0D4D}" Namespace="TcIoXPlanar">Inertia</BaseType>
+										<PTCID>#x03175066</PTCID>
+										<ContextId>1</ContextId>
+									</Parameter>
+									<Parameter DisableCodeGeneration="true" ShowSubItems="true" Group="General">
+										<Name>BasicProductsOfInertia</Name>
+										<Comment><![CDATA[Products of inertia, e.g. mover + permanent tooling or coupled movers + frame.]]></Comment>
+										<BitSize>192</BitSize>
+										<BaseType GUID="{D695FF89-E870-4A02-9D41-2147DD54482F}" Namespace="TcIoXPlanar">ProductsOfInertia</BaseType>
+										<PTCID>#x0317506a</PTCID>
+										<ContextId>1</ContextId>
+									</Parameter>
+								</Parameters>
+								<Properties>
+									<Property>
+										<Name>Category</Name>
+										<Value>ParametrizationSet</Value>
+									</Property>
+									<Property>
+										<Name>ChildCategory</Name>
+										<Value>InertiaParametrization</Value>
+									</Property>
+								</Properties>
+								<ParentOTCID>#x01010110</ParentOTCID>
+								<ParameterValues>
+									<Value>
+										<Name>BasicInertia.Mass</Name>
+										<Value>0</Value>
+									</Value>
+									<Value>
+										<Name>BasicInertia.Ixx</Name>
+										<Value>0</Value>
+									</Value>
+									<Value>
+										<Name>BasicInertia.Iyy</Name>
+										<Value>0</Value>
+									</Value>
+									<Value>
+										<Name>BasicInertia.Izz</Name>
+										<Value>0</Value>
+									</Value>
+									<Value>
+										<Name>BasicInertia.CentreOfMassX</Name>
+										<Value>0</Value>
+									</Value>
+									<Value>
+										<Name>BasicInertia.CentreOfMassY</Name>
+										<Value>0</Value>
+									</Value>
+									<Value>
+										<Name>BasicInertia.CentreOfMassZ</Name>
+										<Value>0</Value>
+									</Value>
+									<Value>
+										<Name>BasicProductsOfInertia.Ixy</Name>
+										<Value>0</Value>
+									</Value>
+									<Value>
+										<Name>BasicProductsOfInertia.Ixz</Name>
+										<Value>0</Value>
+									</Value>
+									<Value>
+										<Name>BasicProductsOfInertia.Iyz</Name>
+										<Value>0</Value>
+									</Value>
+								</ParameterValues>
+							</TmcDesc>
+						</Module>
+					</Module>
+					<Module Id="#x010100d0" KeepUnrestoredLinks="2" ClassFactoryId="Beckhoff Automation GmbH|TcIoXPlanar|4.4.21.0">
+						<Name>Full-Mover (XPlanarMoverParametrizationSet)</Name>
+						<ImageId>1001</ImageId>
+						<TmcDesc GUID="{B62463F0-AB4B-4D3B-B3F8-B9ACE62F6CA5}" ClassFactoryId="Beckhoff Automation GmbH|TcIoXPlanar|4.4.21.0">
+							<Name>XPlanarMoverParametrizationSet</Name>
+							<CLSID ClassFactory="TcIoXPlanar">{B62463F0-AB4B-4D3B-B3F8-B9ACE62F6CA5}</CLSID>
+							<Info>
+								<ImageData>424d360300000000000036000000280000001000000010000000010018000000000000000000741200007412000000000000000000003d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b297b766f7a766d79756c9f9c957772697570679b97913d3b296f6a5f6d675d6b665b696458666155645e533d3b293d3b297f7b737f7b737f7a723d3b299f9c959f9c953d3b293d3b299b97919b97919b97919b97919b97916661553d3b293d3b2989857f8b867f3d3b2989857d3d3b293d3b297d796f3d3b293d3b293d3b293d3b293d3b293d3b299b97913d3b293d3b2996928c97938e3d3b2996928c938f888f8b8489847c3d3b297b766d9b97919b9791706b603d3b299b97913d3b293d3b29a19e99a3a09aa3a09a3d3b299f9c959b979195918a3d3b298581783d3b293d3b29736e633d3b299b97913d3b293d3b29aca9a53d3b293d3b29adaaa5aaa7a2a6a39d3d3b293d3b29858178b2afa9b2afa97570663d3b299b97913d3b293d3b29b7b4b03d3b29b9b7b2b8b6b0b5b3ae3d3b29a9a6a03d3b2998948d3d3b293d3b2979746b3d3b299b97913d3b293d3b29c1bfbc3d3b29c5c3c0c3c1bdc0bdb93d3b29b3b0ab3d3b29a19d97b2afa9b2afa97f7b723d3b299b97913d3b293d3b29cac8c53d3b293d3b29ceccc9cac8c5c4c2be3d3b293d3b29adaaa43d3b293d3b298581783d3b299b97913d3b293d3b29d1cfcdd6d4d2d8d7d53d3b29d2d0cecbc9c6c1beba3d3b29adaaa4a19e98a19e988d89813d3b299b97913d3b293d3b29d6d4d2dcdbd93d3b29dedddcd8d6d4d0cecbc5c3c03d3b29b0ada8a5a19c8d89818d89813d3b299b97913d3b293d3b29d8d7d5e0dfdd3d3b29e2e1e03d3b293d3b29c8c6c33d3b293d3b293d3b293d3b293d3b293d3b299b97913d3b293d3b29d7d6d5dddcdbe1e0df3d3b29d9d8d6d1cfcd3d3b293d3b29b1afaaa7a39e9b97928f8b84827e767a766e3d3b293d3b29d3d2d1d8d7d6dad9d7d9d8d6d4d2d0cdcbc9c4c2c03d3b29b0ada9a5a29d9a96918e8a84817d767b776f3d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b29</ImageData>
+							</Info>
+							<InitSequence>PSO</InitSequence>
+							<Contexts>
+								<Context>
+									<Id>1</Id>
+								</Context>
+							</Contexts>
+							<Interfaces>
+								<Interface DisableCodeGeneration="true">
+									<Type GUID="{00000012-0000-0000-E000-000000000064}">ITComObject</Type>
+								</Interface>
+								<Interface DisableCodeGeneration="true">
+									<Type GUID="{03000012-0000-0000-E000-000000000064}">ITcADI</Type>
+								</Interface>
+								<Interface DisableCodeGeneration="true">
+									<Type GUID="{03000018-0000-0000-E000-000000000064}">ITcWatchSource</Type>
+								</Interface>
+							</Interfaces>
+							<Parameters>
+								<Parameter OnlineParameter="true" DisableCodeGeneration="true" ReadOnly="true" Group="Info">
+									<Name>GeneralParametrizationObjectID</Name>
+									<Comment><![CDATA[Object IDs of general parametrization]]></Comment>
+									<BitSize>32</BitSize>
+									<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+									<PTCID>#x0317a000</PTCID>
+									<ContextId>1</ContextId>
+								</Parameter>
+								<Parameter OnlineParameter="true" DisableCodeGeneration="true" ReadOnly="true" Group="Info">
+									<Name>ObserverParametrizationObjectID</Name>
+									<Comment><![CDATA[Object IDs of observer parametrization]]></Comment>
+									<BitSize>32</BitSize>
+									<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+									<PTCID>#x0317a001</PTCID>
+									<ContextId>1</ContextId>
+								</Parameter>
+								<Parameter OnlineParameter="true" DisableCodeGeneration="true" ReadOnly="true" Group="Info">
+									<Name>ControllerParametrizationObjectID</Name>
+									<Comment><![CDATA[Object IDs of controller parametrization]]></Comment>
+									<BitSize>32</BitSize>
+									<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+									<PTCID>#x0317a002</PTCID>
+									<ContextId>1</ContextId>
+								</Parameter>
+								<Parameter OnlineParameter="true" DisableCodeGeneration="true" ReadOnly="true" Group="Info">
+									<Name>FilterParametrizationObjectID</Name>
+									<Comment><![CDATA[Object IDs of filter parametrization]]></Comment>
+									<BitSize>32</BitSize>
+									<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+									<PTCID>#x0317a003</PTCID>
+									<ContextId>1</ContextId>
+								</Parameter>
+								<Parameter OnlineParameter="true" DisableCodeGeneration="true" ReadOnly="true" Group="Info">
+									<Name>InertiaParametrizationObjectID</Name>
+									<Comment><![CDATA[Object IDs of inertia parametrization]]></Comment>
+									<BitSize>32</BitSize>
+									<BaseType GUID="{18071995-0000-0000-0000-00000000000F}">OTCID</BaseType>
+									<PTCID>#x0317a004</PTCID>
+									<ContextId>1</ContextId>
+								</Parameter>
+								<Parameter OnlineParameter="true" DisableCodeGeneration="true" ReadOnly="true" Group="Info">
+									<Name>IsExternalFeedbackParametrizationSet</Name>
+									<Comment><![CDATA[TRUE: Parametrization set is an external feedback parametrization set]]></Comment>
+									<BitSize>8</BitSize>
+									<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
+									<PTCID>#x0317a006</PTCID>
+									<ContextId>1</ContextId>
+								</Parameter>
+							</Parameters>
+							<Properties>
+								<Property>
+									<Name>Category</Name>
+									<Value>ProcessingUnit</Value>
+								</Property>
+								<Property>
+									<Name>ChildCategory</Name>
+									<Value>ParametrizationSet</Value>
+								</Property>
+							</Properties>
+							<ParentOTCID>#x01010010</ParentOTCID>
+						</TmcDesc>
+						<Module Id="#x010100e0" KeepUnrestoredLinks="2" ClassFactoryId="Beckhoff Automation GmbH|TcIoXPlanar|4.4.21.0">
+							<Name>GeneralParametrization</Name>
+							<ImageId>1002</ImageId>
+							<TmcDesc GUID="{C63F18DF-B502-42EF-BD16-12D7BB245AA1}" ClassFactoryId="Beckhoff Automation GmbH|TcIoXPlanar|4.4.21.0">
+								<Name>GeneralParametrization</Name>
+								<CLSID ClassFactory="TcIoXPlanar">{F473098A-A7AE-4234-8708-97FC41621122}</CLSID>
+								<Info>
+									<ImageData>424d360300000000000036000000280000001000000010000000010018000000000000000000741200007412000000000000000000003d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b297b766f7a766d7a766da6a39da6a39da6a39da6a39da6a39da6a39da6a39da6a39da6a39d666155645e533d3b293d3b297f7b737f7b733d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b29a6a39d6661553d3b293d3b2989857f8b867f3d3b2989857d9b9791837e759b97919b97919b97919b9791706b603d3b29a6a39d6863583d3b293d3b2996928c97938e3d3b2996928c3d3b298f8b843d3b293d3b293d3b293d3b29736e633d3b29a6a39d6b665b3d3b293d3b29a19e99a3a09a3d3b29a29e98b1aea89b9791b1aea8b1aea8b1aea8b1aea87671673d3b29a6a39d6d675d3d3b293d3b29aca9a5aeaba73d3b29adaaa53d3b29a6a39d3d3b293d3b293d3b293d3b297c776d3d3b29a6a39d6f6a603d3b293d3b29b7b4b0b9b6b13d3b29b8b6b1cac8c5b1aea8cac8c5cac8c5cac8c5cac8c5837f763d3b29a6a39d716c623d3b293d3b29c1bfbcc3c1be3d3b29c4c2be3d3b29bbb9b33d3b293d3b293d3b293d3b298b877f3d3b29a6a39d736e643d3b293d3b29cac8c5cccbc83d3b29ceccc9cac8c5c4c2bebbb8b4b2afa9a7a49e9d9993918d863d3b29a6a39d7570663d3b293d3b29d1cfcdd6d4d23d3b29d6d4d2d2d0cecbc9c6c2bfbbb7b5af3d3b293d3b293d3b293d3b29a6a39d7772693d3b293d3b29d6d4d2dcdbd93d3b29dedddcd8d6d4d0cecbc6c4c1bbb8b33d3b29a6a39da6a39d3d3b29a6a39d78736b3d3b293d3b29d8d7d5e0dfdd3d3b29e2e1e0d9d8d6d1cfccc8c6c3bcbab53d3b29a6a39d3d3b298e8a83817d757a756c3d3b293d3b29d7d6d5dddcdb3d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b299b97928f8b84827e767a766e3d3b293d3b29d3d2d1d8d7d6dad9d7d9d8d6d4d2d0cdcbc9c4c2c0bab8b3b0ada9a5a29d9a96918e8a84817d767b776f3d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b29</ImageData>
+								</Info>
+								<InitSequence>PSO</InitSequence>
+								<Contexts>
+									<Context>
+										<Id>1</Id>
+									</Context>
+								</Contexts>
+								<Interfaces>
+									<Interface DisableCodeGeneration="true">
+										<Type GUID="{00000012-0000-0000-E000-000000000064}">ITComObject</Type>
+									</Interface>
+									<Interface DisableCodeGeneration="true">
+										<Type GUID="{03000012-0000-0000-E000-000000000064}">ITcADI</Type>
+									</Interface>
+									<Interface DisableCodeGeneration="true">
+										<Type GUID="{03000018-0000-0000-E000-000000000064}">ITcWatchSource</Type>
+									</Interface>
+								</Interfaces>
+								<Parameters>
+									<Group><![CDATA[Base]]></Group>
+									<Group Collapsed="true"><![CDATA[MoverEnablingDisabling]]></Group>
+									<Group Collapsed="true"><![CDATA[PositionReference]]></Group>
+									<Group Collapsed="true"><![CDATA[MoverCommunication]]></Group>
+									<Parameter DisableCodeGeneration="true" Group="MoverEnablingDisabling">
+										<Name>zPosAtEnable</Name>
+										<Comment><![CDATA[When enabling/activating the mover, it will fly at this Z position.]]></Comment>
+										<BitSize>64</BitSize>
+										<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+										<Unit><![CDATA[mm]]></Unit>
+										<Default>
+											<Value>2.0</Value>
+										</Default>
+										<PTCID>#x03175030</PTCID>
+										<ContextId>1</ContextId>
+									</Parameter>
+									<Parameter HideParameter="true" DisableCodeGeneration="true" Group="MoverEnablingDisabling">
+										<Name>zRangeAtEnable</Name>
+										<Comment><![CDATA[Acceptance range, in which the mover has to stay for a while after enabling. The acceptance region is zPosAtEnable +- zRangeAtEnable]]></Comment>
+										<BitSize>64</BitSize>
+										<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+										<Unit><![CDATA[mm]]></Unit>
+										<Default>
+											<Value>0.1</Value>
+										</Default>
+										<PTCID>#x03175039</PTCID>
+										<ContextId>1</ContextId>
+									</Parameter>
+									<Parameter HideParameter="true" DisableCodeGeneration="true" Group="MoverEnablingDisabling">
+										<Name>TimeToStayAtEnablingHeight</Name>
+										<Comment><![CDATA[After reaching the enabling height, the mover remains there for this time to ensure it is stable. Max. 4 seconds.]]></Comment>
+										<BitSize>64</BitSize>
+										<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+										<Unit><![CDATA[s]]></Unit>
+										<Default>
+											<Value>1.0</Value>
+										</Default>
+										<PTCID>#x0317503a</PTCID>
+										<ContextId>1</ContextId>
+									</Parameter>
+									<Parameter DisableCodeGeneration="true" Group="MoverEnablingDisabling">
+										<Name>EnablingForceIncrement</Name>
+										<Comment><![CDATA[Defines the smoothness of the mover enabling. During the enabling, the mover's force is increased by this amount. Set to 0 if you want to enable the mover based on EnablingTime.]]></Comment>
+										<BitSize>64</BitSize>
+										<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+										<Unit><![CDATA[N/cycle]]></Unit>
+										<Default>
+											<Value>0.0</Value>
+										</Default>
+										<PTCID>#x03175061</PTCID>
+										<ContextId>1</ContextId>
+									</Parameter>
+									<Parameter DisableCodeGeneration="true" Group="MoverEnablingDisabling">
+										<Name>DisablingForceDecrement</Name>
+										<Comment><![CDATA[Defines the smoothness of the mover disabling. During the disabling, the mover's force is decreased by this amount. Set to 0 if you want to disable the mover based on DisablingTime.]]></Comment>
+										<BitSize>64</BitSize>
+										<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+										<Unit><![CDATA[N/cycle]]></Unit>
+										<Default>
+											<Value>0.0</Value>
+										</Default>
+										<PTCID>#x03175062</PTCID>
+										<ContextId>1</ContextId>
+									</Parameter>
+									<Parameter DisableCodeGeneration="true" Group="MoverEnablingDisabling">
+										<Name>EnablingTime</Name>
+										<Comment><![CDATA[Defines the time that the mover needs for enabling. Has to be between 0.1s and 4s.]]></Comment>
+										<BitSize>64</BitSize>
+										<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+										<Unit><![CDATA[s]]></Unit>
+										<Default>
+											<Value>0.5</Value>
+										</Default>
+										<PTCID>#x0317506b</PTCID>
+										<ContextId>1</ContextId>
+									</Parameter>
+									<Parameter DisableCodeGeneration="true" Group="MoverEnablingDisabling">
+										<Name>DisablingTime</Name>
+										<Comment><![CDATA[Defines the time that the mover needs for disabling. Has to be between 0.1s and 4s.]]></Comment>
+										<BitSize>64</BitSize>
+										<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+										<Unit><![CDATA[s]]></Unit>
+										<Default>
+											<Value>0.5</Value>
+										</Default>
+										<PTCID>#x0317506c</PTCID>
+										<ContextId>1</ContextId>
+									</Parameter>
+									<Parameter DisableCodeGeneration="true" Group="Base">
+										<Name>SetpointInterpolation</Name>
+										<Comment><![CDATA[External setpoints can be interpolated by the setpoint dynamics or an internal calculated BSpline.]]></Comment>
+										<BitSize>16</BitSize>
+										<BaseType GUID="{960D5D3A-1C8A-4482-844E-842A4F399F8E}" Namespace="TcIoXPlanar">SetpointInterpolation</BaseType>
+										<PTCID>#x03175022</PTCID>
+										<ContextId>1</ContextId>
+									</Parameter>
+									<Parameter DisableCodeGeneration="true" Group="Base">
+										<Name>BrakeAcceleration</Name>
+										<Comment><![CDATA[Brake acceleration in case of an emergency stop.]]></Comment>
+										<BitSize>64</BitSize>
+										<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+										<Unit><![CDATA[mm/s^2]]></Unit>
+										<Default>
+											<Value>10000.0</Value>
+										</Default>
+										<PTCID>#x03175031</PTCID>
+										<ContextId>1</ContextId>
+									</Parameter>
+									<Parameter DisableCodeGeneration="true" Group="Base">
+										<Name>DefaultSetpointCycleTime</Name>
+										<Comment><![CDATA[Default value for setpoint cycle time if no time stamp is generated.]]></Comment>
+										<BitSize>64</BitSize>
+										<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+										<Unit><![CDATA[s]]></Unit>
+										<Default>
+											<Value>0.002</Value>
+										</Default>
+										<PTCID>#x03175032</PTCID>
+										<ContextId>1</ContextId>
+									</Parameter>
+									<Parameter DisableCodeGeneration="true" Group="PositionReference">
+										<Name>PositionReferenceMode</Name>
+										<Comment><![CDATA[NoCommonReference: each mover is at z=0 when resting. TileTopSurface/TileBottomSurface: predefined references. UserSpecified: define your own reference via the reference zOffset.]]></Comment>
+										<BitSize>16</BitSize>
+										<BaseType GUID="{93EFF533-445A-499F-B877-8FDA3E4311E2}" Namespace="TcIoXPlanar">PositionReferenceMode</BaseType>
+										<PTCID>#x03175067</PTCID>
+										<ContextId>1</ContextId>
+									</Parameter>
+									<Parameter DisableCodeGeneration="true" Group="PositionReference">
+										<Name>PositionReferenceZOffset</Name>
+										<Comment><![CDATA[Only taken into account when PositionReferenceMode=UserSpecified. Offset of 0.0 means the tile bottom surface is taken as reference surface.]]></Comment>
+										<BitSize>64</BitSize>
+										<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+										<Unit><![CDATA[mm]]></Unit>
+										<Default>
+											<Value>0.0</Value>
+										</Default>
+										<PTCID>#x03175068</PTCID>
+										<ContextId>1</ContextId>
+									</Parameter>
+									<Parameter HideParameter="true" DisableCodeGeneration="true" Group="MoverCommunication">
+										<Name>MoverCommAmplitude</Name>
+										<Comment><![CDATA[Value between 4000 and 14000. Standard is 10000.]]></Comment>
+										<BitSize>32</BitSize>
+										<BaseType GUID="{18071995-0000-0000-0000-000000000008}">UDINT</BaseType>
+										<Default>
+											<Value>10000</Value>
+										</Default>
+										<PTCID>#x03175104</PTCID>
+										<ContextId>1</ContextId>
+									</Parameter>
+									<Parameter HideParameter="true" DisableCodeGeneration="true" Group="MoverCommunication">
+										<Name>MoverCommPeriodsPerSymbol</Name>
+										<Comment><![CDATA[Even value between 8 and 40. Standard is 20. Low value is faster communication, high value is slower but safer communication.]]></Comment>
+										<BitSize>32</BitSize>
+										<BaseType GUID="{18071995-0000-0000-0000-000000000008}">UDINT</BaseType>
+										<Default>
+											<Value>20</Value>
+										</Default>
+										<PTCID>#x03175096</PTCID>
+										<ContextId>1</ContextId>
+									</Parameter>
+									<Parameter HideParameter="true" DisableCodeGeneration="true" Group="MoverCommunication">
+										<Name>MoverCommUseOneEtherCatBranch</Name>
+										<Comment><![CDATA[Set to true if no synchronized EtherCAT ports are available.]]></Comment>
+										<BitSize>8</BitSize>
+										<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
+										<Default>
+											<EnumText>TRUE</EnumText>
+										</Default>
+										<PTCID>#x03175103</PTCID>
+										<ContextId>1</ContextId>
+									</Parameter>
+									<Parameter HideParameter="true" DisableCodeGeneration="true" Group="MoverCommunication">
+										<Name>MoverOrientationDcCurrentFactor</Name>
+										<BitSize>64</BitSize>
+										<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+										<Default>
+											<Value>1.0</Value>
+										</Default>
+										<PTCID>#x0317509f</PTCID>
+										<ContextId>1</ContextId>
+									</Parameter>
+									<Parameter HideParameter="true" DisableCodeGeneration="true" Group="MoverCommunication">
+										<Name>MoverOrientationDeviationDiffThreshold</Name>
+										<BitSize>64</BitSize>
+										<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+										<Default>
+											<Value>30.0</Value>
+										</Default>
+										<PTCID>#x03175100</PTCID>
+										<ContextId>1</ContextId>
+									</Parameter>
+									<Parameter HideParameter="true" DisableCodeGeneration="true" Group="MoverCommunication">
+										<Name>MoverHallSensorRepetitions</Name>
+										<BitSize>32</BitSize>
+										<BaseType GUID="{18071995-0000-0000-0000-000000000008}">UDINT</BaseType>
+										<Default>
+											<Value>32</Value>
+										</Default>
+										<PTCID>#x03175089</PTCID>
+										<ContextId>1</ContextId>
+									</Parameter>
+								</Parameters>
+								<EventClasses>
+									<EventClass>
+										<Type GUID="{13066D61-08C3-495B-AA41-2259D07198C3}" Namespace="TcIoXPlanar">XPlanarEvents</Type>
+									</EventClass>
+								</EventClasses>
+								<Properties>
+									<Property>
+										<Name>Category</Name>
+										<Value>ParametrizationSet</Value>
+									</Property>
+									<Property>
+										<Name>ChildCategory</Name>
+										<Value>GeneralParametrization</Value>
+									</Property>
+								</Properties>
+								<ParentOTCID>#x010100d0</ParentOTCID>
+								<ParameterValues>
+									<Value>
+										<Name>zPosAtEnable</Name>
+										<Value>2</Value>
+									</Value>
+									<Value>
+										<Name>zRangeAtEnable</Name>
+										<Value>0.1</Value>
+									</Value>
+									<Value>
+										<Name>TimeToStayAtEnablingHeight</Name>
+										<Value>1</Value>
+									</Value>
+									<Value>
+										<Name>EnablingForceIncrement</Name>
+										<Value>0</Value>
+									</Value>
+									<Value>
+										<Name>DisablingForceDecrement</Name>
+										<Value>0</Value>
+									</Value>
+									<Value>
+										<Name>EnablingTime</Name>
+										<Value>0.5</Value>
+									</Value>
+									<Value>
+										<Name>DisablingTime</Name>
+										<Value>0.5</Value>
+									</Value>
+									<Value>
+										<Name>SetpointInterpolation</Name>
+										<EnumText>NcDynamics</EnumText>
+									</Value>
+									<Value>
+										<Name>BrakeAcceleration</Name>
+										<Value>10000</Value>
+									</Value>
+									<Value>
+										<Name>DefaultSetpointCycleTime</Name>
+										<Value>0.002</Value>
+									</Value>
+									<Value>
+										<Name>PositionReferenceMode</Name>
+										<EnumText>NoCommonReference</EnumText>
+									</Value>
+									<Value>
+										<Name>PositionReferenceZOffset</Name>
+										<Value>0</Value>
+									</Value>
+									<Value>
+										<Name>MoverCommAmplitude</Name>
+										<Value>10000</Value>
+									</Value>
+									<Value>
+										<Name>MoverCommPeriodsPerSymbol</Name>
+										<Value>20</Value>
+									</Value>
+									<Value>
+										<Name>MoverCommUseOneEtherCatBranch</Name>
+										<EnumText>TRUE</EnumText>
+									</Value>
+									<Value>
+										<Name>MoverOrientationDcCurrentFactor</Name>
+										<Value>1</Value>
+									</Value>
+									<Value>
+										<Name>MoverOrientationDeviationDiffThreshold</Name>
+										<Value>30</Value>
+									</Value>
+									<Value>
+										<Name>MoverHallSensorRepetitions</Name>
+										<Value>32</Value>
+									</Value>
+								</ParameterValues>
+							</TmcDesc>
+						</Module>
+						<Module Id="#x01010100" KeepUnrestoredLinks="2" ClassFactoryId="Beckhoff Automation GmbH|TcIoXPlanar|4.4.21.0">
+							<Name>InertiaParametrization</Name>
+							<ImageId>1002</ImageId>
+							<TmcDesc GUID="{7AD21AD3-09A0-40F7-8252-8B309095137B}" ClassFactoryId="Beckhoff Automation GmbH|TcIoXPlanar|4.4.21.0">
+								<Name>InertiaParametrization</Name>
+								<CLSID ClassFactory="TcIoXPlanar">{7AD21AD3-09A0-40F7-8252-8B309095137B}</CLSID>
+								<Info>
+									<ImageData>424d360300000000000036000000280000001000000010000000010018000000000000000000741200007412000000000000000000003d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b297b766f7a766d7a766da6a39da6a39da6a39da6a39da6a39da6a39da6a39da6a39da6a39d666155645e533d3b293d3b297f7b737f7b733d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b29a6a39d6661553d3b293d3b2989857f8b867f3d3b2989857d9b9791837e759b97919b97919b97919b9791706b603d3b29a6a39d6863583d3b293d3b2996928c97938e3d3b2996928c3d3b298f8b843d3b293d3b293d3b293d3b29736e633d3b29a6a39d6b665b3d3b293d3b29a19e99a3a09a3d3b29a29e98b1aea89b9791b1aea8b1aea8b1aea8b1aea87671673d3b29a6a39d6d675d3d3b293d3b29aca9a5aeaba73d3b29adaaa53d3b29a6a39d3d3b293d3b293d3b293d3b297c776d3d3b29a6a39d6f6a603d3b293d3b29b7b4b0b9b6b13d3b29b8b6b1cac8c5b1aea8cac8c5cac8c5cac8c5cac8c5837f763d3b29a6a39d716c623d3b293d3b29c1bfbcc3c1be3d3b29c4c2be3d3b29bbb9b33d3b293d3b293d3b293d3b298b877f3d3b29a6a39d736e643d3b293d3b29cac8c5cccbc83d3b29ceccc9cac8c5c4c2bebbb8b4b2afa9a7a49e9d9993918d863d3b29a6a39d7570663d3b293d3b29d1cfcdd6d4d23d3b29d6d4d2d2d0cecbc9c6c2bfbbb7b5af3d3b293d3b293d3b293d3b29a6a39d7772693d3b293d3b29d6d4d2dcdbd93d3b29dedddcd8d6d4d0cecbc6c4c1bbb8b33d3b29a6a39da6a39d3d3b29a6a39d78736b3d3b293d3b29d8d7d5e0dfdd3d3b29e2e1e0d9d8d6d1cfccc8c6c3bcbab53d3b29a6a39d3d3b298e8a83817d757a756c3d3b293d3b29d7d6d5dddcdb3d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b299b97928f8b84827e767a766e3d3b293d3b29d3d2d1d8d7d6dad9d7d9d8d6d4d2d0cdcbc9c4c2c0bab8b3b0ada9a5a29d9a96918e8a84817d767b776f3d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b293d3b29</ImageData>
+								</Info>
+								<InitSequence>PSO</InitSequence>
+								<Contexts>
+									<Context>
+										<Id>1</Id>
+									</Context>
+								</Contexts>
+								<Interfaces>
+									<Interface DisableCodeGeneration="true">
+										<Type GUID="{00000012-0000-0000-E000-000000000064}">ITComObject</Type>
+									</Interface>
+									<Interface DisableCodeGeneration="true">
+										<Type GUID="{03000012-0000-0000-E000-000000000064}">ITcADI</Type>
+									</Interface>
+									<Interface DisableCodeGeneration="true">
+										<Type GUID="{03000018-0000-0000-E000-000000000064}">ITcWatchSource</Type>
+									</Interface>
+								</Interfaces>
+								<Parameters>
+									<Parameter DisableCodeGeneration="true" ShowSubItems="true" Group="General">
+										<Name>BasicInertia</Name>
+										<Comment><![CDATA[Total Inertia of e.g. mover + permanent tooling or coupled movers + frame. Additional flexible payload inertia can be set in the mover object parameters.]]></Comment>
+										<BitSize>448</BitSize>
+										<BaseType GUID="{70954D12-5B1F-46F1-8D45-40C9481F0D4D}" Namespace="TcIoXPlanar">Inertia</BaseType>
+										<PTCID>#x03175066</PTCID>
+										<ContextId>1</ContextId>
+									</Parameter>
+									<Parameter DisableCodeGeneration="true" ShowSubItems="true" Group="General">
+										<Name>BasicProductsOfInertia</Name>
+										<Comment><![CDATA[Products of inertia, e.g. mover + permanent tooling or coupled movers + frame.]]></Comment>
+										<BitSize>192</BitSize>
+										<BaseType GUID="{D695FF89-E870-4A02-9D41-2147DD54482F}" Namespace="TcIoXPlanar">ProductsOfInertia</BaseType>
+										<PTCID>#x0317506a</PTCID>
+										<ContextId>1</ContextId>
+									</Parameter>
+								</Parameters>
+								<Properties>
+									<Property>
+										<Name>Category</Name>
+										<Value>ParametrizationSet</Value>
+									</Property>
+									<Property>
+										<Name>ChildCategory</Name>
+										<Value>InertiaParametrization</Value>
+									</Property>
+								</Properties>
+								<ParentOTCID>#x010100d0</ParentOTCID>
+								<ParameterValues>
+									<Value>
+										<Name>BasicInertia.Mass</Name>
+										<Value>0</Value>
+									</Value>
+									<Value>
+										<Name>BasicInertia.Ixx</Name>
+										<Value>0</Value>
+									</Value>
+									<Value>
+										<Name>BasicInertia.Iyy</Name>
+										<Value>0</Value>
+									</Value>
+									<Value>
+										<Name>BasicInertia.Izz</Name>
+										<Value>0</Value>
+									</Value>
+									<Value>
+										<Name>BasicInertia.CentreOfMassX</Name>
+										<Value>0</Value>
+									</Value>
+									<Value>
+										<Name>BasicInertia.CentreOfMassY</Name>
+										<Value>0</Value>
+									</Value>
+									<Value>
+										<Name>BasicInertia.CentreOfMassZ</Name>
+										<Value>0</Value>
+									</Value>
+									<Value>
+										<Name>BasicProductsOfInertia.Ixy</Name>
+										<Value>0</Value>
+									</Value>
+									<Value>
+										<Name>BasicProductsOfInertia.Ixz</Name>
+										<Value>0</Value>
+									</Value>
+									<Value>
+										<Name>BasicProductsOfInertia.Iyz</Name>
+										<Value>0</Value>
+									</Value>
+								</ParameterValues>
+							</TmcDesc>
+						</Module>
+					</Module>
 				</Module>
 			</Modules>
 		</System>
@@ -3680,9 +4796,99 @@ External Setpoint Generation:
 		</Motion>
 		<Plc>
 			<Project GUID="{9E6DAFC1-D901-4993-BEB8-0B1F069714DA}" Name="Plc" PrjFilePath="Plc\Plc.plcproj" TmcFilePath="Plc\Plc.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="1" TmcPath="Plc\Plc.tmc" TmcHash="{A8AD6123-B907-47F0-CBEF-C36ED2046335}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="1" TmcHash="{7E9E02EC-7432-C7E2-EB0D-0C7C8739D544}" TmcPath="Plc\Plc.tmc">
 					<Name>Plc Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
+					<Vars VarGrpType="2" AreaNo="1">
+						<Name>PlcTask Outputs</Name>
+						<Var>
+							<Name>MAIN.aMovers[1].fbMover.PLCTOMC</Name>
+							<Comment><![CDATA[ Mover data that is transferred from the Planar Mover to this function block. ]]></Comment>
+							<Type GUID="{8CF7E034-6BBC-291C-E83F-2D2297581DBB}" Namespace="Tc3_Mc3PlanarMotion">CDT_PLCTOMC_PLANAR_MOVER</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.aMovers[1].AxisSetpointX.Axis.PlcToNc</Name>
+							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.aMovers[1].AxisSetpointY.Axis.PlcToNc</Name>
+							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.aMovers[1].AxisSetpointZ.Axis.PlcToNc</Name>
+							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.aMovers[1].AxisSetpointA.Axis.PlcToNc</Name>
+							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.aMovers[1].AxisSetpointB.Axis.PlcToNc</Name>
+							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.aMovers[1].AxisSetpointC.Axis.PlcToNc</Name>
+							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.aMovers[2].fbMover.PLCTOMC</Name>
+							<Comment><![CDATA[ Mover data that is transferred from the Planar Mover to this function block. ]]></Comment>
+							<Type GUID="{8CF7E034-6BBC-291C-E83F-2D2297581DBB}" Namespace="Tc3_Mc3PlanarMotion">CDT_PLCTOMC_PLANAR_MOVER</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.aMovers[2].AxisSetpointX.Axis.PlcToNc</Name>
+							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.aMovers[2].AxisSetpointY.Axis.PlcToNc</Name>
+							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.aMovers[2].AxisSetpointZ.Axis.PlcToNc</Name>
+							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.aMovers[2].AxisSetpointA.Axis.PlcToNc</Name>
+							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.aMovers[2].AxisSetpointB.Axis.PlcToNc</Name>
+							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.aMovers[2].AxisSetpointC.Axis.PlcToNc</Name>
+							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.aMovers[3].fbMover.PLCTOMC</Name>
+							<Comment><![CDATA[ Mover data that is transferred from the Planar Mover to this function block. ]]></Comment>
+							<Type GUID="{8CF7E034-6BBC-291C-E83F-2D2297581DBB}" Namespace="Tc3_Mc3PlanarMotion">CDT_PLCTOMC_PLANAR_MOVER</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.aMovers[3].AxisSetpointX.Axis.PlcToNc</Name>
+							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.aMovers[3].AxisSetpointY.Axis.PlcToNc</Name>
+							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.aMovers[3].AxisSetpointZ.Axis.PlcToNc</Name>
+							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.aMovers[3].AxisSetpointA.Axis.PlcToNc</Name>
+							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.aMovers[3].AxisSetpointB.Axis.PlcToNc</Name>
+							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.aMovers[3].AxisSetpointC.Axis.PlcToNc</Name>
+							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
+						</Var>
+					</Vars>
 					<Vars VarGrpType="1">
 						<Name>PlcTask Inputs</Name>
 						<Var>
@@ -3783,36 +4989,6 @@ External Setpoint Generation:
 							<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.aTracks[1].fbTrack.MCTOPLC_STD</Name>
-							<Comment><![CDATA[ Track data that is transferred from the Planar Track to this function block. ]]></Comment>
-							<Type GUID="{5769ADF0-D6E6-40D9-B474-790A2A7F1D1F}" Namespace="MC">CDT_MCTOPLC_PLANAR_TRACK</Type>
-						</Var>
-						<Var>
-							<Name>MAIN.aTracks[2].fbTrack.MCTOPLC_STD</Name>
-							<Comment><![CDATA[ Track data that is transferred from the Planar Track to this function block. ]]></Comment>
-							<Type GUID="{5769ADF0-D6E6-40D9-B474-790A2A7F1D1F}" Namespace="MC">CDT_MCTOPLC_PLANAR_TRACK</Type>
-						</Var>
-						<Var>
-							<Name>MAIN.aTracks[3].fbTrack.MCTOPLC_STD</Name>
-							<Comment><![CDATA[ Track data that is transferred from the Planar Track to this function block. ]]></Comment>
-							<Type GUID="{5769ADF0-D6E6-40D9-B474-790A2A7F1D1F}" Namespace="MC">CDT_MCTOPLC_PLANAR_TRACK</Type>
-						</Var>
-						<Var>
-							<Name>MAIN.aTracks[4].fbTrack.MCTOPLC_STD</Name>
-							<Comment><![CDATA[ Track data that is transferred from the Planar Track to this function block. ]]></Comment>
-							<Type GUID="{5769ADF0-D6E6-40D9-B474-790A2A7F1D1F}" Namespace="MC">CDT_MCTOPLC_PLANAR_TRACK</Type>
-						</Var>
-						<Var>
-							<Name>MAIN.aTracks[5].fbTrack.MCTOPLC_STD</Name>
-							<Comment><![CDATA[ Track data that is transferred from the Planar Track to this function block. ]]></Comment>
-							<Type GUID="{5769ADF0-D6E6-40D9-B474-790A2A7F1D1F}" Namespace="MC">CDT_MCTOPLC_PLANAR_TRACK</Type>
-						</Var>
-						<Var>
-							<Name>MAIN.aTracks[6].fbTrack.MCTOPLC_STD</Name>
-							<Comment><![CDATA[ Track data that is transferred from the Planar Track to this function block. ]]></Comment>
-							<Type GUID="{5769ADF0-D6E6-40D9-B474-790A2A7F1D1F}" Namespace="MC">CDT_MCTOPLC_PLANAR_TRACK</Type>
-						</Var>
-						<Var>
 							<Name>MAIN.fbStationA.fbOptionalTrackUsedInLiveView.MCTOPLC_STD</Name>
 							<Comment><![CDATA[ Track data that is transferred from the Planar Track to this function block. ]]></Comment>
 							<Type GUID="{5769ADF0-D6E6-40D9-B474-790A2A7F1D1F}" Namespace="MC">CDT_MCTOPLC_PLANAR_TRACK</Type>
@@ -3838,104 +5014,64 @@ External Setpoint Generation:
 							<Type GUID="{5769ADF0-D6E6-40D9-B474-790A2A7F1D1F}" Namespace="MC">CDT_MCTOPLC_PLANAR_TRACK</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.fbStationDummy1.fbOptionalTrackUsedInLiveView.MCTOPLC_STD</Name>
+							<Name>MAIN.aTracks[1].fbTrack.MCTOPLC_STD</Name>
 							<Comment><![CDATA[ Track data that is transferred from the Planar Track to this function block. ]]></Comment>
 							<Type GUID="{5769ADF0-D6E6-40D9-B474-790A2A7F1D1F}" Namespace="MC">CDT_MCTOPLC_PLANAR_TRACK</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.fbStationDummy2.fbOptionalTrackUsedInLiveView.MCTOPLC_STD</Name>
+							<Name>MAIN.aTracks[1].fbHelpferStationOnEndOfThisTrack.fbOptionalTrackUsedInLiveView.MCTOPLC_STD</Name>
 							<Comment><![CDATA[ Track data that is transferred from the Planar Track to this function block. ]]></Comment>
 							<Type GUID="{5769ADF0-D6E6-40D9-B474-790A2A7F1D1F}" Namespace="MC">CDT_MCTOPLC_PLANAR_TRACK</Type>
 						</Var>
-					</Vars>
-					<Vars VarGrpType="2" AreaNo="1">
-						<Name>PlcTask Outputs</Name>
 						<Var>
-							<Name>MAIN.aMovers[1].fbMover.PLCTOMC</Name>
-							<Comment><![CDATA[ Mover data that is transferred from the Planar Mover to this function block. ]]></Comment>
-							<Type GUID="{8CF7E034-6BBC-291C-E83F-2D2297581DBB}" Namespace="Tc3_Mc3PlanarMotion">CDT_PLCTOMC_PLANAR_MOVER</Type>
+							<Name>MAIN.aTracks[2].fbTrack.MCTOPLC_STD</Name>
+							<Comment><![CDATA[ Track data that is transferred from the Planar Track to this function block. ]]></Comment>
+							<Type GUID="{5769ADF0-D6E6-40D9-B474-790A2A7F1D1F}" Namespace="MC">CDT_MCTOPLC_PLANAR_TRACK</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.aMovers[1].AxisSetpointX.Axis.PlcToNc</Name>
-							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
+							<Name>MAIN.aTracks[2].fbHelpferStationOnEndOfThisTrack.fbOptionalTrackUsedInLiveView.MCTOPLC_STD</Name>
+							<Comment><![CDATA[ Track data that is transferred from the Planar Track to this function block. ]]></Comment>
+							<Type GUID="{5769ADF0-D6E6-40D9-B474-790A2A7F1D1F}" Namespace="MC">CDT_MCTOPLC_PLANAR_TRACK</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.aMovers[1].AxisSetpointY.Axis.PlcToNc</Name>
-							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
+							<Name>MAIN.aTracks[3].fbTrack.MCTOPLC_STD</Name>
+							<Comment><![CDATA[ Track data that is transferred from the Planar Track to this function block. ]]></Comment>
+							<Type GUID="{5769ADF0-D6E6-40D9-B474-790A2A7F1D1F}" Namespace="MC">CDT_MCTOPLC_PLANAR_TRACK</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.aMovers[1].AxisSetpointZ.Axis.PlcToNc</Name>
-							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
+							<Name>MAIN.aTracks[3].fbHelpferStationOnEndOfThisTrack.fbOptionalTrackUsedInLiveView.MCTOPLC_STD</Name>
+							<Comment><![CDATA[ Track data that is transferred from the Planar Track to this function block. ]]></Comment>
+							<Type GUID="{5769ADF0-D6E6-40D9-B474-790A2A7F1D1F}" Namespace="MC">CDT_MCTOPLC_PLANAR_TRACK</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.aMovers[1].AxisSetpointA.Axis.PlcToNc</Name>
-							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
+							<Name>MAIN.aTracks[4].fbTrack.MCTOPLC_STD</Name>
+							<Comment><![CDATA[ Track data that is transferred from the Planar Track to this function block. ]]></Comment>
+							<Type GUID="{5769ADF0-D6E6-40D9-B474-790A2A7F1D1F}" Namespace="MC">CDT_MCTOPLC_PLANAR_TRACK</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.aMovers[1].AxisSetpointB.Axis.PlcToNc</Name>
-							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
+							<Name>MAIN.aTracks[4].fbHelpferStationOnEndOfThisTrack.fbOptionalTrackUsedInLiveView.MCTOPLC_STD</Name>
+							<Comment><![CDATA[ Track data that is transferred from the Planar Track to this function block. ]]></Comment>
+							<Type GUID="{5769ADF0-D6E6-40D9-B474-790A2A7F1D1F}" Namespace="MC">CDT_MCTOPLC_PLANAR_TRACK</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.aMovers[1].AxisSetpointC.Axis.PlcToNc</Name>
-							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
+							<Name>MAIN.aTracks[5].fbTrack.MCTOPLC_STD</Name>
+							<Comment><![CDATA[ Track data that is transferred from the Planar Track to this function block. ]]></Comment>
+							<Type GUID="{5769ADF0-D6E6-40D9-B474-790A2A7F1D1F}" Namespace="MC">CDT_MCTOPLC_PLANAR_TRACK</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.aMovers[2].fbMover.PLCTOMC</Name>
-							<Comment><![CDATA[ Mover data that is transferred from the Planar Mover to this function block. ]]></Comment>
-							<Type GUID="{8CF7E034-6BBC-291C-E83F-2D2297581DBB}" Namespace="Tc3_Mc3PlanarMotion">CDT_PLCTOMC_PLANAR_MOVER</Type>
+							<Name>MAIN.aTracks[5].fbHelpferStationOnEndOfThisTrack.fbOptionalTrackUsedInLiveView.MCTOPLC_STD</Name>
+							<Comment><![CDATA[ Track data that is transferred from the Planar Track to this function block. ]]></Comment>
+							<Type GUID="{5769ADF0-D6E6-40D9-B474-790A2A7F1D1F}" Namespace="MC">CDT_MCTOPLC_PLANAR_TRACK</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.aMovers[2].AxisSetpointX.Axis.PlcToNc</Name>
-							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
+							<Name>MAIN.aTracks[6].fbTrack.MCTOPLC_STD</Name>
+							<Comment><![CDATA[ Track data that is transferred from the Planar Track to this function block. ]]></Comment>
+							<Type GUID="{5769ADF0-D6E6-40D9-B474-790A2A7F1D1F}" Namespace="MC">CDT_MCTOPLC_PLANAR_TRACK</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.aMovers[2].AxisSetpointY.Axis.PlcToNc</Name>
-							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
-						</Var>
-						<Var>
-							<Name>MAIN.aMovers[2].AxisSetpointZ.Axis.PlcToNc</Name>
-							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
-						</Var>
-						<Var>
-							<Name>MAIN.aMovers[2].AxisSetpointA.Axis.PlcToNc</Name>
-							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
-						</Var>
-						<Var>
-							<Name>MAIN.aMovers[2].AxisSetpointB.Axis.PlcToNc</Name>
-							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
-						</Var>
-						<Var>
-							<Name>MAIN.aMovers[2].AxisSetpointC.Axis.PlcToNc</Name>
-							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
-						</Var>
-						<Var>
-							<Name>MAIN.aMovers[3].fbMover.PLCTOMC</Name>
-							<Comment><![CDATA[ Mover data that is transferred from the Planar Mover to this function block. ]]></Comment>
-							<Type GUID="{8CF7E034-6BBC-291C-E83F-2D2297581DBB}" Namespace="Tc3_Mc3PlanarMotion">CDT_PLCTOMC_PLANAR_MOVER</Type>
-						</Var>
-						<Var>
-							<Name>MAIN.aMovers[3].AxisSetpointX.Axis.PlcToNc</Name>
-							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
-						</Var>
-						<Var>
-							<Name>MAIN.aMovers[3].AxisSetpointY.Axis.PlcToNc</Name>
-							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
-						</Var>
-						<Var>
-							<Name>MAIN.aMovers[3].AxisSetpointZ.Axis.PlcToNc</Name>
-							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
-						</Var>
-						<Var>
-							<Name>MAIN.aMovers[3].AxisSetpointA.Axis.PlcToNc</Name>
-							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
-						</Var>
-						<Var>
-							<Name>MAIN.aMovers[3].AxisSetpointB.Axis.PlcToNc</Name>
-							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
-						</Var>
-						<Var>
-							<Name>MAIN.aMovers[3].AxisSetpointC.Axis.PlcToNc</Name>
-							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
+							<Name>MAIN.aTracks[6].fbHelpferStationOnEndOfThisTrack.fbOptionalTrackUsedInLiveView.MCTOPLC_STD</Name>
+							<Comment><![CDATA[ Track data that is transferred from the Planar Track to this function block. ]]></Comment>
+							<Type GUID="{5769ADF0-D6E6-40D9-B474-790A2A7F1D1F}" Namespace="MC">CDT_MCTOPLC_PLANAR_TRACK</Type>
 						</Var>
 					</Vars>
 					<UnrestoredVarLinks ImportTime="2024-08-07T16:34:57">
@@ -3952,6 +5088,16 @@ External Setpoint Generation:
 							</OwnerB>
 							<OwnerB Name="TIID^LAN4">
 								<Link VarA="MAIN.fbEtherCatDiagLAN4.EtherCatMasterNetID" TypeA="AMSNETID" InOutA="0" GuidA="{18071995-0000-0000-0000-000000000041}" VarB="InfoData^AmsNetId" RestoreInfo="ANotFound"/>
+							</OwnerB>
+						</OwnerA>
+					</UnrestoredVarLinks>
+					<UnrestoredVarLinks ImportTime="2025-07-25T11:12:00">
+						<OwnerA Name="InputDst" Prefix="TIPC^Plc^Plc Instance" Type="1">
+							<OwnerB Name="TINC^XPlanar MC Project^Groups^AnyStation05">
+								<Link VarA="MAIN.fbStationDummy1.fbOptionalTrackUsedInLiveView.MCTOPLC_STD" TypeA="MC.CDT_MCTOPLC_PLANAR_TRACK" InOutA="0" GuidA="{5769ADF0-D6E6-40D9-B474-790A2A7F1D1F}" VarB="McToPlc^STD" RestoreInfo="ANotFound"/>
+							</OwnerB>
+							<OwnerB Name="TINC^XPlanar MC Project^Groups^AnyStation06">
+								<Link VarA="MAIN.fbStationDummy2.fbOptionalTrackUsedInLiveView.MCTOPLC_STD" TypeA="MC.CDT_MCTOPLC_PLANAR_TRACK" InOutA="0" GuidA="{5769ADF0-D6E6-40D9-B474-790A2A7F1D1F}" VarB="McToPlc^STD" RestoreInfo="ANotFound"/>
 							</OwnerB>
 						</OwnerA>
 					</UnrestoredVarLinks>
@@ -3986,26 +5132,24 @@ External Setpoint Generation:
 		</Variants>
 	</Project>
 	<Mappings>
-		<MappingInfo Identifier="{05000010-2001-0850-1000-040300205008}" Id="#x02030130" Watchdog="14000000040000000400000004000000"/>
+		<MappingInfo Identifier="{05000010-2001-0850-1000-040300205008}" Id="#x02030140" Watchdog="14000000040000000400000004000000"/>
 		<MappingInfo Identifier="{02010030-0050-0201-2001-010130001105}" Id="#x02030010" Watchdog="20000000040000000400000004000000"/>
 		<MappingInfo Identifier="{02010030-0050-0201-5000-010110001105}" Id="#x02030030" Watchdog="20000000040000000400000004000000"/>
 		<MappingInfo Identifier="{02010030-0050-0201-6000-010120001105}" Id="#x02030020" Watchdog="20000000040000000400000004000000"/>
-		<MappingInfo Identifier="{02010050-2001-0850-0001-120500205008}" Id="#x020300f0" Watchdog="14000000040000000400000004000000"/>
+		<MappingInfo Identifier="{02010050-2001-0850-0001-120500205008}" Id="#x02030080" Watchdog="14000000040000000400000004000000"/>
 		<MappingInfo Identifier="{02010050-2001-0850-1000-100500205008}" Id="#x02030040" Watchdog="14000000040000000400000004000000"/>
-		<MappingInfo Identifier="{02010050-2001-0850-1001-120500205008}" Id="#x020300c0" Watchdog="14000000040000000400000004000000"/>
-		<MappingInfo Identifier="{02010050-2001-0850-2000-120500205008}" Id="#x02030090" Watchdog="14000000040000000400000004000000"/>
-		<MappingInfo Identifier="{02010050-2001-0850-2001-120500205008}" Id="#x02030080" Watchdog="14000000040000000400000004000000"/>
-		<MappingInfo Identifier="{02010050-2001-0850-3000-120500205008}" Id="#x02030050" Watchdog="14000000040000000400000004000000"/>
-		<MappingInfo Identifier="{02010050-2001-0850-5000-120500205008}" Id="#x02030100" Watchdog="14000000040000000400000004000000"/>
-		<MappingInfo Identifier="{02010050-2001-0850-6000-120500205008}" Id="#x020300d0" Watchdog="14000000040000000400000004000000"/>
-		<MappingInfo Identifier="{02010050-2001-0850-7000-120500205008}" Id="#x020300a0" Watchdog="14000000040000000400000004000000"/>
-		<MappingInfo Identifier="{02010050-2001-0850-8000-120500205008}" Id="#x02030060" Watchdog="14000000040000000400000004000000"/>
-		<MappingInfo Identifier="{02010050-2001-0850-9000-120500205008}" Id="#x02030120" Watchdog="14000000040000000400000004000000"/>
-		<MappingInfo Identifier="{02010050-2001-0850-A000-120500205008}" Id="#x02030110" Watchdog="14000000040000000400000004000000"/>
+		<MappingInfo Identifier="{02010050-2001-0850-1001-120500205008}" Id="#x02030090" Watchdog="14000000040000000400000004000000"/>
+		<MappingInfo Identifier="{02010050-2001-0850-2000-120500205008}" Id="#x02030120" Watchdog="14000000040000000400000004000000"/>
+		<MappingInfo Identifier="{02010050-2001-0850-2001-120500205008}" Id="#x020300a0" Watchdog="14000000040000000400000004000000"/>
+		<MappingInfo Identifier="{02010050-2001-0850-3000-120500205008}" Id="#x02030130" Watchdog="14000000040000000400000004000000"/>
+		<MappingInfo Identifier="{02010050-2001-0850-5000-120500205008}" Id="#x02030050" Watchdog="14000000040000000400000004000000"/>
+		<MappingInfo Identifier="{02010050-2001-0850-6000-120500205008}" Id="#x02030060" Watchdog="14000000040000000400000004000000"/>
+		<MappingInfo Identifier="{02010050-2001-0850-7000-120500205008}" Id="#x02030070" Watchdog="14000000040000000400000004000000"/>
+		<MappingInfo Identifier="{02010050-2001-0850-8000-120500205008}" Id="#x020300b0" Watchdog="14000000040000000400000004000000"/>
+		<MappingInfo Identifier="{02010050-2001-0850-9000-120500205008}" Id="#x020300c0" Watchdog="14000000040000000400000004000000"/>
+		<MappingInfo Identifier="{02010050-2001-0850-A000-120500205008}" Id="#x020300d0" Watchdog="14000000040000000400000004000000"/>
 		<MappingInfo Identifier="{02010050-2001-0850-B000-120500205008}" Id="#x020300e0" Watchdog="14000000040000000400000004000000"/>
-		<MappingInfo Identifier="{02010050-2001-0850-C000-120500205008}" Id="#x020300b0" Watchdog="14000000040000000400000004000000"/>
-		<MappingInfo Identifier="{02010050-2001-0850-D000-120500205008}" Id="#x02030070" Watchdog="14000000040000000400000004000000"/>
-		<MappingInfo Identifier="{02010050-2001-0850-E000-120500205008}" Id="#x02030140" Watchdog="14000000040000000400000004000000"/>
+		<MappingInfo Identifier="{02010050-2001-0850-E000-120500205008}" Id="#x02030110" Watchdog="14000000040000000400000004000000"/>
 		<OwnerA Name="TIPC^Plc^Plc Instance">
 			<OwnerB Name="TINC^NC-Task 1 SAF^Axes^01_A">
 				<Link VarA="PlcTask Inputs^MAIN.aMovers[1].AxisSetpointA.Axis.NcToPlc" VarB="Outputs^ToPlc"/>
@@ -4114,12 +5258,6 @@ External Setpoint Generation:
 			</OwnerB>
 			<OwnerB Name="TINC^XPlanar MC Project^Groups^AnyStation04">
 				<Link VarA="PlcTask Inputs^MAIN.fbStationD.fbOptionalTrackUsedInLiveView.MCTOPLC_STD" VarB="McToPlc^STD"/>
-			</OwnerB>
-			<OwnerB Name="TINC^XPlanar MC Project^Groups^AnyStation05">
-				<Link VarA="PlcTask Inputs^MAIN.fbStationDummy1.fbOptionalTrackUsedInLiveView.MCTOPLC_STD" VarB="McToPlc^STD"/>
-			</OwnerB>
-			<OwnerB Name="TINC^XPlanar MC Project^Groups^AnyStation06">
-				<Link VarA="PlcTask Inputs^MAIN.fbStationDummy2.fbOptionalTrackUsedInLiveView.MCTOPLC_STD" VarB="McToPlc^STD"/>
 			</OwnerB>
 			<OwnerB Name="TINC^XPlanar MC Project^Groups^AnyStation07">
 				<Link VarA="PlcTask Inputs^MAIN.fbStationD_ChangeGap.fbOptionalTrackUsedInLiveView.MCTOPLC_STD" VarB="McToPlc^STD"/>

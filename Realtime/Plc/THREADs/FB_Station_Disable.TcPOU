@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
   <POU Name="FB_Station_Disable" Id="{f250b27e-a3a3-4f8c-a728-76a9ef965b85}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_Station_Disable EXTENDS FB_CH_Object
 VAR
-
 	ipStation : I_XP_Station_PLC;
+	sTargetStation : STRING; //the mover gets this as next target
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -26,6 +26,27 @@ END_VAR]]></Declaration>
         <ST><![CDATA[THIS^.ipStation := ipStation;]]></ST>
       </Implementation>
     </Method>
+    <Property Name="TargetStation" Id="{5ff39824-8aa6-4379-85ea-5b936c3fe971}">
+      <Declaration><![CDATA[{attribute 'monitoring':='call'}
+ //the mover gets this as next target
+PROPERTY TargetStation : STRING]]></Declaration>
+      <Get Name="Get" Id="{97b60edd-bb37-40e4-8720-74ff66e6d2e0}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[TargetStation := sTargetStation;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{0aff3268-9492-4c82-bae7-14cc2d4fc454}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[sTargetStation := TargetStation;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
     <Method Name="Update" Id="{109ef4a0-0354-43ed-b4f8-08e59b74708c}">
       <Declaration><![CDATA[METHOD Update : HRESULT
 VAR
@@ -99,7 +120,7 @@ CASE nSeq OF
 		END_IF
 		
 	8: // send movers away
-		ipStation.SendMoversToStation(MAIN.G_WorkBench);
+		ipStation.SendMoversToStation(THIS^.sTargetStation);
 		nSeq := 0;	
 	
 END_CASE

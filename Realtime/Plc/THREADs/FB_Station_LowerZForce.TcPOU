@@ -1,10 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
   <POU Name="FB_Station_LowerZForce" Id="{986f1d68-bf8e-4783-9c03-c01052f5acdc}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_Station_LowerZForce EXTENDS FB_CH_Object
 VAR
-
 	ipStation : I_XP_Station_PLC;
+	nSeq : UINT;
+	fbTon : TON;
+	ipMoverInStation : I_XP_Mover_PLC;
+	bFromUpstreamProcessIsFinish: BOOL := TRUE;
+	sTargetStation : STRING; //the mover gets this as next target
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -26,19 +30,33 @@ END_VAR]]></Declaration>
         <ST><![CDATA[THIS^.ipStation := ipStation;]]></ST>
       </Implementation>
     </Method>
+    <Property Name="TargetStation" Id="{b8475f86-11ac-454e-bb60-686b1712227c}">
+      <Declaration><![CDATA[{attribute 'monitoring':='call'}
+ //the mover gets this as next target
+PROPERTY TargetStation : STRING]]></Declaration>
+      <Get Name="Get" Id="{5d579e06-88ee-4aa6-a2fa-7633fd86f1fb}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[TargetStation := sTargetStation;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{836bf01a-e060-4d8a-9635-cf3dd29b47a6}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[sTargetStation := TargetStation;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
     <Method Name="Update" Id="{dc7ca279-7959-4b33-8e61-bcdf95f8089d}">
       <Declaration><![CDATA[METHOD Update : HRESULT
 VAR
 	refPlanarTrack : REFERENCE TO MC_PlanarTrack;
 END_VAR
 
-VAR_INST
-	nSeq : UINT;
-	fbFeedback : MC_PlanarFeedback;
-	fbTon : TON;
-	ipMoverInStation : I_XP_Mover_PLC;
-	stForceLimitMax, stForceLimitMin : Force6D;
-END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[IF ipStation = 0 THEN
@@ -49,36 +67,23 @@ IF ipStation.System.Disabled THEN
 	nSeq := 0;
 END_IF
 
+//The simulation (automatic retransmission of a mover after a fixed time) is stopped for this station
 ipStation.SimulationStop();
 
 CASE nSeq OF 
 
 	0: //wait for mover
 		IF ipStation.MoversInPlace THEN
+			//receive the foremost mover in the station (if there is more than one mover in the station)
 			ipMoverInStation := ipStation.MoversInQueue[0];
 			nSeq := 1;
 		END_IF
 		
 	1: //Z = 0
-		ipMoverInStation.MoveZ(0);
-		
-		stForceLimitMax := ipMoverInStation.TcIoXPlanarMover.GetForceLimitMax();
-		stForceLimitMin := ipMoverInStation.TcIoXPlanarMover.GetForceLimitMin();
-		
-		stForceLimitMax.Fz := 0.1;		
-		stForceLimitMin.Fz := 0.01;
-		stForceLimitMax.Mx := 0.1;		
-		stForceLimitMin.Mx := 0.01;
-		stForceLimitMax.My := 0.1;		
-		stForceLimitMin.My := 0.01;
-		
-		//Min musste be < Max
-		ipMoverInStation.TcIoXPlanarMover.SetForceLimitMin(stForceLimitMin);		
-		ipMoverInStation.TcIoXPlanarMover.SetForceLimitMax(stForceLimitMax);
-
+		ipMoverInStation.LowerToUnknownLevel();
 		nSeq := 2;				
 
-	2: // wait until disable is finish
+	2: // wait until lowering is finish
 		IF ipMoverInStation.Feedback.Done THEN
 			fbTon.IN := FALSE;
 			nSeq := 3;	
@@ -90,49 +95,60 @@ CASE nSeq OF
 			nSeq := 4;	
 		END_IF			
 
-	4: //Z=4
-		ipMoverInStation.MoveZ(4.0);
-		
-		stForceLimitMax.Fz := 50;		
-		stForceLimitMin.Fz := 20;
-		stForceLimitMax.Mx := 2.0;		
-		stForceLimitMin.Mx := 0.2;
-		stForceLimitMax.My := 2.0;		
-		stForceLimitMin.My := 0.2;
-		
-		//Max must be >Min
-		ipMoverInStation.TcIoXPlanarMover.SetForceLimitMax(stForceLimitMax);
-		ipMoverInStation.TcIoXPlanarMover.SetForceLimitMin(stForceLimitMin);
+	4: //Lift
+		ipMoverInStation.LiftFromUnknownLevel();
 		nSeq := 5;				
 
-	5: // wait until enable is finish
-		IF ipMoverInStation.Feedback.Done THEN
-			fbTon.IN := FALSE;
-			nSeq := 6;	
-		END_IF
-		
-	6: //join Track
-		refPlanarTrack REF= ipStation.AccocietedTrack.PlanarTrack;
-		ipMoverInStation.PlanarMover.JoinTrack(	commandFeedback	:= fbFeedback, 
-												targetTrack		:= refPlanarTrack, 
-												constraint		:= ipMoverInStation.DynConstraint, 
-												options			:= 0);
-		nSeq := 7;				
+	5: // wait until lifting is finish
+		//The upstream process can set this bool if the process is finish and the mover can leave the station
+		bFromUpstreamProcessIsFinish := bFromUpstreamProcessIsFinish;
 
-	7: // wait until enable is finish
-		IF fbFeedback.Done THEN
-			fbTon.IN := FALSE;
-			nSeq := 8;	
+		fbTon.IN := TRUE;
+		IF fbTon.q AND bFromUpstreamProcessIsFinish THEN
+			nSeq := 100;	
 		END_IF
+
 		
-	8: // send movers away
-		ipStation.SendMoversToStation(MAIN.G_WorkBench);
-		nSeq := 0;	
+	100: // send movers away to next target station or groupe. If no target exist, wait in this step
+		IF sTargetStation <> '' THEN
+			ipStation.SendMoversToStation(THIS^.sTargetStation);
+			nSeq := 0;	
+		END_IF
+
 	
 END_CASE
-fbFeedback.Update();
 fbTon(PT:= T#5S);]]></ST>
       </Implementation>
     </Method>
+    <LineIds Name="FB_Station_LowerZForce">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Station_LowerZForce.FB_init">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Station_LowerZForce.TargetStation.Get">
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Station_LowerZForce.TargetStation.Set">
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Station_LowerZForce.Update">
+      <LineId Id="3" Count="6" />
+      <LineId Id="93" Count="0" />
+      <LineId Id="10" Count="6" />
+      <LineId Id="94" Count="0" />
+      <LineId Id="17" Count="4" />
+      <LineId Id="37" Count="15" />
+      <LineId Id="97" Count="0" />
+      <LineId Id="65" Count="2" />
+      <LineId Id="99" Count="3" />
+      <LineId Id="69" Count="2" />
+      <LineId Id="85" Count="2" />
+      <LineId Id="103" Count="1" />
+      <LineId Id="106" Count="0" />
+      <LineId Id="105" Count="0" />
+      <LineId Id="89" Count="2" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
   </POU>
 </TcPlcObject>

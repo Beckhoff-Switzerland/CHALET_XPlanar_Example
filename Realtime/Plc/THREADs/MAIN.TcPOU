@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
   <POU Name="MAIN" Id="{0d5726c6-96bf-43b9-ad37-581c6a412de7}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR CONSTANT
@@ -8,8 +8,7 @@ VAR CONSTANT
 	//Unique station identification 
 	S_INFEED1 	: STRING := 'Station A';
 	S_OUTFEED1 	: STRING := 'Station D';
-	
-	//Groupe ID
+	//Groupe station identification 
 	G_PROCESS	: STRING := 'Groupe Process';
 END_VAR
 VAR
@@ -17,8 +16,6 @@ VAR
 	bEnable				: BOOL;
 	bDisable, bReset	: BOOL;
 	bSetSettings 		: BOOL := TRUE;
-	
-	//////////////////////////////////////////////////////////////////////////
 	
 	(* XPlanar System - 1 per associated XPlanar 
 		The system is the container and organizer for all subsequent XPlanar objects. All objects are registered with this system*)
@@ -56,7 +53,6 @@ VAR
 								 	(ipSystem			:= fbXpSystem),
 								 	(ipSystem			:= fbXpSystem),
 								 	(ipSystem			:= fbXpSystem)];
-	
 
 	(* XPlanar station - n per associated XPlanar. Can be instantiated as an array and/or individually
 		The stations are the main component of the application. As soon as the system has been started up and all movers are on the track, the movers are only sent from one station to the next.
@@ -107,35 +103,15 @@ VAR
 									xPos				:= 188,//120,125
 									yPos				:= 90);						
 													
-					
-	fbStationDummy1 : FB_XP_Station(ipSystem 			:= fbXpSystem,
-									ipAccocietedTrack 	:= aTracks[5], // =fix track
-									sUniqueName 		:= '',
-									sTargetGroup		:= '',
-									nMoverQueueSize		:= 0,
-									xPos				:= 361,
-									yPos				:= 575);			
-						
-	fbStationDummy2 : FB_XP_Station(ipSystem 			:= fbXpSystem,
-									ipAccocietedTrack 	:= aTracks[6], // =fix track
-									sUniqueName 		:= '',
-									sTargetGroup		:= '',
-									nMoverQueueSize		:= 0,
-									xPos				:= 377,
-									yPos				:= 119);	
+	(*Processing station*)								
+	fbStationCLowerZ : FB_Station_LowerZForce(ipStation := fbStationC);	
+	fbStationBExternalSetpoint : FB_Station_ExternalSetpoint(ipStation := fbStationB);							
+									
 	(* EtherCAt diagnostics - TC3_Eventlogger
 	This function block instance scans the entire EtherCat master. 
 	Each EtherCat slave device is recognized and a message is written to the TC3_Eventlogger as soon as an unwanted state occurs.*)
 	//	fbEtherCatDiagLAN3 : FB_EtherCatMasterDiag;
 	//	fbEtherCatDiagLAN4 : FB_EtherCatMasterDiag;
-END_VAR
-
-//Example ExternalSetpoint MoveToExactStationCoordinates
-VAR
-	bSetpointExample2 : BOOL; //Set this variable to run external setpoint example
-	nSeqStation2 : UINT;
-	ipMoverExample2 : I_XP_Mover_PLC;
-	fPositionOffsetX, fPositionOffsetY : LREAL;//Target position (position next to track) - Actual position (position on the track)
 END_VAR
 
 //Example ConfigTrack
@@ -149,11 +125,7 @@ END_VAR
 //Example SimulationMode
 VAR
 	bStartSimulation,bStopSimulation : BOOL;
-	bStation1_Ready : BOOL := TRUE; 
-	bStation2_Ready : BOOL := TRUE;  
-	bStation3_Ready : BOOL := TRUE;  
 END_VAR
-
 
 //Example Manual Interaction with process outside XPlanar
 VAR
@@ -161,7 +133,7 @@ VAR
 	bFromUpsreamProcessIsFinish 	: BOOL; //The upstream process can set this bool if the process is finish and the mover can leave the station
 	sFromUpstreamTagedStation		: STRING; //The Upstream can chose where the movers should go next
 END_VAR
-	
+
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[IF NOT bInitDone THEN
@@ -183,10 +155,14 @@ END_IF
 
 IF bStartSimulation AND ipXPlanarPLC.Enabled THEN
 	bStartSimulation := FALSE;
-	fbStationA.SimulationStart(fProcessDuration := 0.1, sTargedStation := G_PROCESS); //Groupe
-	fbStationB.SimulationStart(fProcessDuration := 1.0, sTargedStation := S_OUTFEED1); //Exact Station
-	fbStationC.SimulationStart(fProcessDuration := 1.0, sTargedStation := S_OUTFEED1);
-	fbStationD.SimulationStart(fProcessDuration := 0.5, sTargedStation := S_INFEED1);
+	fbStationA.SimulationStart(fProcessDuration := 0.1, sTargetStation := G_PROCESS); //Groupe
+	fbStationD.SimulationStart(fProcessDuration := 0.5, sTargetStation := S_INFEED1); //Exact Station
+	
+	//fbStationB.SimulationStart(fProcessDuration := 1.0, sTargetStation := S_OUTFEED1); 
+	fbStationBExternalSetpoint.TargetStation := S_OUTFEED1;	
+	
+	//fbStationC.SimulationStart(fProcessDuration := 1.0, sTargetStation := S_OUTFEED1);
+	fbStationCLowerZ.TargetStation := S_OUTFEED1;
 END_IF
 
 IF bStopSimulation THEN
@@ -202,11 +178,10 @@ END_IF
 IF ipXPlanarPLC.Enabled THEN
 	//Movement to the station is only permitted if the track is free. 
 	//This serves to prevent collisions as only the gap is not sufficient here
-	fbStationb.ReadyToRecvMovers := fbStationb.AccocietedTrack.CtsMoversOnTrack = 0;
+	fbStationB.ReadyToRecvMovers := fbStationB.AccocietedTrack.CtsMoversOnTrack = 0;
 	fbStationC.ReadyToRecvMovers := fbStationC.AccocietedTrack.CtsMoversOnTrack = 0;
-
 ELSE
-	fbStationb.ReadyToRecvMovers := FALSE;
+	fbStationB.ReadyToRecvMovers := FALSE;
 	fbStationC.ReadyToRecvMovers := FALSE;
 END_IF
 
@@ -227,7 +202,7 @@ IF bSetSettings THEN
 	fbStationA.TargetPosWindow := 5.0;
 	
 	//The mover gets this targed gap asson he leves the station
-	fbStationA.MoverGapAtExit := 350.0;
+	fbStationA.MoverGapAtExit := 300.0;
 	fbStationD_ChangeGap.MoverGapAtExit := 190.0;
 	
 	fbStationB.MoverVelocityAtExit := 2000;	
@@ -236,9 +211,6 @@ IF bSetSettings THEN
 	
 	fbStationC.MoverVelocityAtExit := 2000;	
 	fbStationC.MoverAccAtExit := MC_DEFAULT;
-	
-	fbStationDummy1.SuppressDynamicsChange := TRUE; //This station should not have a efekto on the gap or speed of the mover
-	fbStationDummy2.SuppressDynamicsChange := TRUE;
 END_IF
 
 
@@ -247,99 +219,12 @@ PRG_Example_ProductData_Simple();
 
 (* Update is called at the end of the program *)
 ipXPlanarPLC.Update();
+fbStationCLowerZ.Update();
+fbStationBExternalSetpoint.Update();
 //fbEtherCatDiagLAN3.Update();
 //fbEtherCatDiagLAN4.Update();
 ]]></ST>
     </Implementation>
-    <Method Name="Example_ExternalSetpoint_MoveToExactStationCoordinates" Id="{ce45c26b-0642-437b-b80f-2e7c7e49fed9}">
-      <Declaration><![CDATA[METHOD Example_ExternalSetpoint_MoveToExactStationCoordinates : BOOL
-VAR
-	ipThisStation : I_XP_Station_PLC;
-END_VAR
-]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[(* A station has an X/Y coordinate on the track and an assigned track. 
-   As this coordinate is not always on a track (especially tricky in the curve), the station is moved to the coordinate that is closest to the track.
-   However, if the mover needs to move to the exact original position, regardless of the track, the mover can use this sequence to move to this point.
-*)
-ipThisStation := xPlanarPLC.Station(S_OUTFEED1);
-
-//Set this variable to run external setpoint example
-IF bSetpointExample2 AND ipThisStation <> 0 THEN
-	
-	//fix 1 Movers are used in example
-	ipThisStation.MoverQueueSize := 1;
-	//Switch off simulation in Station 2
-	ipThisStation.SimulationMode(fProcessDuration := 0, sTargedStation := '');
-	
-	CASE nSeqStation2 OF	
-		0: //Wait for Mover
-			IF ipThisStation.MoversInPlace THEN
-				//Get interface to mover
-				ipMoverExample2 := ipThisStation.MoversInQueue[0];
-				nSeqStation2 := nSeqStation2 + 1;
-			END_IF
-			
-		1: //Start External Setpoint (Relative Mode). PowerOn all 6 simulationaxis if linked
-			ipMoverExample2.StartExternalSetpoint();
-			nSeqStation2 := nSeqStation2 + 1;
-		
-		2: //Wait for feedback
-			IF ipMoverExample2.Feedback.Done THEN
-				nSeqStation2 := nSeqStation2 + 1;
-			END_IF
-			
-		3: 	//Target position (position next to track) - Actual position (position on the track)
-			fPositionOffsetX := (ipThisStation.PositionXY.x - ipThisStation.PositionOnTrackXY.x);
-			fPositionOffsetY := (ipThisStation.PositionXY.y - ipThisStation.PositionOnTrackXY.y);
-			
-			ipMoverExample2.AxisExtSetpointX.MoveAbsolute(fPosition := fPositionOffsetX,0,0,0,0,0);
-			ipMoverExample2.AxisExtSetpointY.MoveAbsolute(fPosition := fPositionOffsetY,0,0,0,0,0);
-
-			nSeqStation2 := nSeqStation2 + 1;
-			
-		4: //Wait for feedback
-			IF ipMoverExample2.AxisExtSetpointX.Feedback.Done AND ipMoverExample2.AxisExtSetpointY.Feedback.Done THEN
-				nSeqStation2 := nSeqStation2 + 1;
-			END_IF	
-			
-		5: //Mover is in station. Process could do something here
-			nSeqStation2 := nSeqStation2 + 1;
-			
-		6: //Move back to track
-			ipMoverExample2.AxisExtSetpointX.MoveAbsolute(fPosition := 0,0,0,0,0,0);
-			ipMoverExample2.AxisExtSetpointY.MoveAbsolute(fPosition := 0,0,0,0,0,0);
-			nSeqStation2 := nSeqStation2 + 1;
-		
-		7: //Wait for finishing movement
-			IF ipMoverExample2.AxisExtSetpointX.Feedback.Done AND ipMoverExample2.AxisExtSetpointY.Feedback.Done THEN
-				nSeqStation2 := nSeqStation2 + 1;
-			END_IF
-			
-		
-		8: //Stop external setpoint mode
-			ipMoverExample2.StopExternalSetpoint();
-			nSeqStation2 := nSeqStation2 + 1;
-			
-		9: //Wait for feedback
-			IF ipMoverExample2.Feedback.Done THEN
-				nSeqStation2 := nSeqStation2 + 1;
-			END_IF		
-
-			
-		10: //Finish. Send Mover in next Station
-			ipThisStation.SendMoversToStation(G_INFEED);
-			nSeqStation2 := 0;
-	END_CASE
-
-
-END_IF
-//Reset seq
-IF xPlanarPLC.Disabled THEN
-	nSeqStation2 := 0;
-END_IF]]></ST>
-      </Implementation>
-    </Method>
     <Method Name="Example_ManualConfigTrack" Id="{6aa3b8a8-a905-473e-81e8-375f53092929}">
       <Declaration><![CDATA[METHOD Example_ManualConfigTrack : BOOL
 ]]></Declaration>

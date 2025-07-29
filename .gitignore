@@ -1,10 +1,24 @@
-# [void*.ers] - TwinCAT CHALET V1.4
+# =========================================================
+# CHALET V1.6
+# =========================================================
 
+
+# =========================================================
 # Visual Studio
+# ---------------------------------------------------------
 **/.vs/
 *.~u
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+# =========================================================
 
-# Build results
+
+
+# =========================================================
+# General build results
+# ---------------------------------------------------------
 **/[Dd]ebug/
 **/[Dd]ebugPublic/
 **/[Rr]elease/
@@ -18,48 +32,114 @@
 **/[Oo]bj/
 **/[Ll]og/
 **/[Ll]ogs/
+# =========================================================
 
+
+
+# =========================================================
 # Temporary files
+# ---------------------------------------------------------
 *.[Cc]ache
 *.pfx
+# =========================================================
 
+
+
+# =========================================================
 # NuGet Packages
+# ---------------------------------------------------------
 *.nupkg
 **/Packages/
+# =========================================================
 
-# TwinCAT 
+
+
+# =========================================================
+# TwinCAT | System
+# ---------------------------------------------------------
+# Exclude build results
 **/_Boot/
+# Keep system configuration files
 # **/_Config/
+# Exclude license files
 *.tclrs
+# Exclude binaries
 *.bin
+# Exclude backups
 *.bak
+# Exclude type definiion (TwinCAT 2 notation)
 *.tpy
+# Exclude module definition (TwinCAT 3 notation)
 *.tmc
-# But not these files...
-!/TMC/*
-
-
 *.tmcRefac
+# Exception for event logger types manually stored here
+!/TMC/*
+# CAUTION: Add exception for TMC files if
+# - Type system is stored in separate file
+# - C/C++ sources are present in solution
+# =========================================================
 
-# Online Change sources
+
+# =========================================================
+# TwinCAT | PLC | Online Change
+# ---------------------------------------------------------
 **/_CompileInfo/
 LineIDs.dbg
+# =========================================================
 
 
-# Libraries
+
+# =========================================================
+# TwinCAT | PLC | Libraries
+# ---------------------------------------------------------
 **/_Libraries/*
-# But not these files...
+# Exception for Beckhoff Switzerland Libraries
 !**/_Libraries/beckhoff ch/
+# =========================================================
 
 
-# TwinCAT HMI related
+
+# =========================================================
+# TwinCAT | HMI
+# ---------------------------------------------------------
 **/.engineering_servers/
 **/json-schema.org/
+liveview_*
+*.cache
+*.db-shm
+*.db-wal
+*.pid
+.hmiframework/
+.hmipkgs/*-*-*-*/
+tchmipublish.journal.json
+packages.config.updates
+# =========================================================
 
-# Twincat Vision related
+
+
+# =========================================================
+# TwinCAT | Vision 
+# ---------------------------------------------------------
 *.tcs
 *.mp4
 *.jpg
 *.png
 *.gif
 *.bmp
+# =========================================================
+
+
+
+# =========================================================
+# TwinCAT | C++ 
+# ---------------------------------------------------------
+ipch/
+*.aps
+*.ncb
+*.opendb
+*.opensdf
+*.sdf
+*.cachefile
+*.VC.db
+*.VC.VC.opendb
+# =========================================================

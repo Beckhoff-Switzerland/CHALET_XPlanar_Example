@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<TcSmItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.55" ClassName="CTComMcObjDef" SubType="72">
+<TcSmItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4026.17" ClassName="CTComMcObjDef" SubType="72" TcProjectVariant="Simulation">
 	<DataTypes>
 		<DataType>
 			<Name GUID="{A405473D-A1A7-439E-8C48-FC8F02636891}" Namespace="MC">MC_PLANAR_TRACK_COLLISION_RANGE_MODE</Name>
@@ -64,6 +64,9 @@
 				<Property>
 					<Name>plcAttribute_qualified_only</Name>
 				</Property>
+				<Property>
+					<Name>plcAttribute_to_string</Name>
+				</Property>
 			</Properties>
 		</DataType>
 		<DataType>
@@ -99,6 +102,9 @@
 			<Properties>
 				<Property>
 					<Name>plcAttribute_qualified_only</Name>
+				</Property>
+				<Property>
+					<Name>plcAttribute_to_string</Name>
 				</Property>
 			</Properties>
 		</DataType>
@@ -323,6 +329,9 @@
 		<TmcDesc GUID="{87201A49-0B3B-48DC-957C-3BC5C2E990F0}" TcSmClass="TComMcGroupObj">
 			<Name>Planar Track</Name>
 			<CLSID ClassFactory="TcNc3">{050300C8-0000-0000-F000-000000000064}</CLSID>
+			<Info>
+				<ImageData>424dd6020000000000003600000028000000100000000e00000001001800000000000000000000000000000000000000000000000000939393939393939393939393939393939393939393939393939393939393939393939393939393939393939393939393939393bdbbbb5d5c5c5d5c5c5d5c5c5d5c5c5d5c5c5d5c5c5d5c5c5d5c5c5d5c5c5d5c5c5d5c5c5d5c5c5d5c5c939393939393c5c3c35d5c5c9e9d9d5d5c5c636363c5c3c3c5c3c37d7c7b6c6b6cc0bebd545454c0bebdbdbbbb636363939393939393c5c3c35d5c5cadababc8c6c5605f5ea8a6a4c5c3c3c5c3c3adabab9e9d9dc5c3c3939393605f5e70706f939393939393cccccc5d5c5c5454549a9a976c6b6cc5c3c3c5c3c3c5c3c3c5c3c3c5c3c3c5c3c3605f5eb2b2b2b0aeae939393939393d0cecd5d5c5c8785859696965d5c5caaa8a7545454747474c5c3c3c5c3c36c6b6caaa8a7b2b2b2b2b2b2939393939393d5d3d3605f5ed5d3d35d5c5ccccccc5d5c5cb0aeae7d7c7b9e9c9ac5c3c35d5c5cbdbbbbb2b2b2bdbbbb939393939393dddddd5d5c5cdddddd6c6b6cadababcbcbcbcbcbcb9493915d5c5c545454939393c0bebdbdbbbbb2b2b2939393939393dddddd5d5c5ce3e3e3adabab6c6b6cd0cecdcbcbcbcbcbcbc8c6c55d5c5cc5c3c3c0bebdbdbbbbb2b2b2939393939393e3e3e3605f5ee3e3e3e3e3e3636363adababd0cecdcbcbcb8a8988878585c5c3c3c5c3c3bdbbbbbdbbbb939393939393e3e3e35d5c5ceaeaeaeaeaeae3e3e3545454adabab9a9a975d5c5ccbcbcbc8c6c5c5c3c3bdbbbbb2b2b2939393939393e3e3e35d5c5cf1f1f1eaeaeae3e3e3e3e3e36c6b6c797977d5d3d3cbcbcbc8c6c5c5c3c3bdbbbbb2b2b2939393939393e3e3e3605f5eeaeaeaeaeaeae3e3e3ddddddddddddd5d3d3d5d3d3ccccccc8c6c5c5c3c3bdbbbbbdbbbb939393939393939393939393939393939393939393939393939393939393939393939393939393939393939393939393939393</ImageData>
+			</Info>
 			<InitSequence>PSO</InitSequence>
 			<Contexts>
 				<Context>
@@ -627,10 +636,6 @@
 					<Value>33620048</Value>
 				</Value>
 				<Value>
-					<Name>Track length</Name>
-					<Value>0</Value>
-				</Value>
-				<Value>
 					<Name>Maximal mover width</Name>
 					<Value>155</Value>
 				</Value>
@@ -652,66 +657,10 @@
 				</Value>
 				<Value>
 					<Name>Collision range mode</Name>
-					<EnumText>Automatic</EnumText>
+					<EnumText>Manual</EnumText>
 				</Value>
 				<Value>
 					<Name>PartOID</Name>
-					<Value>0</Value>
-				</Value>
-				<Value>
-					<Name>GroupOID</Name>
-					<Value>0</Value>
-				</Value>
-				<Value>
-					<Name>State</Name>
-					<EnumText>Invalid</EnumText>
-				</Value>
-				<Value>
-					<Name>Operation mode</Name>
-					<EnumText>Invalid</EnumText>
-				</Value>
-				<Value>
-					<Name>Mover count on track</Name>
-					<Value>0</Value>
-				</Value>
-				<Value>
-					<Name>Moving mover count</Name>
-					<Value>0</Value>
-				</Value>
-				<Value>
-					<Name>Geometric online information.h1</Name>
-					<Data>d8648ab44f46394b8708c82c1147c8b6</Data>
-				</Value>
-				<Value>
-					<Name>Geometric online information.1.start.x</Name>
-					<Value>606.435180664063</Value>
-				</Value>
-				<Value>
-					<Name>Geometric online information.1.start.y</Name>
-					<Value>601</Value>
-				</Value>
-				<Value>
-					<Name>Geometric online information.1.start.c</Name>
-					<Value>0</Value>
-				</Value>
-				<Value>
-					<Name>Geometric online information.1.end.x</Name>
-					<Value>608.036865234375</Value>
-				</Value>
-				<Value>
-					<Name>Geometric online information.1.end.y</Name>
-					<Value>599</Value>
-				</Value>
-				<Value>
-					<Name>Geometric online information.1.end.c</Name>
-					<Value>0</Value>
-				</Value>
-				<Value>
-					<Name>Previous tracks[1]</Name>
-					<Value>0</Value>
-				</Value>
-				<Value>
-					<Name>Subsequent tracks[1]</Name>
 					<Value>0</Value>
 				</Value>
 				<Value>
@@ -772,10 +721,6 @@
 				</Value>
 				<Value>
 					<Name>Closed loop</Name>
-					<EnumText>FALSE</EnumText>
-				</Value>
-				<Value>
-					<Name>Closed loop online information</Name>
 					<EnumText>FALSE</EnumText>
 				</Value>
 				<Value>

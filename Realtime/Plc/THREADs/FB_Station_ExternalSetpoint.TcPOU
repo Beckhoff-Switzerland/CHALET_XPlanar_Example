@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
+  <POU Name="FB_Station_ExternalSetpoint" Id="{09f3dfce-204a-4785-b9c0-7ed7320ace08}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Station_ExternalSetpoint EXTENDS FB_CH_Object
+VAR
+	ipStation : I_XP_Station_PLC;
+	nSeq : UINT;
+	fbTon : TON;
+	ipMoverInStation : I_XP_Mover_PLC;
+	bFromUpstreamProcessIsFinish: BOOL := TRUE;	
+	sTargetStation : STRING; //the mover gets this as next target
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="FB_init" Id="{a049c9fd-224b-4fcb-ab13-cbccf79c7cbd}">
+      <Declaration><![CDATA[METHOD FB_init : BOOL
+VAR_INPUT
+	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
+	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
+	
+	ipStation : I_XP_Station_PLC;
+	
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.ipStation := ipStation;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="TargetStation" Id="{8d6e37b0-a4bf-4d4e-8133-142565ccd752}">
+      <Declaration><![CDATA[{attribute 'monitoring':='call'}
+ //the mover gets this as next target
+PROPERTY TargetStation : STRING]]></Declaration>
+      <Get Name="Get" Id="{a1a5ad86-b170-433c-af76-71b515d94ba0}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[TargetStation := sTargetStation;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{23360c4e-0c77-4f61-98af-5d65d944e629}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[sTargetStation := TargetStation;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="Update" Id="{7f988138-89db-4dde-a9d6-ebe28687f807}">
+      <Declaration><![CDATA[METHOD Update : HRESULT
+VAR
+	fPositionOffsetX, fPositionOffsetY : LREAL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF ipStation = 0 THEN
+	RETURN; // ERROR
+END_IF
+
+IF ipStation.System.Disabled THEN
+	nSeq := 0;
+END_IF
+
+//The simulation (automatic retransmission of a mover after a fixed time) is stopped for this station
+ipStation.SimulationStop();
+
+CASE nSeq OF 
+	0: //wait for mover
+		IF ipStation.MoversInPlace THEN
+			//receive the foremost mover in the station (if there is more than one mover in the station)
+			ipMoverInStation := ipStation.MoversInQueue[0];
+			IF ipMoverInStation <> 0 THEN
+				nSeq := 1;
+			END_IF
+		END_IF
+		
+	1: //Switch on all external setpoint axes.
+		ipMoverInStation.StartExternalSetpoint();
+		nSeq := 2;				
+
+	2: // wait until enabling is finish
+		IF ipMoverInStation.Feedback.Done THEN
+			fbTon.IN := FALSE;
+			nSeq := 3;	
+		END_IF
+		
+	3: //start Movement Example "scorrective movement" e.g.: a chamber has previously recognized the component and the tile must now align itself with this value
+		ipMoverInStation.AxisExtSetpointX.MoveRelative(15,0,0,0,0,0);
+		ipMoverInStation.AxisExtSetpointC.MoveRelative(-5,0,0,0,0,0);
+		nSeq := 4;	
+		
+	4: 	//Wait for finish Movement
+		//The upstream process can set this bool if the process is finish and the mover can leave the station
+		bFromUpstreamProcessIsFinish := bFromUpstreamProcessIsFinish;
+		IF ipMoverInStation.AxisExtSetpointX.Feedback.Done AND ipMoverInStation.AxisExtSetpointC.Feedback.Done AND bFromUpstreamProcessIsFinish THEN
+			fbTon.IN := TRUE; //Start timer
+			IF fbTon.Q THEN
+				fbTon.IN := FALSE; //Reset timer
+				nSeq := 5;					
+			END_IF
+		END_IF
+
+
+	5: //Start Movement Example "exact station position" e.g.: The actual station is located slightly next to the track. It is particularly difficult to “hit” an exact position in the curve
+		fPositionOffsetX := (ipStation.PositionXY.x - ipStation.PositionOnTrackXY.x);
+		fPositionOffsetY := (ipStation.PositionXY.y - ipStation.PositionOnTrackXY.y);
+		
+		ipMoverInStation.AxisExtSetpointX.MoveAbsolute(fPosition := fPositionOffsetX,0,0,0,0,0);
+		ipMoverInStation.AxisExtSetpointY.MoveAbsolute(fPosition := fPositionOffsetY,0,0,0,0,0);
+		ipMoverInStation.AxisExtSetpointC.MoveAbsolute(fPosition := 0,0,0,0,0,0);
+		nSeq := 6;	
+		
+	6: 	//Wait for finish Movement
+		IF ipMoverInStation.AxisExtSetpointX.Feedback.Done AND ipMoverInStation.AxisExtSetpointY.Feedback.Done AND ipMoverInStation.AxisExtSetpointC.Feedback.Done THEN
+			fbTon.IN := TRUE; //Start timer
+			IF fbTon.Q THEN
+				fbTon.IN := FALSE; //Reset timer
+				nSeq := 7;					
+			END_IF
+		END_IF
+	
+	7: 	//Stop external Setpint
+		ipMoverInStation.StopExternalSetpoint();
+		nSeq := 8;	
+
+	8: // wait until enable is finish
+		IF ipMoverInStation.Feedback.Done THEN
+			fbTon.IN := FALSE;
+			nSeq := 100;	
+		END_IF
+		
+	100: // send movers away to next target station or groupe. If no target exist, wait in this step
+		IF sTargetStation <> '' THEN
+			ipStation.SendMoversToStation(THIS^.sTargetStation);
+			nSeq := 0;	
+		END_IF	
+	
+END_CASE
+
+fbTon(PT:= T#1S);]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

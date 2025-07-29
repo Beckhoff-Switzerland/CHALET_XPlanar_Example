@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<TcSmItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.55" ClassName="CTComMcObjDef" SubType="72" TcProjectVariant="Simulation">
+<TcSmItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4026.16" ClassName="CTComMcObjDef" SubType="72" TcProjectVariant="Simulation">
 	<DataTypes>
 		<DataType>
 			<Name GUID="{6D2B99B2-A9F2-44AF-A298-4BB7A08AE294}" Namespace="MC" TcBaseType="true">MC_PLANAR_STATE</Name>
@@ -49,6 +49,9 @@
 			<Properties>
 				<Property>
 					<Name>plcAttribute_qualified_only</Name>
+				</Property>
+				<Property>
+					<Name>plcAttribute_to_string</Name>
 				</Property>
 			</Properties>
 		</DataType>
@@ -195,7 +198,8 @@
 					<ContextId OnlineAccess="true">0</ContextId>
 				</Parameter>
 				<Parameter>
-					<Name>Reset timeout for the parts of this environment</Name>
+					<Name>Timeout for part state machines</Name>
+					<Comment><![CDATA[Timeout for part forceEnable and reset commands of the user in seconds.]]></Comment>
 					<BitSize>64</BitSize>
 					<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
 					<Unit><![CDATA[s]]></Unit>
@@ -287,24 +291,8 @@
 					<Value>16842768</Value>
 				</Value>
 				<Value>
-					<Name>Reset timeout for the parts of this environment</Name>
+					<Name>Timeout for part state machines</Name>
 					<Value>2</Value>
-				</Value>
-				<Value>
-					<Name>GroupOID</Name>
-					<Value>0</Value>
-				</Value>
-				<Value>
-					<Name>StatorCount</Name>
-					<Value>0</Value>
-				</Value>
-				<Value>
-					<Name>BoundaryElementCount</Name>
-					<Value>0</Value>
-				</Value>
-				<Value>
-					<Name>PartCount</Name>
-					<Value>0</Value>
 				</Value>
 			</ParameterValues>
 		</TmcDesc>
