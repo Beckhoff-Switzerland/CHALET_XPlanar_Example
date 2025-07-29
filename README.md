@@ -69,11 +69,6 @@ Packages to use Usermode-Runtime:
 - TwinCAT.XARUM.AdvancedMotion
 
 
-### Build 3.1.4024
-- [TE1000 | TwinCAT 3 Engineering](https://www.beckhoff.com/en-en/products/automation/twincat/texxxx-twincat-3-engineering/te1000.html)
-- [TF5890 | TwinCAT 3 XPlanar](https://www.beckhoff.com/en-en/products/automation/twincat/tfxxxx-twincat-3-functions/tf5xxx-motion/tf5890.html)
-- [TF5430 | TwinCAT 3 Planar Motion](https://www.beckhoff.com/en-en/products/automation/twincat/tfxxxx-twincat-3-functions/tf5xxx-motion/tf5430.html?)
-
 ---
 ## Quick Start
 When the project is opened in TwinCat for the first time, certain PLC libraries are missing. These are stored in the project and can be installed using the following button.<br>
