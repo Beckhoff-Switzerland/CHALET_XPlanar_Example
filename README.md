@@ -6,7 +6,7 @@
 
 The **CHALET Framework** is a powerful and intuitive software library designed to simplify the control and management of **Beckhoff XPlanar** systems. It abstracts the complexities of direct mover control, allowing developers and engineers to focus entirely on defining and optimizing their material flow processes.
 
-![image](https://github.com/user-attachments/assets/d8d6c46d-9b93-48af-81e2-3aab3ca74152)
+![image](https://github.com/user-attachments/assets/cdabc5ef-70da-4cc3-823f-08bfe2f041ff)
 ---
 
 ## Why CHALET?
