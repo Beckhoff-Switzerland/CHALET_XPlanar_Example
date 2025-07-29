@@ -56,6 +56,20 @@ Once a processing step is completed, any mover can be **commanded to any desired
 
 ---
 ## Requirements
+
+### Build 3.1.4026
+
+Worklaods:
+- TwinCAT.Standard.XAE
+- TF5890.XPlanar.XAE
+- TF5400.AdvancedMotionPack.XAE
+  
+Packages to use Usermode-Runtime:
+- TwinCAT.XARUM.NCPTP
+- TwinCAT.XARUM.AdvancedMotion
+
+
+### Build 3.1.4024
 - [TE1000 | TwinCAT 3 Engineering](https://www.beckhoff.com/en-en/products/automation/twincat/texxxx-twincat-3-engineering/te1000.html)
 - [TF5890 | TwinCAT 3 XPlanar](https://www.beckhoff.com/en-en/products/automation/twincat/tfxxxx-twincat-3-functions/tf5xxx-motion/tf5890.html)
 - [TF5430 | TwinCAT 3 Planar Motion](https://www.beckhoff.com/en-en/products/automation/twincat/tfxxxx-twincat-3-functions/tf5xxx-motion/tf5430.html?)
